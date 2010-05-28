@@ -5,11 +5,11 @@ from django.utils.translation import ugettext_lazy as _
 
 from captcha.widgets import ReCaptcha
 
-from recaptcha import captcha
+from recaptcha.client import captcha
 
 class ReCaptchaField(forms.CharField):
     default_error_messages = {
-        'captcha_invalid': _(u'Invalid captcha')
+        'captcha_invalid': _(u'Incorrect, please try again.')
     }
 
     def __init__(self, *args, **kwargs):
