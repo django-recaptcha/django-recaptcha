@@ -7,9 +7,13 @@ class ReCaptcha(forms.widgets.Widget):
     recaptcha_challenge_name = 'recaptcha_challenge_field'
     recaptcha_response_name = 'recaptcha_response_field'
 
+    def __init__(self, *args, **kwargs):
+        self.attrs = kwargs.get('attrs', {})
+        super(ReCaptchaWidget, self).__init__(*args, **kwargs)
+
     def render(self, name, value, attrs=None):
-        return mark_safe(u'%s' % captcha.displayhtml(settings.RECAPTCHA_PUBLIC_KEY))
+        return mark_safe(u'%s' % captcha.displayhtml(settings.RECAPTCHA_PUBLIC_KEY), self.attrs)
 
     def value_from_datadict(self, data, files, name):
-        return [data.get(self.recaptcha_challenge_name, None), 
+        return [data.get(self.recaptcha_challenge_name, None),
             data.get(self.recaptcha_response_name, None)]
