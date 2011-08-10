@@ -34,5 +34,6 @@ Once done you should be able to access `/accounts/register/ <http://localhost:80
 Credits
 -------
 Inspired Marco Fucci's blogpost titled `Integrating reCAPTCHA with Django <http://www.marcofucci.com/tumblelog/26/jul/2009/integrating-recaptcha-with-django>`_
+
 reCAPTCHA © 2011 Google
 
