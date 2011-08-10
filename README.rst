@@ -5,7 +5,7 @@ Django reCAPTCHA
 .. contents:: Contents
     :depth: 5
 
-django-recaptcha uses a modified version of the `Python reCAPTCHA client <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the package as ``captcha.py``.
+django-recaptcha uses a modified version of the `Python reCAPTCHA client <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the package as ``client.py``.
 
 
 Installation
