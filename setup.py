@@ -14,7 +14,6 @@ setup(
         'https://bitbucket.org/ubernostrum/django-registration/downloads/django-registration-0.8-alpha-1.tar.gz#egg=django-registration-0.8-alpha-1',
     ],
     install_requires = [
-        'recaptcha-client',
         'django-registration>=0.8-alpha-1',
     ],
     include_package_data=True,
