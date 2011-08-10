@@ -13,6 +13,16 @@ Installation
 Usage
 -----
 
+Field
+~~~~~
+The quickest way to add reCAPTHCA to a form is use the included ``ReCaptchaField`` field type. A ``ReCaptcha`` widget is rendered as the form field, with the field validating itself without any further action required from you. For example::
+
+    from django import forms
+    from captcha.fields import ReCaptchaField
+
+    class FormWithCaptcha(forms.Form):
+        captcha = ReCaptchaField()
+
 django-registration
 ~~~~~~~~~~~~~~~~~~~
 django-recaptcha ships with a `django-registration <https://bitbucket.org/ubernostrum/django-registration>`_ backend extending the default backend to include a reCAPTCHA field. This is included mostly as an example of how you could intergrate a reCAPTCHA field with django-registration. I suggest you familiarize yourself with `the django-registration docs <http://docs.b-list.org/django-registration/0.8/index.html>`_ for more comprehensive documentation. 
