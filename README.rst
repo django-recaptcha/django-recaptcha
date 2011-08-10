@@ -19,6 +19,8 @@ django-recaptcha ships with a `django-registration <https://bitbucket.org/uberno
 
 To use the reCAPTHCA backend complete these steps:
 
+#. Add ``registration`` to your ``INSTALLED_APPS`` setting.
+
 #. Add captcha registration backend url include to your project's ``urls.py`` file::
 
     (r'^accounts/', include('captcha.backends.default.urls')),
