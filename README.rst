@@ -27,7 +27,7 @@ To use the reCAPTHCA backend complete these steps:
     
     ACCOUNT_ACTIVATION_DAYS = 7
 
-# Implement various `templates as required by django-registration<http://docs.b-list.org/django-registration/0.8/quickstart.html#required-templates>`_.
+#. Implement various `templates as required by django-registration<http://docs.b-list.org/django-registration/0.8/quickstart.html#required-templates>`_.
 
 Once done you should be able to access `/accounts/register/ <http://localhost:8000/accounts/register/>`_ and see reCAPTCHA in action.
 
