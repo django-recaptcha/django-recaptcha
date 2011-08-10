@@ -29,7 +29,7 @@ To use the reCAPTHCA backend complete these steps:
 
 #. Implement various `templates as required by django-registration <http://docs.b-list.org/django-registration/0.8/quickstart.html#required-templates>`_.
 
-Once done you should be able to access `/accounts/register/ <http://localhost:8000/accounts/register/>`_ and see reCAPTCHA in action.
+Once done you should be able to access `/accounts/register/ <http://localhost:8000/accounts/register/>`_ and see the reCAPTCHA field in action as part of the registration process.
 
 Credits
 -------
