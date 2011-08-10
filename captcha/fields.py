@@ -37,9 +37,7 @@ class ReCaptchaField(forms.CharField):
         super(ReCaptchaField, self).clean(values[1])
         recaptcha_challenge_value = smart_unicode(values[0])
         recaptcha_response_value = smart_unicode(values[1])
-        check_captcha = client.submit(recaptcha_challenge_value, recaptcha_response_value, settings.RECAPTCHA_PRIVATE_KEY, self.get_remote_ip())
-        # TODO: Use SSL.
-        #, use_ssl=utils.use_ssl())
+        check_captcha = client.submit(recaptcha_challenge_value, recaptcha_response_value, private_key=settings.RECAPTCHA_PRIVATE_KEY, remoteip=self.get_remote_ip(), use_ssl=utils.use_ssl())
         if not check_captcha.is_valid:
             raise forms.util.ValidationError(self.error_messages['captcha_invalid'])
         return values[0]
