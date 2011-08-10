@@ -13,6 +13,11 @@ Installation
 
 #. Install or add ``django-recaptcha`` to your Python path.
 
+#. Optionally add a ``RECAPTCHA_USE_SSL`` setting to the project's ``settings.py`` file. This causes reCAPTCHA validation submits to be made over SSL, i.e.::
+    RECAPTCHA_USE_SSL = True
+
+If you don't add this setting the default behaviour is to **NOT** SSL.
+
 Usage
 -----
 
