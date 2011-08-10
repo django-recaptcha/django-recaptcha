@@ -37,7 +37,7 @@ Usage
 
 Field
 ~~~~~
-The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaField`` field type. A ``ReCaptcha`` widget is rendered as the form field with the field validating itself without any further action required from you. For example::
+The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaField`` field type. A ``ReCaptcha`` widget will be rendered with the field validating itself without any further action required from you. For example::
 
     from django import forms
     from captcha.fields import ReCaptchaField
