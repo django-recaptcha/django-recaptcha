@@ -29,8 +29,8 @@ Installation
     
     RECAPTCHA_USE_SSL = True
 
-If you don't add this setting the default behaviour is to **NOT** use SSL.
-This can be seperately specified at runtime by passing a ``use_ssl`` parameter when constructing the ``ReCaptchaField``, see field usage below.
+   If you don't add this setting the default behaviour is to **NOT** use SSL.
+   This can be seperately specified at runtime by passing a ``use_ssl`` parameter when constructing the ``ReCaptchaField``, see field usage below.
 
 Usage
 -----
