@@ -45,7 +45,7 @@ The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaFi
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField()
 
-To allow for runtime specification of keys and SSL usage you can pass ``private_key``, ``public_key`` or ``use_ssl`` parameters to the constructor, i.e.::
+To allow for runtime specification of keys and SSL usage you can optinally pass ``private_key``, ``public_key`` or ``use_ssl`` parameters to the constructor, i.e.::
     
     captcha = ReCaptchaField(
         public_key='76wtgdfsjhsydt7r5FFGFhgsdfytd656sad75fgh',
