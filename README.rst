@@ -20,6 +20,7 @@ django-recaptcha ships with a `django-registration <https://bitbucket.org/uberno
 To use the reCAPTHCA backend complete these steps:
 
 #. Add captcha registration backend url include to your project's ``urls.py`` file::
+
     (r'^accounts/', include('captcha.backends.default.urls')),
 
 #. Add an ``ACCOUNT_ACTIVATION_DAYS`` setting to the project's ``settings.py`` file. This is the number of days users will have to activate their accounts after registering, as required by django-registration, i.e.::
