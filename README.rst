@@ -5,6 +5,9 @@ Django reCAPTCHA
 .. contents:: Contents
     :depth: 5
 
+django-recaptcha uses a modified version of the `Python reCAPTCHA client <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the package as ``captcha.py``.
+
+
 Installation
 ------------
 
@@ -22,6 +25,12 @@ The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaFi
 
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField()
+
+The reCAPTCHA widget has several `Javascript options variables <https://code.google.com/apis/recaptcha/docs/customization.html>`_ customizing the behaviour of the widget, such as ``theme`` and ``lang``. You can forward these options to the widget by passing an ``attr`` parameter containing a dictionary of options to ``ReCaptchaField``, i.e.::
+
+    captcha = ReCaptchaField(attrs={'options': {'theme' : 'clean'}})
+
+The captcha client takes the key/value pairs for the options key, iterates over them, and writes out the RecaptchaOptions value in JavaScript.
 
 django-registration
 ~~~~~~~~~~~~~~~~~~~
