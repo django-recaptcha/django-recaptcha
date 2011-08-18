@@ -1,8 +1,22 @@
 import urllib2, urllib
 
-API_SSL_SERVER="https://www.google.com/recaptcha/api"
-API_SERVER="http://www.google.com/recaptcha/api"
-VERIFY_SERVER="www.google.com"
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils import simplejson as json
+from django.utils.safestring import mark_safe
+
+DEFAULT_API_SSL_SERVER = "https://www.google.com/recaptcha/api"
+DEFAULT_API_SERVER = "http://www.google.com/recaptcha/api"
+DEFAULT_VERIFY_SERVER = "www.google.com"
+DEFAULT_WIDGET_TEMPLATE = 'captcha/widget.html'
+
+API_SSL_SERVER = getattr(settings, "CAPTCHA_API_SSL_SERVER", DEFAULT_API_SSL_SERVER)
+API_SERVER=getattr(settings, "CAPTCHA_API_SERVER", DEFAULT_API_SERVER)
+VERIFY_SERVER=getattr(settings, "CAPTCHA_VERIFY_SERVER", DEFAULT_VERIFY_SERVER)
+WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE", DEFAULT_WIDGET_TEMPLATE)
+
+
+RECAPTCHA_SUPPORTED_LANUAGES = ('en', 'nl', 'fr', 'de', 'pt', 'ru', 'es', 'tr')
 
 class RecaptchaResponse(object):
     def __init__(self, is_valid, error_code=None):
@@ -28,28 +42,15 @@ def displayhtml (public_key,
     else:
         server = API_SERVER
 
-    options_js = ''
-    if attrs:
-        options_js = '<script type="text/javascript">var RecaptchaOptions = {\n'
-        for k, v in attrs.get('options').items():
-            options_js += "\t%s : '%s',\n" % (k, v)
-        options_js += '};\n</script>'
+    if not 'lang' in attrs:
+        attrs['lang'] = settings.LANGUAGE_CODE[:2]
 
-    return """
-    %(options_js)s
-    <script type="text/javascript" src="%(ApiServer)s/challenge?k=%(PublicKey)s%(ErrorParam)s"></script>
-
-<noscript>
-  <iframe src="%(ApiServer)s/noscript?k=%(PublicKey)s%(ErrorParam)s" height="300" width="500" frameborder="0"></iframe><br />
-  <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
-  <input type='hidden' name='recaptcha_response_field' value='manual_challenge' />
-</noscript>
-""" % {
-        'ApiServer' : server,
-        'PublicKey' : public_key,
-        'ErrorParam' : error_param,
-        'options_js' : options_js
-        }
+    return render_to_string(WIDGET_TEMPLATE, 
+            {'api_server': server,
+             'public_key': public_key,
+             'error_param': error_param,
+             'options': mark_safe(json.dumps(attrs, indent=2))
+             })
 
 
 def submit (recaptcha_challenge_field,
