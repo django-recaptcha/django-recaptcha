@@ -1,4 +1,10 @@
 from setuptools import setup, find_packages
+from setuptools.command.test import test
+
+def run_tests(self):
+    from setuptest.runtests import runtests
+    return runtests(self)
+test.run_tests = run_tests
 
 setup(
     name='django-recaptcha',
@@ -16,6 +22,10 @@ setup(
     install_requires = [
         'django-registration>=0.8-alpha-1',
     ],
+    tests_require=[
+        'django-setuptest',
+    ],
+    test_suite="captcha.tests",
     include_package_data=True,
     classifiers = [
         "Programming Language :: Python",
