@@ -12,4 +12,5 @@ bTaylor Design
 Other
 -----
 * Brooks Travis
+* `Denis Mishchishin <https://github.com/denz>`_
 

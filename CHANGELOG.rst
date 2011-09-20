@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.0.3 (2011-09-20)
+------------------
+#. Don't force registration version thanks kshileev.
+#. Render widget using template, thanks denz. 
+
 0.0.2 (2011-08-10)
 ------------------
 #. Use remote IP when validating.
