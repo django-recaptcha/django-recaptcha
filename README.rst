@@ -61,7 +61,7 @@ The reCAPTCHA widget supports several `Javascript options variables <https://cod
 
     captcha = ReCaptchaField(attrs={'theme' : 'clean'})
 
-The captcha client takes the key/value pairs for the options key, iterates over them and writes out the RecaptchaOptions value in JavaScript.
+The captcha client takes the key/value pairs and writes out the RecaptchaOptions value in JavaScript.
 
 django-registration
 ~~~~~~~~~~~~~~~~~~~
