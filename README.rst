@@ -13,6 +13,8 @@ Installation
 
 #. Install or add ``django-recaptcha`` to your Python path.
 
+#. Add ``captcha`` to your ``INSTALLED_APPS`` setting.
+
 #. Add a ``RECAPTCHA_PUBLIC_KEY`` setting to the project's ``settings.py`` file. This is your public API key as provided by reCAPTCHA, i.e.::
     
     RECAPTCHA_PUBLIC_KEY = '76wtgdfsjhsydt7r5FFGFhgsdfytd656sad75fgh'
