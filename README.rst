@@ -65,6 +65,10 @@ django-registration
 ~~~~~~~~~~~~~~~~~~~
 django-recaptcha ships with a `django-registration <https://bitbucket.org/ubernostrum/django-registration>`_ backend extending the default backend to include a reCAPTCHA field. This is included mostly as an example of how you could intergrate a reCAPTCHA field with django-registration. I suggest you familiarize yourself with `the django-registration docs <http://docs.b-list.org/django-registration/0.8/index.html>`_ for more comprehensive documentation. 
 
+.. note::
+
+    This backend will only work with django-registration versions `0.8-alpha-1 <https://bitbucket.org/ubernostrum/django-registration/downloads/django-registration-0.8-alpha-1.tar.gz>`_ and up.
+
 To use the reCAPTHCA backend complete these steps:
 
 #. Add ``registration`` to your ``INSTALLED_APPS`` setting.
