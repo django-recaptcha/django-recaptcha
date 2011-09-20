@@ -59,7 +59,7 @@ If specified these parameters will be used instead of your reCAPCTHA project set
         
 The reCAPTCHA widget supports several `Javascript options variables <https://code.google.com/apis/recaptcha/docs/customization.html>`_ customizing the behaviour of the widget, such as ``theme`` and ``lang``. You can forward these options to the widget by passing an ``attr`` parameter containing a dictionary of options to ``ReCaptchaField``, i.e.::
 
-    captcha = ReCaptchaField(attrs={'options': {'theme' : 'clean'}})
+    captcha = ReCaptchaField(attrs={'theme' : 'clean'})
 
 The captcha client takes the key/value pairs for the options key, iterates over them and writes out the RecaptchaOptions value in JavaScript.
 
