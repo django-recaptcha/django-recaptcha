@@ -4,4 +4,4 @@ from registration.forms import RegistrationForm
 
 
 class RegistrationFormCaptcha(RegistrationForm):
-    captcha = ReCaptchaField(attrs={'options': {'theme': 'white'}})
+    captcha = ReCaptchaField(attrs={'theme': 'white'})
