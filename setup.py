@@ -10,11 +10,8 @@ setup(
     license='BSD',
     url='http://github.com/praekelt/django-recaptcha',
     packages = find_packages(),
-    dependency_links = [
-        'https://bitbucket.org/ubernostrum/django-registration/downloads/django-registration-0.8-alpha-1.tar.gz#egg=django-registration-0.8-alpha-1',
-    ],
     install_requires = [
-        'django-registration>=0.8-alpha-1',
+        'django-registration',
     ],
     tests_require=[
         'django-setuptest>=0.0.6',
