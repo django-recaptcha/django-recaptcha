@@ -41,7 +41,10 @@ class ReCaptchaField(forms.CharField):
             if 'request' in f.f_locals:
                 request = f.f_locals['request']
                 if request:
-                    return request.META['REMOTE_ADDR']
+                    remote_ip = request.META.get('REMOTE_ADDR',"")
+                    forwarded_ip = request.META.get('HTTP_X_FORWARDED_FOR',"")
+                    ip = remote_ip if not forwarded_ip else forwarded_ip
+                    return ip
             f = f.f_back
 
     def clean(self, values):
