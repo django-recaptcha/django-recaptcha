@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-recaptcha',
-    version='0.0.3',
+    version='0.0.4 (unreleased)',
     description='Django recaptcha form field/widget app.',
     long_description = open('README.rst', 'r').read() + open('AUTHORS.rst', 'r').read() + open('CHANGELOG.rst', 'r').read(),
     author='Praekelt Foundation',
