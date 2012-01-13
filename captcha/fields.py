@@ -48,6 +48,10 @@ class ReCaptchaField(forms.CharField):
         super(ReCaptchaField, self).clean(values[1])
         recaptcha_challenge_value = smart_unicode(values[0])
         recaptcha_response_value = smart_unicode(values[1])
+
+        if settings.DEBUG and recaptcha_response_value == 'PASSED':
+            return values[0]
+
         check_captcha = client.submit(recaptcha_challenge_value, \
                 recaptcha_response_value, private_key=self.private_key, \
                 remoteip=self.get_remote_ip(), use_ssl=self.use_ssl)
