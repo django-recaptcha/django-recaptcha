@@ -63,6 +63,21 @@ The reCAPTCHA widget supports several `Javascript options variables <https://cod
 
 The captcha client takes the key/value pairs and writes out the RecaptchaOptions value in JavaScript.
 
+
+Unit Testing
+~~~~~~~~~~~~
+django-recaptcha detects for `DEBUG = True` in the settings.py to facilitate unit tests.
+When `DEBUG = TRUE`, using `PASSED` as the `recaptcha_response_field` value.
+
+Example:
+
+    form_params = {'recaptcha_response_field': 'PASSED'}
+    form = RegistrationForm(form_params) # assuming only one ReCaptchaField
+    form.is_valid() # True
+
+Passing any other values will cause django-recaptcha to continue normal processing and return a form error.
+
+
 django-registration
 ~~~~~~~~~~~~~~~~~~~
 django-recaptcha ships with a `django-registration <https://bitbucket.org/ubernostrum/django-registration>`_ backend extending the default backend to include a reCAPTCHA field. This is included mostly as an example of how you could intergrate a reCAPTCHA field with django-registration. I suggest you familiarize yourself with `the django-registration docs <http://docs.b-list.org/django-registration/0.8/index.html>`_ for more comprehensive documentation. 
