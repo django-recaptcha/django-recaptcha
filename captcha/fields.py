@@ -41,8 +41,8 @@ class ReCaptchaField(forms.CharField):
             if 'request' in f.f_locals:
                 request = f.f_locals['request']
                 if request:
-                    remote_ip = request.META.get('REMOTE_ADDR',"")
-                    forwarded_ip = request.META.get('HTTP_X_FORWARDED_FOR',"")
+                    remote_ip = request.META.get('REMOTE_ADDR', '')
+                    forwarded_ip = request.META.get('HTTP_X_FORWARDED_FOR', '')
                     ip = remote_ip if not forwarded_ip else forwarded_ip
                     return ip
             f = f.f_back
@@ -59,6 +59,7 @@ class ReCaptchaField(forms.CharField):
                 recaptcha_response_value, private_key=self.private_key, \
                 remoteip=self.get_remote_ip(), use_ssl=self.use_ssl)
         if not check_captcha.is_valid:
-            raise forms.util.ValidationError(self.error_messages[\
-                    'captcha_invalid'])
+            raise forms.util.ValidationError(
+                self.error_messages['captcha_invalid']
+            )
         return values[0]
