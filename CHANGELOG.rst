@@ -1,8 +1,8 @@
 Changelog
 =========
 
-0.0.4 (unreleased)
-------------------
+0.0.4
+-----
 #. Handle missing REMOTE_ADDR request meta key. Thanks Joe Jasinski.
 #. Added checks for settings.DEBUG to facilitate tests. Thanks Victor Neo.
 #. Fix for correct iframe URL in case of no javascript. Thanks gerdemb.
