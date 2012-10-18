@@ -10,9 +10,6 @@ setup(
     license='BSD',
     url='http://github.com/praekelt/django-recaptcha',
     packages = find_packages(),
-    install_requires = [
-        'django-registration',
-    ],
     tests_require=[
         'django-setuptest>=0.0.6',
     ],
