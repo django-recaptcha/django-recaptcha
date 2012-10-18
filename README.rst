@@ -66,16 +66,30 @@ The captcha client takes the key/value pairs and writes out the RecaptchaOptions
 
 Unit Testing
 ~~~~~~~~~~~~
-django-recaptcha detects for `DEBUG = True` in the settings.py to facilitate unit tests.
-When `DEBUG = TRUE`, using `PASSED` as the `recaptcha_response_field` value.
+
+django-recaptcha introduces an environmental variable `RECAPTCHA_TESTING` which
+helps facilitate tests. The environmental variable should be set to `"True"`, 
+and cleared, using the `setUp()` and `tearDown()` methods in your test classes.
+
+Setting `RECAPTCHA_TESTING` to `True` causes django-recpatcha to accept 
+`"PASSED"` as the `recaptcha_response_field` value.
 
 Example:
+
+    import os
+    os.environ['RECAPTCHA_TESTING'] = 'True'
 
     form_params = {'recaptcha_response_field': 'PASSED'}
     form = RegistrationForm(form_params) # assuming only one ReCaptchaField
     form.is_valid() # True
 
-Passing any other values will cause django-recaptcha to continue normal processing and return a form error.
+    os.environ['RECAPTCHA_TESTING'] = 'False'
+    form.is_valid() # False
+
+Passing any other values will cause django-recaptcha to continue normal processing 
+and return a form error.
+
+Check `tests.py` for a full example.
 
 
 django-registration
