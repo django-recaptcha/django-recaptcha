@@ -1,8 +1,8 @@
 import os
 import unittest
 
+from captcha import fields
 from django.forms import Form
-from captcha import fields, forms, models, widgets
 
 
 class TestForm(Form):
@@ -25,4 +25,4 @@ class TestCase(unittest.TestCase):
         self.assertFalse(form.is_valid())
 
     def tearDown(self):
-        del os.environ['RECAPTCHA_TESTING']    
+        del os.environ['RECAPTCHA_TESTING']
