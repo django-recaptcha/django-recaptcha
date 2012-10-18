@@ -4,6 +4,7 @@ Authors
 Praekelt Foundation
 -------------------
 * Shaun Sephton
+* Peter Pistorius
 * Hedley Roos
 
 bTaylor Design
