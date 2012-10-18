@@ -74,7 +74,7 @@ and cleared, using the `setUp()` and `tearDown()` methods in your test classes.
 Setting `RECAPTCHA_TESTING` to `True` causes django-recpatcha to accept 
 `"PASSED"` as the `recaptcha_response_field` value.
 
-Example:
+Example:::
 
     import os
     os.environ['RECAPTCHA_TESTING'] = 'True'
