@@ -4,6 +4,7 @@ Changelog
 0.0.5
 -----
 #. Removed django-registration dependency
+#. Changed testing mechanism to environmental variable `RECAPTCHA_TESTING`
 
 0.0.4
 -----

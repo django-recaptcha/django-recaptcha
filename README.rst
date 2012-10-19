@@ -71,7 +71,7 @@ django-recaptcha introduces an environmental variable `RECAPTCHA_TESTING` which
 helps facilitate tests. The environmental variable should be set to `"True"`, 
 and cleared, using the `setUp()` and `tearDown()` methods in your test classes.
 
-Setting `RECAPTCHA_TESTING` to `True` causes django-recpatcha to accept 
+Setting `RECAPTCHA_TESTING` to `True` causes django-recaptcha to accept 
 `"PASSED"` as the `recaptcha_response_field` value.
 
 Example:::
