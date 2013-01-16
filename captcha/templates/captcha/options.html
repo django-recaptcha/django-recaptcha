@@ -1,1 +1,10 @@
-<script type="text/javascript">var RecaptchaOptions = {{options}}</script>
+<script type="text/javascript">
+    var DjangoRecaptchaOptions = {{options}};
+    if (typeof RecaptchaOptions === 'undefined') {
+        RecaptchaOptions = DjangoRecaptchaOptions;
+    } else {
+        for (key in DjangoRecaptchaOptions) {
+            RecaptchaOptions[key] = DjangoRecaptchaOptions[key];
+        }
+    }
+</script>
