@@ -1,6 +1,6 @@
 <script type="text/javascript">
     var DjangoRecaptchaOptions = {{options}};
-    if (typeof RecaptchaOptions === 'undefined') {
+    if (typeof RecaptchaOptions !== 'object') {
         RecaptchaOptions = DjangoRecaptchaOptions;
     } else {
         for (key in DjangoRecaptchaOptions) {
