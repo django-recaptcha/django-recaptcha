@@ -1,7 +1,12 @@
 Changelog
 =========
 
-0.0.5
+0.0.6
+-----
+#. Added an extra parameter `lang` to bypass Google's language bug. See http://code.google.com/p/recaptcha/issues/detail?id=133#c3
+#. widget.html no longer includes options.html. Options are added directly to widget.html
+
+0.0.5 (2013-01-17)
 -----
 #. Removed django-registration dependency
 #. Changed testing mechanism to environmental variable `RECAPTCHA_TESTING`
