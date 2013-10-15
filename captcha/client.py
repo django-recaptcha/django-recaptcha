@@ -5,6 +5,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils import simplejson as json
 from django.utils.safestring import mark_safe
+from django.utils.translation import get_language
 
 DEFAULT_API_SSL_SERVER = "https://www.google.com/recaptcha/api"
 DEFAULT_API_SERVER = "http://www.google.com/recaptcha/api"
@@ -49,7 +50,7 @@ def displayhtml(public_key,
         server = API_SERVER
 
     if not 'lang' in attrs:
-        attrs['lang'] = settings.LANGUAGE_CODE[:2]
+        attrs['lang'] = get_language()[:2]
 
     return render_to_string(WIDGET_TEMPLATE,
             {'api_server': server,
