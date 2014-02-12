@@ -1,11 +1,11 @@
-{% include "captcha/options.html" %}
 
 {# import recaptcha_ajax.js in your body  #} 
 {# <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script> #}
 
 <div id="Recap"></div>
 <script type="text/javascript">
-Recaptcha.create("{{ public_key }}",
+  var RecaptchaOptions = {{options}};
+  Recaptcha.create("{{ public_key }}",
     "Recap",
     {
       theme: "red",
