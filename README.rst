@@ -91,6 +91,21 @@ and return a form error.
 
 Check `tests.py` for a full example.
 
+
+AJAX
+~~~~~
+
+To make Recapcha work in ajax-loaded forms:
+
+#. import recaptcha_ajax.js on your page (not in the loaded template):
+ 
+    <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+
+#. settings.py
+
+    CAPTCHA_AJAX = True
+
+
 Credits
 -------
 Inspired Marco Fucci's blogpost titled `Integrating reCAPTCHA with Django <http://www.marcofucci.com/tumblelog/26/jul/2009/integrating-recaptcha-with-django>`_
