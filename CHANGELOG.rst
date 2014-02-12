@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.0.7 (2014-02-12)
+------------------
+#. Make it possible to load the widget via ajax.
+
 0.0.6 (2013-01-31)
 ------------------
 #. Added an extra parameter `lang` to bypass Google's language bug. See http://code.google.com/p/recaptcha/issues/detail?id=133#c3
