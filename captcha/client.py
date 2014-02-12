@@ -10,13 +10,19 @@ DEFAULT_API_SSL_SERVER = "https://www.google.com/recaptcha/api"
 DEFAULT_API_SERVER = "http://www.google.com/recaptcha/api"
 DEFAULT_VERIFY_SERVER = "www.google.com"
 DEFAULT_WIDGET_TEMPLATE = 'captcha/widget.html'
+DEFAULT_WIDGET_TEMPLATE_AJAX = 'captcha/widget_ajax.html'
 
 API_SSL_SERVER = getattr(settings, "CAPTCHA_API_SSL_SERVER", \
         DEFAULT_API_SSL_SERVER)
 API_SERVER = getattr(settings, "CAPTCHA_API_SERVER", DEFAULT_API_SERVER)
 VERIFY_SERVER = getattr(settings, "CAPTCHA_VERIFY_SERVER", \
         DEFAULT_VERIFY_SERVER)
-WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE", \
+
+if getattr(settings, "CAPTCHA_AJAX", False):
+    WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE", \
+        DEFAULT_WIDGET_TEMPLATE_AJAX)
+else:
+    WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE", \
         DEFAULT_WIDGET_TEMPLATE)
 
 
