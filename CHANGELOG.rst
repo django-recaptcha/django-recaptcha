@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.0.8 (2014-02-13)
+------------------
+#. Bugfix: remove reference to options.html.
+
 0.0.7 (2014-02-12)
 ------------------
 #. Make it possible to load the widget via ajax.
