@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.0.9 (2014-02-14)
+------------------
+#. Bugfix: release master and not develop. This should fix the confusion due to master having been the default branch on Github.
+
 0.0.8 (2014-02-13)
 ------------------
 #. Bugfix: remove reference to options.html.
