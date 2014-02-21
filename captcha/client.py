@@ -1,9 +1,13 @@
 import urllib
 import urllib2
 
+try:
+    import json
+except ImportError:
+    from django.utils import simplejson as json
+
 from django.conf import settings
 from django.template.loader import render_to_string
-from django.utils import simplejson as json
 from django.utils.safestring import mark_safe
 
 DEFAULT_API_SSL_SERVER = "https://www.google.com/recaptcha/api"
