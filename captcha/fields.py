@@ -3,7 +3,11 @@ import sys
 
 from django import forms
 from django.conf import settings
-from django.utils.encoding import smart_text
+try:
+    from django.utils.encoding import smart_unicode
+except ImportError:
+    from django.utils.encoding import smart_text as smart_unicode
+
 from django.utils.translation import ugettext_lazy as _
 
 from captcha import client
@@ -50,8 +54,8 @@ class ReCaptchaField(forms.CharField):
 
     def clean(self, values):
         super(ReCaptchaField, self).clean(values[1])
-        recaptcha_challenge_value = smart_text(values[0])
-        recaptcha_response_value = smart_text(values[1])
+        recaptcha_challenge_value = smart_unicode(values[0])
+        recaptcha_response_value = smart_unicode(values[1])
 
         if os.environ.get('RECAPTCHA_TESTING', None) == 'True' and \
                 recaptcha_response_value == 'PASSED':

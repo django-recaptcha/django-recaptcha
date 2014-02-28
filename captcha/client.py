@@ -1,8 +1,19 @@
-import urllib.request, urllib.parse, urllib.error
+import django
+if django.VERSION[1] >= 5:
+    import json
+else:
+    from django.utils import simplejson as json
+try:
+    import urllib2 as request
+    import urllib as parse
+    version = 2
+except ImportError:
+    import urllib.request as request
+    import urllib.parse as parse
+    version = 3
 
 from django.conf import settings
 from django.template.loader import render_to_string
-import json
 from django.utils.safestring import mark_safe
 
 DEFAULT_API_SSL_SERVER = "https://www.google.com/recaptcha/api"
@@ -92,19 +103,21 @@ def submit(recaptcha_challenge_field,
             return s.encode('utf-8')
         return s
 
-    params = urllib.parse.urlencode({
+    params = parse.urlencode({
             'privatekey': encode_if_necessary(private_key),
             'remoteip':  encode_if_necessary(remoteip),
             'challenge':  encode_if_necessary(recaptcha_challenge_field),
             'response':  encode_if_necessary(recaptcha_response_field),
-            }).encode('utf-8')
-    
+            })
+    if version == 3:
+        params = params.encode('utf-8')
+
     if use_ssl:
         verify_url = 'https://%s/recaptcha/api/verify' % VERIFY_SERVER
     else:
         verify_url = 'http://%s/recaptcha/api/verify' % VERIFY_SERVER
 
-    request = urllib.request.Request(
+    req = request.Request(
         url=verify_url,
         data=params,
         headers={
@@ -113,13 +126,16 @@ def submit(recaptcha_challenge_field,
             }
         )
 
-    httpresp = urllib.request.urlopen(request)
+    httpresp = request.urlopen(req)
 
     return_values = httpresp.read().splitlines()
     httpresp.close()
 
     return_code = return_values[0]
-    if (return_code.decode('utf-8') == "true"):
+    if version == 3:
+        return_code = return_code.decode('utf-8')
+    
+    if (return_code == "true"):
         return RecaptchaResponse(is_valid=True)
     else:
         return RecaptchaResponse(is_valid=False, error_code=return_values[1])
