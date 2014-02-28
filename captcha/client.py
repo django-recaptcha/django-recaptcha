@@ -1,13 +1,8 @@
-import urllib
-import urllib2
-
-try:
-    import json
-except ImportError:
-    from django.utils import simplejson as json
+import urllib.request, urllib.parse, urllib.error
 
 from django.conf import settings
 from django.template.loader import render_to_string
+import json
 from django.utils.safestring import mark_safe
 
 DEFAULT_API_SSL_SERVER = "https://www.google.com/recaptcha/api"
@@ -37,6 +32,8 @@ class RecaptchaResponse(object):
     def __init__(self, is_valid, error_code=None):
         self.is_valid = is_valid
         self.error_code = error_code
+        print(is_valid,self.is_valid)
+        print(error_code,self.error_code)
 
 
 def displayhtml(public_key,
@@ -69,7 +66,6 @@ def displayhtml(public_key,
              'options': mark_safe(json.dumps(attrs, indent=2))
              })
 
-
 def submit(recaptcha_challenge_field,
     recaptcha_response_field,
     private_key,
@@ -95,23 +91,22 @@ def submit(recaptcha_challenge_field,
         )
 
     def encode_if_necessary(s):
-        if isinstance(s, unicode):
+        if isinstance(s, str):
             return s.encode('utf-8')
         return s
 
-    params = urllib.urlencode({
+    params = urllib.parse.urlencode({
             'privatekey': encode_if_necessary(private_key),
             'remoteip':  encode_if_necessary(remoteip),
             'challenge':  encode_if_necessary(recaptcha_challenge_field),
             'response':  encode_if_necessary(recaptcha_response_field),
-            })
-
+            }).encode('utf-8')
     if use_ssl:
         verify_url = 'https://%s/recaptcha/api/verify' % VERIFY_SERVER
     else:
         verify_url = 'http://%s/recaptcha/api/verify' % VERIFY_SERVER
 
-    request = urllib2.Request(
+    request = urllib.request.Request(
         url=verify_url,
         data=params,
         headers={
@@ -120,14 +115,13 @@ def submit(recaptcha_challenge_field,
             }
         )
 
-    httpresp = urllib2.urlopen(request)
+    httpresp = urllib.request.urlopen(request)
 
     return_values = httpresp.read().splitlines()
     httpresp.close()
 
     return_code = return_values[0]
-
-    if (return_code == "true"):
+    if (return_code.decode('utf-8') == "true"):
         return RecaptchaResponse(is_valid=True)
     else:
         return RecaptchaResponse(is_valid=False, error_code=return_values[1])
