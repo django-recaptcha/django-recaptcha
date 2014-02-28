@@ -32,9 +32,6 @@ class RecaptchaResponse(object):
     def __init__(self, is_valid, error_code=None):
         self.is_valid = is_valid
         self.error_code = error_code
-        print(is_valid,self.is_valid)
-        print(error_code,self.error_code)
-
 
 def displayhtml(public_key,
     attrs,
@@ -101,6 +98,7 @@ def submit(recaptcha_challenge_field,
             'challenge':  encode_if_necessary(recaptcha_challenge_field),
             'response':  encode_if_necessary(recaptcha_response_field),
             }).encode('utf-8')
+    
     if use_ssl:
         verify_url = 'https://%s/recaptcha/api/verify' % VERIFY_SERVER
     else:
