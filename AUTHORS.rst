@@ -16,4 +16,5 @@ Other
 * Brooks Travis
 * `Denis Mishchishin <https://github.com/denz>`_
 * `Joshua Peper <https://github.com/zout>`_
+* `Rodrigo Primo <https://github.com/rodrigoprimo>`_
 
