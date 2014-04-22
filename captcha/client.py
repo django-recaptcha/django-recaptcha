@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
 
-from captcha._compat import want_bytes, urlencode, Request, urlopen
+from captcha._compat import want_bytes, urlencode, Request, urlopen, PY2
 
 DEFAULT_API_SSL_SERVER = "https://www.google.com/recaptcha/api"
 DEFAULT_API_SERVER = "http://www.google.com/recaptcha/api"
@@ -100,6 +100,9 @@ def submit(recaptcha_challenge_field,
             'response':  want_bytes(recaptcha_response_field),
             })
 
+    if not PY2:
+        params = params.encode('utf-8')
+
     if use_ssl:
         verify_url = 'https://%s/recaptcha/api/verify' % VERIFY_SERVER
     else:
@@ -120,7 +123,7 @@ def submit(recaptcha_challenge_field,
     httpresp.close()
 
     return_code = return_values[0]
-    if version == 3:
+    if not PY2:
         return_code = return_code.decode('utf-8')
 
     if (return_code == "true"):
