@@ -1,10 +1,16 @@
-import urllib
-import urllib2
-
-try:
+import django
+if django.VERSION[1] >= 5:
     import json
-except ImportError:
+else:
     from django.utils import simplejson as json
+try:
+    import urllib2 as request
+    import urllib as parse
+    version = 2
+except ImportError:
+    import urllib.request as request
+    import urllib.parse as parse
+    version = 3
 
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -39,7 +45,6 @@ class RecaptchaResponse(object):
         self.is_valid = is_valid
         self.error_code = error_code
 
-
 def displayhtml(public_key,
     attrs,
     use_ssl=False,
@@ -70,7 +75,6 @@ def displayhtml(public_key,
              'options': mark_safe(json.dumps(attrs, indent=2))
              })
 
-
 def submit(recaptcha_challenge_field,
     recaptcha_response_field,
     private_key,
@@ -96,23 +100,25 @@ def submit(recaptcha_challenge_field,
         )
 
     def encode_if_necessary(s):
-        if isinstance(s, unicode):
+        if isinstance(s, str):
             return s.encode('utf-8')
         return s
 
-    params = urllib.urlencode({
+    params = parse.urlencode({
             'privatekey': encode_if_necessary(private_key),
             'remoteip':  encode_if_necessary(remoteip),
             'challenge':  encode_if_necessary(recaptcha_challenge_field),
             'response':  encode_if_necessary(recaptcha_response_field),
             })
+    if version == 3:
+        params = params.encode('utf-8')
 
     if use_ssl:
         verify_url = 'https://%s/recaptcha/api/verify' % VERIFY_SERVER
     else:
         verify_url = 'http://%s/recaptcha/api/verify' % VERIFY_SERVER
 
-    request = urllib2.Request(
+    req = request.Request(
         url=verify_url,
         data=params,
         headers={
@@ -121,13 +127,15 @@ def submit(recaptcha_challenge_field,
             }
         )
 
-    httpresp = urllib2.urlopen(request)
+    httpresp = request.urlopen(req)
 
     return_values = httpresp.read().splitlines()
     httpresp.close()
 
     return_code = return_values[0]
-
+    if version == 3:
+        return_code = return_code.decode('utf-8')
+    
     if (return_code == "true"):
         return RecaptchaResponse(is_valid=True)
     else:
