@@ -17,18 +17,18 @@ DEFAULT_VERIFY_SERVER = "www.google.com"
 DEFAULT_WIDGET_TEMPLATE = 'captcha/widget.html'
 DEFAULT_WIDGET_TEMPLATE_AJAX = 'captcha/widget_ajax.html'
 
-API_SSL_SERVER = getattr(settings, "CAPTCHA_API_SSL_SERVER", \
-        DEFAULT_API_SSL_SERVER)
+API_SSL_SERVER = getattr(settings, "CAPTCHA_API_SSL_SERVER",
+                         DEFAULT_API_SSL_SERVER)
 API_SERVER = getattr(settings, "CAPTCHA_API_SERVER", DEFAULT_API_SERVER)
-VERIFY_SERVER = getattr(settings, "CAPTCHA_VERIFY_SERVER", \
-        DEFAULT_VERIFY_SERVER)
+VERIFY_SERVER = getattr(settings, "CAPTCHA_VERIFY_SERVER",
+                        DEFAULT_VERIFY_SERVER)
 
 if getattr(settings, "CAPTCHA_AJAX", False):
-    WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE", \
-        DEFAULT_WIDGET_TEMPLATE_AJAX)
+    WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE",
+                              DEFAULT_WIDGET_TEMPLATE_AJAX)
 else:
-    WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE", \
-        DEFAULT_WIDGET_TEMPLATE)
+    WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE",
+                              DEFAULT_WIDGET_TEMPLATE)
 
 
 RECAPTCHA_SUPPORTED_LANUAGES = ('en', 'nl', 'fr', 'de', 'pt', 'ru', 'es', 'tr')
@@ -39,10 +39,11 @@ class RecaptchaResponse(object):
         self.is_valid = is_valid
         self.error_code = error_code
 
+
 def displayhtml(public_key,
-    attrs,
-    use_ssl=False,
-    error=None):
+                attrs,
+                use_ssl=False,
+                error=None):
     """Gets the HTML to display for reCAPTCHA
 
     public_key -- The public api key
@@ -61,19 +62,21 @@ def displayhtml(public_key,
     if not 'lang' in attrs:
         attrs['lang'] = get_language()[:2]
 
-    return render_to_string(WIDGET_TEMPLATE,
-            {'api_server': server,
-             'public_key': public_key,
-             'error_param': error_param,
-             'lang': attrs['lang'],
-             'options': mark_safe(json.dumps(attrs, indent=2))
-             })
+    return render_to_string(
+        WIDGET_TEMPLATE,
+        {'api_server': server,
+         'public_key': public_key,
+         'error_param': error_param,
+         'lang': attrs['lang'],
+         'options': mark_safe(json.dumps(attrs, indent=2))
+         })
+
 
 def submit(recaptcha_challenge_field,
-    recaptcha_response_field,
-    private_key,
-    remoteip,
-    use_ssl=False):
+           recaptcha_response_field,
+           private_key,
+           remoteip,
+           use_ssl=False):
     """
     Submits a reCAPTCHA request for verification. Returns RecaptchaResponse
     for the request
@@ -94,11 +97,11 @@ def submit(recaptcha_challenge_field,
         )
 
     params = urlencode({
-            'privatekey': want_bytes(private_key),
-            'remoteip':  want_bytes(remoteip),
-            'challenge':  want_bytes(recaptcha_challenge_field),
-            'response':  want_bytes(recaptcha_response_field),
-            })
+        'privatekey': want_bytes(private_key),
+        'remoteip':  want_bytes(remoteip),
+        'challenge':  want_bytes(recaptcha_challenge_field),
+        'response':  want_bytes(recaptcha_response_field),
+    })
 
     if not PY2:
         params = params.encode('utf-8')
@@ -112,10 +115,10 @@ def submit(recaptcha_challenge_field,
         url=verify_url,
         data=params,
         headers={
-            "Content-type": "application/x-www-form-urlencoded",
-            "User-agent": "reCAPTCHA Python"
-            }
-        )
+            'Content-type': 'application/x-www-form-urlencoded',
+            'User-agent': 'reCAPTCHA Python'
+        }
+    )
 
     httpresp = urlopen(req)
 
