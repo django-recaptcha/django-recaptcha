@@ -3,21 +3,13 @@ if django.VERSION[1] >= 5:
     import json
 else:
     from django.utils import simplejson as json
-try:
-    import urllib2 as request
-    import urllib as parse
-    version = 2
-except ImportError:
-    import urllib.request as request
-    import urllib.parse as parse
-    version = 3
 
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
 
-from captcha._compat import want_bytes
+from captcha._compat import want_bytes, urlencode, Request, urlopen
 
 DEFAULT_API_SSL_SERVER = "https://www.google.com/recaptcha/api"
 DEFAULT_API_SERVER = "http://www.google.com/recaptcha/api"
@@ -101,7 +93,7 @@ def submit(recaptcha_challenge_field,
             error_code='incorrect-captcha-sol'
         )
 
-    params = parse.urlencode({
+    params = urlencode({
             'privatekey': want_bytes(private_key),
             'remoteip':  want_bytes(remoteip),
             'challenge':  want_bytes(recaptcha_challenge_field),
@@ -113,7 +105,7 @@ def submit(recaptcha_challenge_field,
     else:
         verify_url = 'http://%s/recaptcha/api/verify' % VERIFY_SERVER
 
-    req = request.Request(
+    req = Request(
         url=verify_url,
         data=params,
         headers={
@@ -122,7 +114,7 @@ def submit(recaptcha_challenge_field,
             }
         )
 
-    httpresp = request.urlopen(req)
+    httpresp = urlopen(req)
 
     return_values = httpresp.read().splitlines()
     httpresp.close()
