@@ -17,6 +17,8 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
 
+from captcha._compat import want_bytes
+
 DEFAULT_API_SSL_SERVER = "https://www.google.com/recaptcha/api"
 DEFAULT_API_SERVER = "http://www.google.com/recaptcha/api"
 DEFAULT_VERIFY_SERVER = "www.google.com"
@@ -99,19 +101,12 @@ def submit(recaptcha_challenge_field,
             error_code='incorrect-captcha-sol'
         )
 
-    def encode_if_necessary(s):
-        if isinstance(s, str):
-            return s.encode('utf-8')
-        return s
-
     params = parse.urlencode({
-            'privatekey': encode_if_necessary(private_key),
-            'remoteip':  encode_if_necessary(remoteip),
-            'challenge':  encode_if_necessary(recaptcha_challenge_field),
-            'response':  encode_if_necessary(recaptcha_response_field),
+            'privatekey': want_bytes(private_key),
+            'remoteip':  want_bytes(remoteip),
+            'challenge':  want_bytes(recaptcha_challenge_field),
+            'response':  want_bytes(recaptcha_response_field),
             })
-    if version == 3:
-        params = params.encode('utf-8')
 
     if use_ssl:
         verify_url = 'https://%s/recaptcha/api/verify' % VERIFY_SERVER
@@ -135,7 +130,7 @@ def submit(recaptcha_challenge_field,
     return_code = return_values[0]
     if version == 3:
         return_code = return_code.decode('utf-8')
-    
+
     if (return_code == "true"):
         return RecaptchaResponse(is_valid=True)
     else:
