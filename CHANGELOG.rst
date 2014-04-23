@@ -1,6 +1,13 @@
 Changelog
 =========
 
+
+1.0 (2014-04-23)
+----------------
+
+#. Added Python 3 support
+#. Added French, Dutch and Brazilian Portuguese translations
+
 0.0.9 (2014-02-14)
 ------------------
 #. Bugfix: release master and not develop. This should fix the confusion due to master having been the default branch on Github.
