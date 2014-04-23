@@ -3,7 +3,11 @@ import sys
 
 from django import forms
 from django.conf import settings
-from django.utils.encoding import smart_unicode
+try:
+    from django.utils.encoding import smart_unicode
+except ImportError:
+    from django.utils.encoding import smart_text as smart_unicode
+
 from django.utils.translation import ugettext_lazy as _
 
 from captcha import client
@@ -12,7 +16,7 @@ from captcha.widgets import ReCaptcha
 
 class ReCaptchaField(forms.CharField):
     default_error_messages = {
-        'captcha_invalid': _(u'Incorrect, please try again.')
+        'captcha_invalid': _('Incorrect, please try again.')
     }
 
     def __init__(self, public_key=None, private_key=None, use_ssl=None, \
