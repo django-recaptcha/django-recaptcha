@@ -33,6 +33,14 @@ else:
 
 RECAPTCHA_SUPPORTED_LANUAGES = ('en', 'nl', 'fr', 'de', 'pt', 'ru', 'es', 'tr')
 
+recaptcha_proxy = getattr(settings, "RECAPTCHA_PROXY", None)
+if recaptcha_proxy:
+    proxy = urllib2.ProxyHandler({
+        'http': recaptcha_proxy,
+        'https': recaptcha_proxy
+    })
+    opener = urllib2.build_opener(proxy)
+    urllib2.install_opener(opener)
 
 class RecaptchaResponse(object):
     def __init__(self, is_valid, error_code=None):
