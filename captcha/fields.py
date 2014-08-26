@@ -65,7 +65,7 @@ class ReCaptchaField(forms.CharField):
                 recaptcha_response_value, private_key=self.private_key, \
                 remoteip=self.get_remote_ip(), use_ssl=self.use_ssl)
         if not check_captcha.is_valid:
-            raise forms.util.ValidationError(
+            raise forms.ValidationError(
                 self.error_messages['captcha_invalid']
             )
         return values[0]
