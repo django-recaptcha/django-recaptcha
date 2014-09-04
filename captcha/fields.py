@@ -8,6 +8,7 @@ try:
 except ImportError:
     from django.utils.encoding import smart_text as smart_unicode
 
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 from captcha import client
@@ -65,7 +66,7 @@ class ReCaptchaField(forms.CharField):
                 recaptcha_response_value, private_key=self.private_key, \
                 remoteip=self.get_remote_ip(), use_ssl=self.use_ssl)
         if not check_captcha.is_valid:
-            raise forms.ValidationError(
+            raise ValidationError(
                 self.error_messages['captcha_invalid']
             )
         return values[0]
