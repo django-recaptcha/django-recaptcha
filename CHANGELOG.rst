@@ -2,6 +2,15 @@ Changelog
 =========
 
 
+1.0.1 (2014-09-11)
+------------------
+
+#. Added Django 1.7 suport
+#. Added Russian translations
+#. Added multi dependancy support
+#. Cleanup
+
+
 1.0 (2014-04-23)
 ----------------
 
@@ -51,4 +60,3 @@ Changelog
 0.0.1 (2010-06-17)
 ------------------
 #. Initial release.
-
