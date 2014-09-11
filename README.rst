@@ -10,8 +10,6 @@ Django reCAPTCHA
 
 django-recaptcha uses a modified version of the `Python reCAPTCHA client <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the package as ``client.py``.
 
-|travis|_
-
 
 Installation
 ------------
