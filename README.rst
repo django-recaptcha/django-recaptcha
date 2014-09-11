@@ -2,6 +2,9 @@ Django reCAPTCHA
 ================
 **Django reCAPTCHA form field/widget integration app.**
 
+.. image:: https://travis-ci.org/praekelt/django-recaptcha.svg?branch=develop
+    :target: https://travis-ci.org/praekelt/django-recaptcha
+
 .. contents:: Contents
     :depth: 5
 
