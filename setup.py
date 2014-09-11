@@ -11,7 +11,7 @@ setup(
     url='http://github.com/praekelt/django-recaptcha',
     packages=find_packages(),
     tests_require=[
-        'django-setuptest>=0.0.6',
+        'django-setuptest>=0.1',
     ],
     test_suite="setuptest.setuptest.SetupTestSuite",
     include_package_data=True,

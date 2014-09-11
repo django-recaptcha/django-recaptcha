@@ -59,7 +59,7 @@ def displayhtml(public_key,
     else:
         server = API_SERVER
 
-    if not 'lang' in attrs:
+    if 'lang' not in attrs:
         attrs['lang'] = get_language()[:2]
 
     return render_to_string(
