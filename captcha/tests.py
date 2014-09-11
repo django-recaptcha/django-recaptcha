@@ -8,8 +8,8 @@ from django.forms import Form
 class TestForm(Form):
     captcha = fields.ReCaptchaField(attrs={'theme': 'white'})
 
-class TestCase(unittest.TestCase):
 
+class TestCase(unittest.TestCase):
     def setUp(self):
         os.environ['RECAPTCHA_TESTING'] = 'True'
 
