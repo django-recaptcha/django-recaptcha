@@ -10,6 +10,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
 
 from captcha._compat import want_bytes, urlencode, Request, urlopen, PY2
+from captcha.exceptions import ReCaptchaException
 
 DEFAULT_API_SSL_SERVER = "https://www.google.com/recaptcha/api"
 DEFAULT_API_SERVER = "http://www.google.com/recaptcha/api"
@@ -132,4 +133,6 @@ def submit(recaptcha_challenge_field,
     if (return_code == "true"):
         return RecaptchaResponse(is_valid=True)
     else:
+        if return_values[1] == 'invalid-site-private-key':
+            raise ReCaptchaException("Invalid ReCaptcha private key")
         return RecaptchaResponse(is_valid=False, error_code=return_values[1])

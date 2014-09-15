@@ -1,0 +1,2 @@
+class ReCaptchaException(Exception):
+    pass
