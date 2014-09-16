@@ -21,4 +21,4 @@ msgstr ""
 
 #: fields.py:19
 msgid "Incorrect, please try again."
-msgstr "Ошибка, попробуйте еще раз"
+msgstr "Неверно, попробуйте еще раз"
