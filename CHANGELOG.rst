@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0.2 (2014-09-16)
+------------------
+
+#. Fixed Russian translations
+#. Added Spanish translations
 
 1.0.1 (2014-09-11)
 ------------------
@@ -9,7 +14,6 @@ Changelog
 #. Added Russian translations
 #. Added multi dependancy support
 #. Cleanup
-
 
 1.0 (2014-04-23)
 ----------------
