@@ -24,7 +24,7 @@ class ReCaptchaField(forms.CharField):
                  attrs={}, *args, **kwargs):
         """
         ReCaptchaField can accepts attributes which is a dictionary of
-        attributes to be passed ot the ReCaptcha widget class. The widget will
+        attributes to be passed to the ReCaptcha widget class. The widget will
         loop over any options added and create the RecaptchaOptions
         JavaScript variables as specified in
         https://code.google.com/apis/recaptcha/docs/customization.html
