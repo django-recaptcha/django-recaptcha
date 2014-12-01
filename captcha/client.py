@@ -11,8 +11,8 @@ from django.utils.translation import get_language
 
 from captcha._compat import want_bytes, urlencode, Request, urlopen, PY2
 
-DEFAULT_API_SSL_SERVER = "https://www.google.com/recaptcha/api"
-DEFAULT_API_SERVER = "http://www.google.com/recaptcha/api"
+DEFAULT_API_SSL_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
+DEFAULT_API_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
 DEFAULT_VERIFY_SERVER = "www.google.com"
 DEFAULT_WIDGET_TEMPLATE = 'captcha/widget.html'
 DEFAULT_WIDGET_TEMPLATE_AJAX = 'captcha/widget_ajax.html'
