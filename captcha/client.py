@@ -65,6 +65,7 @@ def displayhtml(public_key,
     if 'lang' not in attrs:
         attrs['lang'] = get_language()[:2]
 
+    print WIDGET_TEMPLATE
     return render_to_string(
         WIDGET_TEMPLATE,
         {'api_server': server,
