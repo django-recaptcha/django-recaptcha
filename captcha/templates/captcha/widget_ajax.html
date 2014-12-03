@@ -1,17 +1,23 @@
 
-{# import recaptcha_ajax.js in your body  #} 
+{# import recaptcha_ajax.js in your body  #}
 {# <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script> #}
 
 <div id="Recap"></div>
 <script type="text/javascript">
+  function extend (target, source) {
+    var a = Object.create(target);
+    Object.keys(source).map(function (prop) {
+      prop in a && (a[prop] = source[prop]);
+    });
+    return a;
+  };
+
   var RecaptchaOptions = {{options}};
   Recaptcha.create("{{ public_key }}",
     "Recap",
-    {
-      theme: "red",
+    extend(RecaptchaOptions, {
       callback: Recaptcha.focus_response_field
-    }, 
-    RecaptchaOptions
+    })
   );
 </script>
 
