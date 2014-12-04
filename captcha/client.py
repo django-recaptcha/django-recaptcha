@@ -14,7 +14,7 @@ from captcha._compat import want_bytes, urlencode, Request, urlopen, PY2
 DEFAULT_API_SSL_SERVER = "https://www.google.com/recaptcha/api"
 DEFAULT_API_SERVER = "http://www.google.com/recaptcha/api"
 DEFAULT_VERIFY_SERVER = "www.google.com"
-if getattr(settings, "NOCAPTCHA", True):
+if getattr(settings, "NOCAPTCHA", False):
     DEFAULT_WIDGET_TEMPLATE = 'captcha/widget_nocaptcha.html'
 else:
     DEFAULT_WIDGET_TEMPLATE = 'captcha/widget.html'
@@ -65,7 +65,6 @@ def displayhtml(public_key,
     if 'lang' not in attrs:
         attrs['lang'] = get_language()[:2]
 
-    print WIDGET_TEMPLATE
     return render_to_string(
         WIDGET_TEMPLATE,
         {'api_server': server,
@@ -100,7 +99,7 @@ def submit(recaptcha_challenge_field,
             error_code='incorrect-captcha-sol'
         )
 
-    if getattr(settings, "NOCAPTCHA", True):
+    if getattr(settings, "NOCAPTCHA", False):
         params = urlencode({
             'secret': want_bytes(private_key), 
             'response': want_bytes(recaptcha_response_field), 
@@ -122,7 +121,7 @@ def submit(recaptcha_challenge_field,
     else:
         verify_url = 'http://%s/recaptcha/api/verify' % VERIFY_SERVER
 
-    if getattr(settings, "NOCAPTCHA", True):
+    if getattr(settings, "NOCAPTCHA", False):
         verify_url = 'https://%s/recaptcha/api/siteverify' % VERIFY_SERVER
 
     req = Request(
@@ -135,7 +134,7 @@ def submit(recaptcha_challenge_field,
     )
 
     httpresp = urlopen(req)
-    if getattr(settings, "NOCAPTCHA", True):
+    if getattr(settings, "NOCAPTCHA", False):
         data = json.load(httpresp)
         return_code = data['success']
         return_values = [return_code, None]
