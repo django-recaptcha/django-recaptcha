@@ -6,8 +6,12 @@ from captcha import client
 
 
 class ReCaptcha(forms.widgets.Widget):
-    recaptcha_challenge_name = 'recaptcha_challenge_field'
-    recaptcha_response_name = 'recaptcha_response_field'
+    if getattr(settings, "NOCAPTCHA", False):
+        recaptcha_response_name = 'g-recaptcha-response'
+        recaptcha_challenge_name = 'g-recaptcha-response'
+    else:
+        recaptcha_challenge_name = 'recaptcha_challenge_field'
+        recaptcha_response_name = 'recaptcha_response_field'
 
     def __init__(self, public_key=None, use_ssl=None, attrs={}, *args,
                  **kwargs):
