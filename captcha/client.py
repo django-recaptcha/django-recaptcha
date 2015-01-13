@@ -14,7 +14,10 @@ from captcha._compat import want_bytes, urlencode, Request, urlopen, PY2
 DEFAULT_API_SSL_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
 DEFAULT_API_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
 DEFAULT_VERIFY_SERVER = "www.google.com"
-DEFAULT_WIDGET_TEMPLATE = 'captcha/widget.html'
+if getattr(settings, "NOCAPTCHA", False):
+    DEFAULT_WIDGET_TEMPLATE = 'captcha/widget_nocaptcha.html'
+else:
+    DEFAULT_WIDGET_TEMPLATE = 'captcha/widget.html'
 DEFAULT_WIDGET_TEMPLATE_AJAX = 'captcha/widget_ajax.html'
 
 API_SSL_SERVER = getattr(settings, "CAPTCHA_API_SSL_SERVER",
@@ -96,12 +99,19 @@ def submit(recaptcha_challenge_field,
             error_code='incorrect-captcha-sol'
         )
 
-    params = urlencode({
+    if getattr(settings, "NOCAPTCHA", False):
+        params = urlencode({
+            'secret': want_bytes(private_key), 
+            'response': want_bytes(recaptcha_response_field), 
+            'remoteip': want_bytes(remoteip),
+        })
+    else:
+        params = urlencode({
         'privatekey': want_bytes(private_key),
         'remoteip':  want_bytes(remoteip),
         'challenge':  want_bytes(recaptcha_challenge_field),
         'response':  want_bytes(recaptcha_response_field),
-    })
+        })
 
     if not PY2:
         params = params.encode('utf-8')
@@ -110,6 +120,9 @@ def submit(recaptcha_challenge_field,
         verify_url = 'https://%s/recaptcha/api/verify' % VERIFY_SERVER
     else:
         verify_url = 'http://%s/recaptcha/api/verify' % VERIFY_SERVER
+
+    if getattr(settings, "NOCAPTCHA", False):
+        verify_url = 'https://%s/recaptcha/api/siteverify' % VERIFY_SERVER
 
     req = Request(
         url=verify_url,
@@ -121,11 +134,20 @@ def submit(recaptcha_challenge_field,
     )
 
     httpresp = urlopen(req)
+    if getattr(settings, "NOCAPTCHA", False):
+        data = json.load(httpresp)
+        return_code = data['success']
+        return_values = [return_code, None]
+        if return_code:
+            return_code = 'true'
+        else:
+            return_code = 'false'
+    else:
+        return_values = httpresp.read().splitlines()
+        return_code = return_values[0]
 
-    return_values = httpresp.read().splitlines()
     httpresp.close()
 
-    return_code = return_values[0]
     if not PY2:
         return_code = return_code.decode('utf-8')
 
