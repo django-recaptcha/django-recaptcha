@@ -19,4 +19,5 @@ Other
 * `Rodrigo Primo <https://github.com/rodrigoprimo>`_
 * `snnwolf <https://github.com/snnwolf>`_
 * `Adriano Orioli <https://github.com/Aorioli>`_
+* `cdvv7788 <https://github.com/cdvv7788>`_
 
