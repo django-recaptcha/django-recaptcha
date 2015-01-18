@@ -30,11 +30,15 @@ Installation
 
    This can be seperately specified at runtime by passing a ``private_key`` parameter when constructing the ``ReCaptchaField``, see field usage below.
 
+#. If you would like to use the new No Captcha reCaptcha add a ``NOCAPTCHA = True`` setting to the project's ``settings.py`` file. ie.::
+
+    NOCAPTCHA = True
+
 #. Optionally add a ``RECAPTCHA_USE_SSL`` setting to the project's ``settings.py`` file. This causes reCAPTCHA validation submits to be made over SSL, i.e.::
 
     RECAPTCHA_USE_SSL = True
 
-   If you don't add this setting the default behaviour is to **NOT** use SSL.
+   If you don't add this setting the default behaviour is to **NOT** use SSL. Note that if you have ``NOCAPTCHA = True`` set, SSL will always be used.
    This can be seperately specified at runtime by passing a ``use_ssl`` parameter when constructing the ``ReCaptchaField``, see field usage below.
 
 Usage
@@ -75,7 +79,8 @@ helps facilitate tests. The environmental variable should be set to `"True"`,
 and cleared, using the `setUp()` and `tearDown()` methods in your test classes.
 
 Setting `RECAPTCHA_TESTING` to `True` causes django-recaptcha to accept
-`"PASSED"` as the `recaptcha_response_field` value.
+`"PASSED"` as the ``recaptcha_response_field`` value. Note that if you are using the new No Captcha reCaptcha 
+(ie. with ``NOCAPTCHA = True`` in your settings) the response field is called ``g-recaptcha-response``.
 
 Example:::
 
