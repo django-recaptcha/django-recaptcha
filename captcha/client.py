@@ -135,10 +135,7 @@ def submit(recaptcha_challenge_field,
 
     httpresp = urlopen(req)
     if getattr(settings, "NOCAPTCHA", False):
-        if not PY2:
-            data = json.loads(httpresp.read().decode('utf-8'))
-        else:
-            data = json.load(httpresp)
+        data = json.loads(httpresp.read().decode('utf-8'))
         return_code = data['success']
         return_values = [return_code, None]
         if return_code:
@@ -150,9 +147,6 @@ def submit(recaptcha_challenge_field,
         return_code = return_values[0]
 
     httpresp.close()
-
-    if not PY2:
-        return_code = return_code.decode('utf-8')
 
     if (return_code == "true"):
         return RecaptchaResponse(is_valid=True)
