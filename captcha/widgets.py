@@ -6,7 +6,7 @@ from captcha import client
 
 
 class ReCaptcha(forms.widgets.Widget):
-    if getattr(settings, "NOCAPTCHA", False):
+    if getattr(settings, "RECAPTCHA_NOCAPTCHA", False):
         recaptcha_response_name = 'g-recaptcha-response'
         recaptcha_challenge_name = 'g-recaptcha-response'
     else:
