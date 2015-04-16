@@ -87,7 +87,7 @@ Example:::
     import os
     os.environ['RECAPTCHA_TESTING'] = 'True'
 
-    form_params = {'recaptcha_response_field': 'PASSED'}
+    form_params = {'recaptcha_response_field': 'PASSED'} # use 'g-recaptcha-response' param name if using NOCAPTCHA
     form = RegistrationForm(form_params) # assuming only one ReCaptchaField
     form.is_valid() # True
 
