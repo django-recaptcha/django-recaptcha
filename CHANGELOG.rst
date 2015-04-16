@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.0.4 (2015-04-16)
+------------------
+
+#. Fixed Python 3 support
+#. Added Polish translations
+#. Update docs
+
 1.0.3 (2015-01-13)
 ------------------
 

@@ -30,11 +30,15 @@ Installation
 
    This can be seperately specified at runtime by passing a ``private_key`` parameter when constructing the ``ReCaptchaField``, see field usage below.
 
+#. If you would like to use the new No Captcha reCaptcha add a ``NOCAPTCHA = True`` setting to the project's ``settings.py`` file. ie.::
+
+    NOCAPTCHA = True
+
 #. Optionally add a ``RECAPTCHA_USE_SSL`` setting to the project's ``settings.py`` file. This causes reCAPTCHA validation submits to be made over SSL, i.e.::
 
     RECAPTCHA_USE_SSL = True
 
-   If you don't add this setting the default behaviour is to **NOT** use SSL.
+   If you don't add this setting the default behaviour is to **NOT** use SSL. Note that if you have ``NOCAPTCHA = True`` set, SSL will always be used.
    This can be seperately specified at runtime by passing a ``use_ssl`` parameter when constructing the ``ReCaptchaField``, see field usage below.
 
 Usage
@@ -42,7 +46,9 @@ Usage
 
 Field
 ~~~~~
-The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaField`` field type. A ``ReCaptcha`` widget will be rendered with the field validating itself without any further action required from you. For example::
+The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaField`` field type. A ``ReCaptcha`` widget will be rendered with the field validating itself without any further action required from you. For example:
+
+.. code-block:: python
 
     from django import forms
     from captcha.fields import ReCaptchaField
@@ -50,7 +56,9 @@ The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaFi
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField()
 
-To allow for runtime specification of keys and SSL usage you can optionally pass ``private_key``, ``public_key`` or ``use_ssl`` parameters to the constructor, i.e.::
+To allow for runtime specification of keys and SSL usage you can optionally pass ``private_key``, ``public_key`` or ``use_ssl`` parameters to the constructor, i.e.:
+
+.. code-block:: python
 
     captcha = ReCaptchaField(
         public_key='76wtgdfsjhsydt7r5FFGFhgsdfytd656sad75fgh',
@@ -60,7 +68,9 @@ To allow for runtime specification of keys and SSL usage you can optionally pass
 
 If specified these parameters will be used instead of your reCAPCTHA project settings.
 
-The reCAPTCHA widget supports several `Javascript options variables <https://code.google.com/apis/recaptcha/docs/customization.html>`_ customizing the behaviour of the widget, such as ``theme`` and ``lang``. You can forward these options to the widget by passing an ``attr`` parameter containing a dictionary of options to ``ReCaptchaField``, i.e.::
+The reCAPTCHA widget supports several `Javascript options variables <https://code.google.com/apis/recaptcha/docs/customization.html>`_ customizing the behaviour of the widget, such as ``theme`` and ``lang``. You can forward these options to the widget by passing an ``attr`` parameter containing a dictionary of options to ``ReCaptchaField``, i.e.:
+
+.. code-block:: python
 
     captcha = ReCaptchaField(attrs={'theme' : 'clean'})
 
@@ -75,14 +85,17 @@ helps facilitate tests. The environmental variable should be set to `"True"`,
 and cleared, using the `setUp()` and `tearDown()` methods in your test classes.
 
 Setting `RECAPTCHA_TESTING` to `True` causes django-recaptcha to accept
-`"PASSED"` as the `recaptcha_response_field` value.
+`"PASSED"` as the ``recaptcha_response_field`` value. Note that if you are using the new No Captcha reCaptcha 
+(ie. with ``NOCAPTCHA = True`` in your settings) the response field is called ``g-recaptcha-response``.
 
-Example:::
+Example:
+
+.. code-block:: python
 
     import os
     os.environ['RECAPTCHA_TESTING'] = 'True'
 
-    form_params = {'recaptcha_response_field': 'PASSED'}
+    form_params = {'recaptcha_response_field': 'PASSED'} # use 'g-recaptcha-response' param name if using NOCAPTCHA
     form = RegistrationForm(form_params) # assuming only one ReCaptchaField
     form.is_valid() # True
 
@@ -92,7 +105,7 @@ Example:::
 Passing any other values will cause django-recaptcha to continue normal processing
 and return a form error.
 
-Check `tests.py` for a full example.
+Check ``tests.py`` for a full example.
 
 
 AJAX
