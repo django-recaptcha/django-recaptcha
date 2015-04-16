@@ -46,7 +46,9 @@ Usage
 
 Field
 ~~~~~
-The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaField`` field type. A ``ReCaptcha`` widget will be rendered with the field validating itself without any further action required from you. For example::
+The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaField`` field type. A ``ReCaptcha`` widget will be rendered with the field validating itself without any further action required from you. For example:
+
+.. code-block:: python
 
     from django import forms
     from captcha.fields import ReCaptchaField
@@ -54,7 +56,9 @@ The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaFi
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField()
 
-To allow for runtime specification of keys and SSL usage you can optionally pass ``private_key``, ``public_key`` or ``use_ssl`` parameters to the constructor, i.e.::
+To allow for runtime specification of keys and SSL usage you can optionally pass ``private_key``, ``public_key`` or ``use_ssl`` parameters to the constructor, i.e.:
+
+.. code-block:: python
 
     captcha = ReCaptchaField(
         public_key='76wtgdfsjhsydt7r5FFGFhgsdfytd656sad75fgh',
@@ -64,7 +68,9 @@ To allow for runtime specification of keys and SSL usage you can optionally pass
 
 If specified these parameters will be used instead of your reCAPCTHA project settings.
 
-The reCAPTCHA widget supports several `Javascript options variables <https://code.google.com/apis/recaptcha/docs/customization.html>`_ customizing the behaviour of the widget, such as ``theme`` and ``lang``. You can forward these options to the widget by passing an ``attr`` parameter containing a dictionary of options to ``ReCaptchaField``, i.e.::
+The reCAPTCHA widget supports several `Javascript options variables <https://code.google.com/apis/recaptcha/docs/customization.html>`_ customizing the behaviour of the widget, such as ``theme`` and ``lang``. You can forward these options to the widget by passing an ``attr`` parameter containing a dictionary of options to ``ReCaptchaField``, i.e.:
+
+.. code-block:: python
 
     captcha = ReCaptchaField(attrs={'theme' : 'clean'})
 
@@ -82,7 +88,9 @@ Setting `RECAPTCHA_TESTING` to `True` causes django-recaptcha to accept
 `"PASSED"` as the ``recaptcha_response_field`` value. Note that if you are using the new No Captcha reCaptcha 
 (ie. with ``NOCAPTCHA = True`` in your settings) the response field is called ``g-recaptcha-response``.
 
-Example:::
+Example:
+
+.. code-block:: python
 
     import os
     os.environ['RECAPTCHA_TESTING'] = 'True'
@@ -97,7 +105,7 @@ Example:::
 Passing any other values will cause django-recaptcha to continue normal processing
 and return a form error.
 
-Check `tests.py` for a full example.
+Check ``tests.py`` for a full example.
 
 
 AJAX
