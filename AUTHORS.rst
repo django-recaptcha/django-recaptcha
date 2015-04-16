@@ -20,4 +20,7 @@ Other
 * `snnwolf <https://github.com/snnwolf>`_
 * `Adriano Orioli <https://github.com/Aorioli>`_
 * `cdvv7788 <https://github.com/cdvv7788>`_
-
+* `Daniel Gatis Carrazzoni <https://github.com/danielgatis>`_
+* `pbf <https://github.com/pbf>`_
+* `Alexey Subbotin <https://github.com/dotsbb>`_
+* `Sean Stewart <https://github.com/mindcruzer>`_
