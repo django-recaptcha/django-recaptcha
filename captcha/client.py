@@ -5,7 +5,9 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
 
-from captcha._compat import want_bytes, urlencode, Request, urlopen, PY2
+from captcha._compat import (
+    build_opener, ProxyHandler, PY2, Request, urlencode, urlopen, want_bytes
+)
 
 DEFAULT_API_SSL_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
 DEFAULT_API_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
@@ -71,6 +73,22 @@ def displayhtml(public_key,
          })
 
 
+def request(*args, **kwargs):
+    """
+    Make a HTTP request with a proxy if configured.
+    """
+    if getattr(settings, 'RECAPTCHA_PROXY', False):
+        proxy = ProxyHandler({
+            'http': settings.RECAPTCHA_PROXY,
+            'https': settings.RECAPTCHA_PROXY,
+        })
+        opener = build_opener(proxy)
+
+        return opener.open(*args, **kwargs)
+    else:
+        return urlopen(*args, **kwargs)
+
+
 def submit(recaptcha_challenge_field,
            recaptcha_response_field,
            private_key,
@@ -129,7 +147,7 @@ def submit(recaptcha_challenge_field,
         }
     )
 
-    httpresp = urlopen(req)
+    httpresp = request(req)
     if getattr(settings, "NOCAPTCHA", False):
         data = json.loads(httpresp.read().decode('utf-8'))
         return_code = data['success']
