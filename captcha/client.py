@@ -157,7 +157,7 @@ def submit(recaptcha_challenge_field,
         else:
             return_code = 'false'
     else:
-        return_values = httpresp.read().splitlines()
+        return_values = httpresp.read().decode('utf-8').splitlines()
         return_code = return_values[0]
 
     httpresp.close()
