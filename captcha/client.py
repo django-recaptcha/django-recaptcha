@@ -141,6 +141,8 @@ def submit(recaptcha_challenge_field,
     else:
         return_values = httpresp.read().splitlines()
         return_code = return_values[0]
+        if not PY2:
+            return_code = return_code.decode('utf-8')
 
     httpresp.close()
 
