@@ -23,7 +23,7 @@ class ReCaptchaField(forms.CharField):
     }
 
     def __init__(self, public_key=None, private_key=None, use_ssl=None,
-                 attrs={}, *args, **kwargs):
+                 attrs=None, *args, **kwargs):
         """
         ReCaptchaField can accepts attributes which is a dictionary of
         attributes to be passed to the ReCaptcha widget class. The widget will
@@ -31,6 +31,8 @@ class ReCaptchaField(forms.CharField):
         JavaScript variables as specified in
         https://code.google.com/apis/recaptcha/docs/customization.html
         """
+        if attrs is None:
+            attrs = {}
         public_key = public_key if public_key else \
             settings.RECAPTCHA_PUBLIC_KEY
         self.private_key = private_key if private_key else \
