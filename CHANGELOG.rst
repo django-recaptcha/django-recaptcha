@@ -5,6 +5,8 @@ Pending
 -------
 
 #. Confirmed tests pass on Django 1.10.
+#. Fixed a bug where the widget was always rendered in the first used language
+   due to ``attrs`` being a mutable default argument.
 
 1.0.5 (2016-01-04)
 ------------------
