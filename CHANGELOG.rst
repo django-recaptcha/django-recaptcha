@@ -1,27 +1,29 @@
 Changelog
 =========
 
+1.0.5 (2016-01-04)
+------------------
+#. Chinese translation (kz26).
+#. Syntax fix (zvin).
+#. Get tests to pass on Django 1.9.
+
 1.0.4 (2015-04-16)
 ------------------
-
 #. Fixed Python 3 support
 #. Added Polish translations
 #. Update docs
 
 1.0.3 (2015-01-13)
 ------------------
-
 #. Added nocaptcha recaptcha support
 
 1.0.2 (2014-09-16)
 ------------------
-
 #. Fixed Russian translations
 #. Added Spanish translations
 
 1.0.1 (2014-09-11)
 ------------------
-
 #. Added Django 1.7 suport
 #. Added Russian translations
 #. Added multi dependancy support
@@ -29,7 +31,6 @@ Changelog
 
 1.0 (2014-04-23)
 ----------------
-
 #. Added Python 3 support
 #. Added French, Dutch and Brazilian Portuguese translations
 

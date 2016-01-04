@@ -41,6 +41,10 @@ Installation
    If you don't add this setting the default behaviour is to **NOT** use SSL. Note that if you have ``NOCAPTCHA = True`` set, SSL will always be used.
    This can be seperately specified at runtime by passing a ``use_ssl`` parameter when constructing the ``ReCaptchaField``, see field usage below.
 
+#. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting to the project's ``settings.py`` file, i.e.::
+
+    RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
+
 Usage
 -----
 
