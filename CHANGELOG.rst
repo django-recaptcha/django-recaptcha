@@ -1,15 +1,14 @@
 Changelog
 =========
 
-next
-----
+1.0.5 (2016-01-04)
+------------------
 #. Chinese translation (kz26).
 #. Syntax fix (zvin).
 #. Get tests to pass on Django 1.9.
 
 1.0.4 (2015-04-16)
 ------------------
-
 #. Fixed Python 3 support
 #. Added Polish translations
 #. Update docs
