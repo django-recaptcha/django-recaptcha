@@ -19,3 +19,10 @@ env:
   - TOXENV=py34-1.7
   - TOXENV=py34-1.8
   - TOXENV=py34-1.9
+# https://github.com/travis-ci/travis-ci/issues/4794
+matrix:
+  include:
+    - python: 3.5
+      env: TOXENV=py35-1.8
+    - python: 3.5
+      env: TOXENV=py35-1.9
