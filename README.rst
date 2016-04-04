@@ -84,11 +84,11 @@ The captcha client takes the key/value pairs and writes out the RecaptchaOptions
 Unit Testing
 ~~~~~~~~~~~~
 
-django-recaptcha introduces an environmental variable `RECAPTCHA_TESTING` which
-helps facilitate tests. The environmental variable should be set to `"True"`,
-and cleared, using the `setUp()` and `tearDown()` methods in your test classes.
+django-recaptcha testing can be accomplished by setting `RECAPTCHA_TESTING` Django
+setting. The recommended way is to decorate TestCase methods via `override_settings`
+decorator.
 
-Setting `RECAPTCHA_TESTING` to `True` causes django-recaptcha to accept
+Setting `RECAPTCHA_TESTING` setting to `True` causes django-recaptcha to accept
 `"PASSED"` as the ``recaptcha_response_field`` value. Note that if you are using the new No Captcha reCaptcha 
 (ie. with ``NOCAPTCHA = True`` in your settings) the response field is called ``g-recaptcha-response``.
 
@@ -96,15 +96,17 @@ Example:
 
 .. code-block:: python
 
-    import os
-    os.environ['RECAPTCHA_TESTING'] = 'True'
+	@override_settings(RECAPTCHA_TESTING=True)
+	def test_validation(self):
+	    form_params = {'recaptcha_response_field': 'PASSED'} # use 'g-recaptcha-response' param name if using NOCAPTCHA
+	    form = RegistrationForm(form_params) # assuming only one ReCaptchaField
+	    form.is_valid() # True
 
-    form_params = {'recaptcha_response_field': 'PASSED'} # use 'g-recaptcha-response' param name if using NOCAPTCHA
-    form = RegistrationForm(form_params) # assuming only one ReCaptchaField
-    form.is_valid() # True
-
-    os.environ['RECAPTCHA_TESTING'] = 'False'
-    form.is_valid() # False
+	@override_settings(RECAPTCHA_TESTING=False) # or whatever else
+	def test_validation(self):
+	    form_params = {'recaptcha_response_field': 'PASSED'} # use 'g-recaptcha-response' param name if using NOCAPTCHA
+	    form = RegistrationForm(form_params) # assuming only one ReCaptchaField
+	    form.is_valid() # False
 
 Passing any other values will cause django-recaptcha to continue normal processing
 and return a form error.
