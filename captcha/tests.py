@@ -3,6 +3,7 @@ import unittest
 
 from captcha import fields
 from django.forms import Form
+from django.test.utils import override_settings
 
 
 class TestForm(Form):
@@ -10,19 +11,15 @@ class TestForm(Form):
 
 
 class TestCase(unittest.TestCase):
-    def setUp(self):
-        os.environ['RECAPTCHA_TESTING'] = 'True'
 
+    @override_settings(RECAPTCHA_TESTING=True)
     def test_envvar_enabled(self):
         form_params = {'recaptcha_response_field': 'PASSED'}
         form = TestForm(form_params)
         self.assertTrue(form.is_valid())
 
+    @override_settings(RECAPTCHA_TESTING=False)
     def test_envvar_disabled(self):
-        os.environ['RECAPTCHA_TESTING'] = 'False'
         form_params = {'recaptcha_response_field': 'PASSED'}
         form = TestForm(form_params)
         self.assertFalse(form.is_valid())
-
-    def tearDown(self):
-        del os.environ['RECAPTCHA_TESTING']
