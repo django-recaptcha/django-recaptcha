@@ -115,16 +115,16 @@ def submit(recaptcha_challenge_field,
 
     if getattr(settings, "NOCAPTCHA", False):
         params = urlencode({
-            'secret': want_bytes(private_key), 
-            'response': want_bytes(recaptcha_response_field), 
+            'secret': want_bytes(private_key),
+            'response': want_bytes(recaptcha_response_field),
             'remoteip': want_bytes(remoteip),
         })
     else:
         params = urlencode({
-        'privatekey': want_bytes(private_key),
-        'remoteip':  want_bytes(remoteip),
-        'challenge':  want_bytes(recaptcha_challenge_field),
-        'response':  want_bytes(recaptcha_response_field),
+            'privatekey': want_bytes(private_key),
+            'remoteip':  want_bytes(remoteip),
+            'challenge':  want_bytes(recaptcha_challenge_field),
+            'response':  want_bytes(recaptcha_response_field),
         })
 
     if not PY2:

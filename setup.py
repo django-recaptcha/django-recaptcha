@@ -1,16 +1,20 @@
 from setuptools import setup, find_packages
 
+
+long_desc = open('README.rst', 'rb').read().decode('utf-8') + \
+            open('AUTHORS.rst', 'rb').read().decode('utf-8') + \
+            open('CHANGELOG.rst', 'rb').read().decode('utf-8')
 setup(
     name='django-recaptcha',
     version='1.0.5',
     description='Django recaptcha form field/widget app.',
-    long_description=open('README.rst', 'r').read() + open('AUTHORS.rst', 'r').read() + open('CHANGELOG.rst', 'r').read(),
+    long_description=long_desc,
     author='Praekelt Foundation',
     author_email='dev@praekelt.com',
     license='BSD',
     url='http://github.com/praekelt/django-recaptcha',
     packages=find_packages(),
-    install_requires = [
+    install_requires=[
         'django',
     ],
     tests_require=[
