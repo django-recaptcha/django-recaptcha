@@ -8,9 +8,15 @@ env:
   - TOXENV=py27-1.5
   - TOXENV=py27-1.6
   - TOXENV=py27-1.7
+  - TOXENV=py27-1.8
+  - TOXENV=py27-1.9
   - TOXENV=py33-1.5
   - TOXENV=py33-1.6
   - TOXENV=py33-1.7
   - TOXENV=py34-1.5
   - TOXENV=py34-1.6
   - TOXENV=py34-1.7
+  - TOXENV=py34-1.8
+  - TOXENV=py34-1.9
+  - TOXENV=py35-1.8
+  - TOXENV=py35-1.9
