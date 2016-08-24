@@ -1,15 +1,5 @@
 <script src='https://www.google.com/recaptcha/api.js{% if lang %}?hl={{ lang }}{% endif %}'></script>
-<script type="text/javascript">
-    var DjangoRecaptchaOptions = {{options}};
-    if (typeof RecaptchaOptions !== 'object') {
-        RecaptchaOptions = DjangoRecaptchaOptions;
-    } else {
-        for (key in DjangoRecaptchaOptions) {
-            RecaptchaOptions[key] = DjangoRecaptchaOptions[key];
-        }
-    }
-</script>
-<div class="g-recaptcha" data-sitekey="{{ public_key }}"></div>
+<div class="g-recaptcha" data-sitekey="{{ public_key }}" {% for option,value in options_dict.items %}data-{{ option }}="{{ value }}" {% endfor %}></div>
 <noscript>
   <div style="width: 302px; height: 352px;">
     <div style="width: 302px; height: 352px; position: relative;">
