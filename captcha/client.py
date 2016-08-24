@@ -71,7 +71,8 @@ def displayhtml(public_key,
          'public_key': public_key,
          'error_param': error_param,
          'lang': lang,
-         'options': mark_safe(json.dumps(attrs, indent=2))
+         'options': mark_safe(json.dumps(attrs, indent=2)),
+         'options_dict': attrs,
          })
 
 
