@@ -66,6 +66,9 @@ class ReCaptchaField(forms.CharField):
                 recaptcha_response_value == 'PASSED':
             return values[0]
 
+        if not self.required:
+            return
+
         try:
             check_captcha = client.submit(
                 recaptcha_challenge_value,

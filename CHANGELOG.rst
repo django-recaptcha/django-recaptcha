@@ -10,6 +10,7 @@ Pending
 #. Made recaptcha checking use SSL by default. This can be disabled by setting
    ``RECAPTCHA_USE_SSL = False`` in your Django settings or passing
    ``use_ssl=False`` to the constructor of ``ReCaptchaField``.
+#. Made ReCaptchaField respect required=False
 
 1.0.6 (2016-10-05)
 ------------------
