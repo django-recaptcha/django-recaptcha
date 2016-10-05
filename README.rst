@@ -11,6 +11,14 @@ Django reCAPTCHA
 django-recaptcha uses a modified version of the `Python reCAPTCHA client <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the package as ``client.py``.
 
 
+Requirements
+------------
+
+Tested with:
+
+* Python: 2.7, 3.4, 3.5
+* Django: 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 1.10
+
 Installation
 ------------
 
@@ -18,39 +26,49 @@ Installation
 
 #. Add ``captcha`` to your ``INSTALLED_APPS`` setting.
 
-#. Add a ``RECAPTCHA_PUBLIC_KEY`` setting to the project's ``settings.py`` file. This is your public API key as provided by reCAPTCHA, i.e.::
+#. Add a ``RECAPTCHA_PUBLIC_KEY`` setting to the project's ``settings.py`` file. This is your public API key as provided by reCAPTCHA, i.e.:
 
-    RECAPTCHA_PUBLIC_KEY = '76wtgdfsjhsydt7r5FFGFhgsdfytd656sad75fgh'
+   .. code-block:: python
+
+       RECAPTCHA_PUBLIC_KEY = '76wtgdfsjhsydt7r5FFGFhgsdfytd656sad75fgh'
 
    This can be seperately specified at runtime by passing a ``public_key`` parameter when constructing the ``ReCaptchaField``, see field usage below.
 
-#. Add a ``RECAPTCHA_PRIVATE_KEY`` setting to the project's ``settings.py`` file. This is your private API key as provided by reCAPTCHA, i.e.::
+#. Add a ``RECAPTCHA_PRIVATE_KEY`` setting to the project's ``settings.py`` file. This is your private API key as provided by reCAPTCHA, i.e.:
 
-    RECAPTCHA_PRIVATE_KEY = '98dfg6df7g56df6gdfgdfg65JHJH656565GFGFGs'
+   .. code-block:: python
+
+       RECAPTCHA_PRIVATE_KEY = '98dfg6df7g56df6gdfgdfg65JHJH656565GFGFGs'
 
    This can be seperately specified at runtime by passing a ``private_key`` parameter when constructing the ``ReCaptchaField``, see field usage below.
 
-#. If you would like to use the new No Captcha reCaptcha add a ``NOCAPTCHA = True`` setting to the project's ``settings.py`` file. ie.::
+#. If you would like to use the new No Captcha reCaptcha add a ``NOCAPTCHA = True`` setting to the project's ``settings.py`` file. ie.:
 
-    NOCAPTCHA = True
+   .. code-block:: python
 
-#. Optionally add a ``RECAPTCHA_USE_SSL`` setting to the project's ``settings.py`` file. This causes reCAPTCHA validation submits to be made over SSL, i.e.::
+       NOCAPTCHA = True
 
-    RECAPTCHA_USE_SSL = True
+#. Optionally add a ``RECAPTCHA_USE_SSL`` setting to the project's ``settings.py`` file. This causes reCAPTCHA validation submits to be made over SSL, i.e.:
+
+   .. code-block:: python
+
+       RECAPTCHA_USE_SSL = True
 
    If you don't add this setting the default behaviour is to **NOT** use SSL. Note that if you have ``NOCAPTCHA = True`` set, SSL will always be used.
    This can be seperately specified at runtime by passing a ``use_ssl`` parameter when constructing the ``ReCaptchaField``, see field usage below.
 
-#. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting to the project's ``settings.py`` file, i.e.::
+#. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting to the project's ``settings.py`` file, i.e.:
 
-    RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
+   .. code-block:: python
+
+       RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
 
 Usage
 -----
 
 Field
 ~~~~~
-The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaField`` field type. A ``ReCaptcha`` widget will be rendered with the field validating itself without any further action required from you. For example:
+The quickest way to add reCAPTCHA to a form is to use the included ``ReCaptchaField`` field class. A ``ReCaptcha`` widget will be rendered with the field validating itself without any further action required from you. For example:
 
 .. code-block:: python
 
@@ -60,19 +78,19 @@ The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaFi
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField()
 
-To allow for runtime specification of keys and SSL usage you can optionally pass ``private_key``, ``public_key`` or ``use_ssl`` parameters to the constructor, i.e.:
+To allow for runtime specification of keys and SSL usage you can optionally pass the ``private_key``, ``public_key``, or ``use_ssl`` parameters to the constructor. For example:
 
 .. code-block:: python
 
     captcha = ReCaptchaField(
         public_key='76wtgdfsjhsydt7r5FFGFhgsdfytd656sad75fgh',
         private_key='98dfg6df7g56df6gdfgdfg65JHJH656565GFGFGs',
-        use_ssl=True
+        use_ssl=True,
     )
 
 If specified these parameters will be used instead of your reCAPTCHA project settings.
 
-The reCAPTCHA widget supports several `Javascript options variables <https://developers.google.com/recaptcha/old/docs/customization>`_ customizing the behaviour of the widget, such as ``theme`` and ``lang``. You can forward these options to the widget by passing an ``attr`` parameter containing a dictionary of options to ``ReCaptchaField``, i.e.:
+The reCAPTCHA widget supports several `Javascript options variables <https://developers.google.com/recaptcha/old/docs/customization>`_ customizing the behaviour of the widget, such as ``theme`` and ``lang``. You can forward these options to the widget by passing an ``attr`` parameter containing a dictionary of options to ``ReCaptchaField``. For example:
 
 .. code-block:: python
 
@@ -84,12 +102,12 @@ The captcha client takes the key/value pairs and writes out the RecaptchaOptions
 Unit Testing
 ~~~~~~~~~~~~
 
-django-recaptcha introduces an environmental variable `RECAPTCHA_TESTING` which
-helps facilitate tests. The environmental variable should be set to `"True"`,
-and cleared, using the `setUp()` and `tearDown()` methods in your test classes.
+django-recaptcha introduces an environmental variable ``RECAPTCHA_TESTING`` which
+helps facilitate tests. The environmental variable should be set to ``"True"``,
+and cleared, using the ``setUp()`` and ``tearDown()`` methods in your test classes.
 
-Setting `RECAPTCHA_TESTING` to `True` causes django-recaptcha to accept
-`"PASSED"` as the ``recaptcha_response_field`` value. Note that if you are using the new No Captcha reCaptcha 
+Setting ``RECAPTCHA_TESTING`` to ``True`` causes django-recaptcha to accept
+``"PASSED"`` as the ``recaptcha_response_field`` value. Note that if you are using the new No Captcha reCaptcha
 (ie. with ``NOCAPTCHA = True`` in your settings) the response field is called ``g-recaptcha-response``.
 
 Example:
@@ -117,13 +135,18 @@ AJAX
 
 To make Recapcha work in ajax-loaded forms:
 
-#. import recaptcha_ajax.js on your page (not in the loaded template):
+#. Import ``recaptcha_ajax.js`` on your page (not in the loaded template):
 
-    <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+   .. code-block:: html
 
-#. settings.py
+       <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
 
-    CAPTCHA_AJAX = True
+#. Add to your Django settings:
+
+   .. code-block:: python
+
+
+       CAPTCHA_AJAX = True
 
 
 Credits

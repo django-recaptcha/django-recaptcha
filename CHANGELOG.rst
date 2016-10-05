@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Pending
+-------
+
+#. Confirmed tests pass on Django 1.10.
+
 1.0.5 (2016-01-04)
 ------------------
 #. Chinese translation (kz26).
