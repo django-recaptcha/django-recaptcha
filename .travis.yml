@@ -1,25 +1,11 @@
+sudo: false
+
 language: python
+python: '3.5'
+cache: pip
+
 install:
   - pip install tox
+
 script:
   - tox
-env:
-  - TOXENV=py27-1.4
-  - TOXENV=py27-1.5
-  - TOXENV=py27-1.6
-  - TOXENV=py27-1.7
-  - TOXENV=py27-1.8
-  - TOXENV=py27-1.9
-  - TOXENV=py27-1.10
-  - TOXENV=py34-1.5
-  - TOXENV=py34-1.6
-  - TOXENV=py34-1.7
-# https://github.com/travis-ci/travis-ci/issues/4794
-matrix:
-  include:
-    - python: 3.5
-      env: TOXENV=py35-1.8
-    - python: 3.5
-      env: TOXENV=py35-1.9
-    - python: 3.5
-      env: TOXENV=py35-1.10
