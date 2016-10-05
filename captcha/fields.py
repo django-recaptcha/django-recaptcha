@@ -64,20 +64,22 @@ class ReCaptchaField(forms.CharField):
                 recaptcha_response_value == 'PASSED':
             return values[0]
 
-        if self.required == True:
-            try:
-                check_captcha = client.submit(
-                    recaptcha_challenge_value,
-                    recaptcha_response_value, private_key=self.private_key,
-                    remoteip=self.get_remote_ip(), use_ssl=self.use_ssl)
-                
-            except socket.error: # Catch timeouts, etc
-                raise ValidationError(
-                    self.error_messages['captcha_error']
-                )
+        if not self.required:
+            return
+            
+        try:
+            check_captcha = client.submit(
+                recaptcha_challenge_value,
+                recaptcha_response_value, private_key=self.private_key,
+                remoteip=self.get_remote_ip(), use_ssl=self.use_ssl)
+            
+        except socket.error: # Catch timeouts, etc
+            raise ValidationError(
+                self.error_messages['captcha_error']
+            )
 
-            if not check_captcha.is_valid:
-                raise ValidationError(
-                    self.error_messages['captcha_invalid']
-                )
-            return values[0]
+        if not check_captcha.is_valid:
+            raise ValidationError(
+                self.error_messages['captcha_invalid']
+            )
+        return values[0]
