@@ -11,16 +11,9 @@ env:
   - TOXENV=py27-1.8
   - TOXENV=py27-1.9
   - TOXENV=py27-1.10
-  - TOXENV=py33-1.5
-  - TOXENV=py33-1.6
-  - TOXENV=py33-1.7
-  - TOXENV=py33-1.8
   - TOXENV=py34-1.5
   - TOXENV=py34-1.6
   - TOXENV=py34-1.7
-  - TOXENV=py34-1.8
-  - TOXENV=py34-1.9
-  - TOXENV=py34-1.10
 # https://github.com/travis-ci/travis-ci/issues/4794
 matrix:
   include:
