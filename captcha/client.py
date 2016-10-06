@@ -60,15 +60,12 @@ def displayhtml(public_key,
     else:
         server = API_SERVER
 
-    if 'lang' not in attrs:
-        attrs['lang'] = get_language()[:2]
-
     return render_to_string(
         WIDGET_TEMPLATE,
         {'api_server': server,
          'public_key': public_key,
          'error_param': error_param,
-         'lang': attrs['lang'],
+         'lang': attrs.get('lang') or get_language()[:2],
          'options': mark_safe(json.dumps(attrs, indent=2))
          })
 
