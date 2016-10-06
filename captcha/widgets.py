@@ -19,7 +19,7 @@ class ReCaptcha(forms.widgets.Widget):
         if attrs is None:
             attrs = {}
         self.use_ssl = use_ssl if use_ssl is not None else getattr(
-            settings, 'RECAPTCHA_USE_SSL', False)
+            settings, 'RECAPTCHA_USE_SSL', True)
         self.js_attrs = attrs
         super(ReCaptcha, self).__init__(*args, **kwargs)
 

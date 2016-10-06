@@ -48,15 +48,6 @@ Installation
 
        NOCAPTCHA = True
 
-#. Optionally add a ``RECAPTCHA_USE_SSL`` setting to the project's ``settings.py`` file. This causes reCAPTCHA validation submits to be made over SSL, i.e.:
-
-   .. code-block:: python
-
-       RECAPTCHA_USE_SSL = True
-
-   If you don't add this setting the default behaviour is to **NOT** use SSL. Note that if you have ``NOCAPTCHA = True`` set, SSL will always be used.
-   This can be seperately specified at runtime by passing a ``use_ssl`` parameter when constructing the ``ReCaptchaField``, see field usage below.
-
 #. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting to the project's ``settings.py`` file, i.e.:
 
    .. code-block:: python
@@ -78,14 +69,13 @@ The quickest way to add reCAPTCHA to a form is to use the included ``ReCaptchaFi
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField()
 
-To allow for runtime specification of keys and SSL usage you can optionally pass the ``private_key``, ``public_key``, or ``use_ssl`` parameters to the constructor. For example:
+To allow for runtime specification of keys and SSL usage you can optionally pass the ``private_key`` or ``public_key`` parameters to the constructor. For example:
 
 .. code-block:: python
 
     captcha = ReCaptchaField(
         public_key='76wtgdfsjhsydt7r5FFGFhgsdfytd656sad75fgh',
         private_key='98dfg6df7g56df6gdfgdfg65JHJH656565GFGFGs',
-        use_ssl=True,
     )
 
 If specified these parameters will be used instead of your reCAPTCHA project settings.
@@ -147,6 +137,14 @@ To make Recapcha work in ajax-loaded forms:
 
 
        CAPTCHA_AJAX = True
+
+
+Disabling SSL
+~~~~~~~~~~~~~
+
+This library used to not use SSL by default, but now it does. You can disable this if required, but you should think long and hard about it before you do so!
+
+You can disable it by setting ``RECAPTCHA_USE_SSL = False`` in your Django settings, or by passing ``use_ssl=False`` to the constructor of ``ReCaptchaField``.
 
 
 Credits

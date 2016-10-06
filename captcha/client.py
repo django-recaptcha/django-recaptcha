@@ -43,12 +43,12 @@ class RecaptchaResponse(object):
 
 def displayhtml(public_key,
                 attrs,
-                use_ssl=False,
+                use_ssl=True,
                 error=None):
     """Gets the HTML to display for reCAPTCHA
 
     public_key -- The public api key
-    use_ssl -- Should the request be sent over ssl?
+    use_ssl -- Should the request be sent over ssl? (deprecated)
     error -- An error message to display (from RecaptchaResponse.error_code)"""
 
     error_param = ''

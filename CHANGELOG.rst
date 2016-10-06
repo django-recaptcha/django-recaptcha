@@ -7,6 +7,9 @@ Pending
 #. New release notes go here
 #. Dropped support for old Django versions. Only the upstream supported
    versions are now supported, currently 1.8, 1.9, and 1.10.
+#. Made recaptcha checking use SSL by default. This can be disabled by setting
+   ``RECAPTCHA_USE_SSL = False`` in your Django settings or passing
+   ``use_ssl=False`` to the constructor of ``ReCaptchaField``.
 
 1.0.6 (2016-10-05)
 ------------------
