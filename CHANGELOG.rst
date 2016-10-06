@@ -5,6 +5,8 @@ Pending
 -------
 
 #. New release notes go here
+#. Dropped support for old Django versions. Only the upstream supported
+   versions are now supported, currently 1.8, 1.9, and 1.10.
 
 1.0.6 (2016-10-05)
 ------------------

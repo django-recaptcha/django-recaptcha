@@ -16,8 +16,8 @@ Requirements
 
 Tested with:
 
-* Python: 2.7, 3.4, 3.5
-* Django: 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 1.10
+* Python: 2.7, 3.5
+* Django: 1.8, 1.9, 1.10
 
 Installation
 ------------
