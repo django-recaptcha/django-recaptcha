@@ -157,6 +157,3 @@ Inspired Marco Fucci's blogpost titled `Integrating reCAPTCHA with Django <http:
 ``client.py`` taken from `recaptcha-client <http://pypi.python.org/pypi/recaptcha-client>`_ licenced MIT/X11 by Mike Crawford.
 
 reCAPTCHA copyright 2012 Google.
-
-.. |travis| image:: https://travis-ci.org/praekelt/device-recaptcha.png?branch=develop
-.. _travis: https://travis-ci.org/praekelt/device-recaptcha
