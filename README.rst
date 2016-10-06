@@ -90,7 +90,7 @@ To allow for runtime specification of keys and SSL usage you can optionally pass
 
 If specified these parameters will be used instead of your reCAPTCHA project settings.
 
-The reCAPTCHA widget supports several `Javascript options variables <https://developers.google.com/recaptcha/old/docs/customization>`_ customizing the behaviour of the widget, such as ``theme`` and ``lang``. You can forward these options to the widget by passing an ``attr`` parameter containing a dictionary of options to ``ReCaptchaField``. For example:
+The reCAPTCHA widget supports several `Javascript options variables <https://developers.google.com/recaptcha/docs/display#js_param>`_ customizing the behaviour of the widget, such as ``theme`` and ``lang``. You can forward these options to the widget by passing an ``attr`` parameter containing a dictionary of options to ``ReCaptchaField``. For example:
 
 .. code-block:: python
 
