@@ -151,9 +151,24 @@ To make Recapcha work in ajax-loaded forms:
 
 Credits
 -------
-Inspired Marco Fucci's blogpost titled `Integrating reCAPTCHA with Django <http://www.marcofucci.com/tumblelog/26/jul/2009/integrating-recaptcha-with-django>`_
 
+Inspired by Marco Fucci's blogpost titled
+`Integrating reCAPTCHA with Django
+<http://www.marcofucci.com/tumblelog/26/jul/2009/integrating-recaptcha-with-django>`_
 
-``client.py`` taken from `recaptcha-client <http://pypi.python.org/pypi/recaptcha-client>`_ licenced MIT/X11 by Mike Crawford.
+``client.py`` initially taken from
+`recaptcha-client <https://pypi.python.org/pypi/recaptcha-client>`_ licenced
+MIT/X11 by Mike Crawford.
 
 reCAPTCHA copyright 2012 Google.
+
+
+Contributors
+------------
+
+**Django reCAPTCHA** was created by Hedley Roos, Peter Pistorius, and Shaun
+Sephton from the Praekelt foundation, and Brandon Taylor from bTaylor design,
+and has since been worked on by `37+ contributors
+<https://github.com/praekelt/django-recaptcha/graphs/contributors>`_. Thanks to
+every contributor, and if you want to get involved please don't hesitate to
+open a pull request on Github.

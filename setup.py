@@ -2,7 +2,6 @@ from setuptools import setup, find_packages
 
 
 long_desc = open('README.rst', 'rb').read().decode('utf-8') + '\n\n' + \
-            open('AUTHORS.rst', 'rb').read().decode('utf-8') + '\n\n' + \
             open('CHANGELOG.rst', 'rb').read().decode('utf-8')
 setup(
     name='django-recaptcha',
