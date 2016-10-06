@@ -4,7 +4,12 @@ Changelog
 Pending
 -------
 
-#. Confirmed tests pass on Django 1.10.
+#. New release notes go here
+
+1.0.6 (2016-10-05)
+------------------
+
+#. Confirmed tests pass on Django 1.10. Older versions should still work.
 #. Fixed a bug where the widget was always rendered in the first used language
    due to ``attrs`` being a mutable default argument.
 
