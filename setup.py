@@ -6,7 +6,7 @@ long_desc = open('README.rst', 'rb').read().decode('utf-8') + '\n\n' + \
             open('CHANGELOG.rst', 'rb').read().decode('utf-8')
 setup(
     name='django-recaptcha',
-    version='1.0.6',
+    version='1.1.0',
     description='Django recaptcha form field/widget app.',
     long_description=long_desc,
     author='Praekelt Foundation',

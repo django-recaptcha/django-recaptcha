@@ -5,6 +5,10 @@ Pending
 -------
 
 #. New release notes go here
+
+1.1.0 (2016-10-28)
+------------------
+
 #. Dropped support for old Django versions. Only the upstream supported
    versions are now supported, currently 1.8, 1.9, and 1.10.
 #. Made recaptcha checking use SSL by default. This can be disabled by setting
