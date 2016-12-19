@@ -5,6 +5,10 @@ Pending
 -------
 
 #. New release notes go here
+
+1.2.0 (2016-12-19)
+------------------
+
 #. Pass options as HTML data attributes instead of the ``RecaptchaOptions``
    JavaScript object in the default template. Custom templates using
    ``RecaptchaOptions`` should migrate to using HTML data attributes.
