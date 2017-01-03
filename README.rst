@@ -101,6 +101,16 @@ The client takes the key/value pairs and writes out the ``RecaptchaOptions``
 value in JavaScript.
 
 
+Development and Functional Testing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Google provides test keys which you can use for your local development and automated testing. These keys cannot be used in production, and will always pass validation. `More information is available here <https://developers.google.com/recaptcha/docs/faq>`_
+
+   .. code-block:: python
+
+       RECAPTCHA_PUBLIC_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+       RECAPTCHA_PRIVATE_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
+
 Unit Testing
 ~~~~~~~~~~~~
 
