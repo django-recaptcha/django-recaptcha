@@ -30,7 +30,7 @@ Installation
 
 #. Add ``'captcha'`` to your ``INSTALLED_APPS`` setting.
 
-#. Add the keys reCAPTCHA have given you to your Django settings as
+#. Add the keys reCAPTCHA have given you to your Django production settings (leave development settings blank to use the default test keys) as
    ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. For example:
 
    .. code-block:: python
@@ -99,6 +99,12 @@ field, containing a dictionary of options. For example:
 
 The client takes the key/value pairs and writes out the ``RecaptchaOptions``
 value in JavaScript.
+
+
+Local Development and Functional Testing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Google provides test keys which are set as the default for ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA. 
 
 
 Unit Testing
