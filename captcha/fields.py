@@ -34,9 +34,9 @@ class ReCaptchaField(forms.CharField):
         if attrs is None:
             attrs = {}
         public_key = public_key if public_key else \
-            settings.RECAPTCHA_PUBLIC_KEY
+            getattr(settings, 'RECAPTCHA_PUBLIC_KEY', '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI')
         self.private_key = private_key if private_key else \
-            settings.RECAPTCHA_PRIVATE_KEY
+            getattr(settings, 'RECAPTCHA_PRIVATE_KEY', '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe')
         self.use_ssl = use_ssl if use_ssl is not None else getattr(
             settings, 'RECAPTCHA_USE_SSL', True)
 
