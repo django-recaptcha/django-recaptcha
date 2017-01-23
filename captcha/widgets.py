@@ -2,7 +2,8 @@ from django import forms
 from django.conf import settings
 from django.utils.safestring import mark_safe
 
-from captcha import client
+from . import client
+from .constants import TEST_PUBLIC_KEY
 
 
 class ReCaptcha(forms.widgets.Widget):
@@ -15,7 +16,7 @@ class ReCaptcha(forms.widgets.Widget):
 
     def __init__(self, public_key=None, use_ssl=None, attrs=None, *args,
                  **kwargs):
-        self.public_key = public_key or getattr(settings, 'RECAPTCHA_PUBLIC_KEY', '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI')
+        self.public_key = public_key or getattr(settings, 'RECAPTCHA_PUBLIC_KEY', TEST_PUBLIC_KEY)
         if attrs is None:
             attrs = {}
         self.use_ssl = use_ssl if use_ssl is not None else getattr(

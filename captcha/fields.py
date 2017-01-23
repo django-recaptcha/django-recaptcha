@@ -12,8 +12,9 @@ except ImportError:
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
-from captcha import client
-from captcha.widgets import ReCaptcha
+from . import client
+from .constants import TEST_PUBLIC_KEY, TEST_PRIVATE_KEY
+from .widgets import ReCaptcha
 
 
 class ReCaptchaField(forms.CharField):
@@ -34,9 +35,9 @@ class ReCaptchaField(forms.CharField):
         if attrs is None:
             attrs = {}
         public_key = public_key if public_key else \
-            getattr(settings, 'RECAPTCHA_PUBLIC_KEY', '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI')
+            getattr(settings, 'RECAPTCHA_PUBLIC_KEY', TEST_PUBLIC_KEY)
         self.private_key = private_key if private_key else \
-            getattr(settings, 'RECAPTCHA_PRIVATE_KEY', '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe')
+            getattr(settings, 'RECAPTCHA_PRIVATE_KEY', TEST_PRIVATE_KEY)
         self.use_ssl = use_ssl if use_ssl is not None else getattr(
             settings, 'RECAPTCHA_USE_SSL', True)
 

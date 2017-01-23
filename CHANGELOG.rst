@@ -5,6 +5,9 @@ Pending
 -------
 
 #. New release notes go here
+#. Made reCAPTCHA test keys the default keys for easy use in development. The
+   captcha doesn't require any interaction, has a warning label that it's for
+   testing purposes only, and always validates.
 
 1.2.0 (2016-12-19)
 ------------------
