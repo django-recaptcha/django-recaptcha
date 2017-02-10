@@ -85,6 +85,22 @@ To allow for runtime specification of keys you can optionally pass the
 If specified these parameters will be used instead of your reCAPTCHA project
 settings.
 
+Within a Form Wizard
+~~~~~
+
+
+If you're intending to use the reCaptcha field in a form wizard you can optionally pass the
+``wizard`` parameter to the constructor. For example:
+
+.. code-block:: python
+
+    captcha = ReCaptchaField(
+        wizard=True,
+    )
+
+This will cache the successful captcha validation response and prevent subsequent validation
+failures when the wizard reruns validation on your forms.
+
 The reCAPTCHA widget supports several `Javascript options variables
 <https://developers.google.com/recaptcha/docs/display#js_param>`_ that
 customize the behaviour of the widget, such as ``theme`` and ``lang``. You can

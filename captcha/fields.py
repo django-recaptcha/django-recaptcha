@@ -39,8 +39,7 @@ class ReCaptchaField(forms.CharField):
             settings.RECAPTCHA_PRIVATE_KEY
         self.use_ssl = use_ssl if use_ssl is not None else getattr(
             settings, 'RECAPTCHA_USE_SSL', True)
-        self.wizard = wizard if wizard is not None else getattr(
-            settings, 'RECAPTCHA_WIZARD', None)
+        self.wizard = wizard
 
         if self.wizard:
             self.cached_result = []
