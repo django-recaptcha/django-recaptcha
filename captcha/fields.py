@@ -43,6 +43,7 @@ class ReCaptchaField(forms.CharField):
         self.widget = ReCaptcha(
             public_key=public_key, use_ssl=self.use_ssl, attrs=attrs)
         self.required = True
+        self.cached_result = False
         super(ReCaptchaField, self).__init__(*args, **kwargs)
 
     def get_remote_ip(self):
@@ -69,6 +70,10 @@ class ReCaptchaField(forms.CharField):
         if not self.required:
             return
 
+        if os.environ.get('RECAPTCHA_WIZARD', None) == 'True' and \
+                self.cached_result:
+            return values[0]
+
         try:
             check_captcha = client.submit(
                 recaptcha_challenge_value,
@@ -84,4 +89,7 @@ class ReCaptchaField(forms.CharField):
             raise ValidationError(
                 self.error_messages['captcha_invalid']
             )
+        else:
+            self.cached_result = True
+
         return values[0]
