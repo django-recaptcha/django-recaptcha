@@ -1,9 +1,12 @@
+import datetime
 import os
 import sys
 import socket
+import time
 
 from django import forms
 from django.conf import settings
+
 try:
     from django.utils.encoding import smart_unicode
 except ImportError:
@@ -41,26 +44,48 @@ class ReCaptchaField(forms.CharField):
             settings, 'RECAPTCHA_USE_SSL', True)
         self.wizard = wizard
 
-        if self.wizard:
-            self.cached_result = []
-
         self.widget = ReCaptcha(
             public_key=public_key, use_ssl=self.use_ssl, attrs=attrs)
         self.required = True
 
         super(ReCaptchaField, self).__init__(*args, **kwargs)
 
-    def get_remote_ip(self):
+    def get_request_object(self):
         f = sys._getframe()
         while f:
             if 'request' in f.f_locals:
                 request = f.f_locals['request']
                 if request:
-                    remote_ip = request.META.get('REMOTE_ADDR', '')
-                    forwarded_ip = request.META.get('HTTP_X_FORWARDED_FOR', '')
-                    ip = remote_ip if not forwarded_ip else forwarded_ip
-                    return ip
+                    return request
             f = f.f_back
+
+    def get_remote_ip(self):
+        request = self.get_request_object()
+        remote_ip = request.META.get('REMOTE_ADDR', '')
+        forwarded_ip = request.META.get('HTTP_X_FORWARDED_FOR', '')
+        ip = remote_ip if not forwarded_ip else forwarded_ip
+        return ip
+
+    def get_cached_result(self):
+        request = self.get_request_object()
+        key = 'rcf-{path}cached-result'.format(path=request.path_info)
+
+        if key in request.session:
+            expires_time = request.session[key]
+            return expires_time > time.time()
+
+        return False
+
+    def set_cached_result(self):
+        request = self.get_request_object()
+        key = 'rcf-{path}cached-result'.format(path=request.path_info)
+        now = datetime.datetime.now()
+
+        expires_time = now + datetime.timedelta(
+            minutes=getattr(settings, 'RECAPTCHA_WIZARD_EXPIRY', 10)
+        )
+
+        request.session[key] = time.mktime(expires_time.timetuple())
 
     def clean(self, values):
         super(ReCaptchaField, self).clean(values[1])
@@ -68,13 +93,13 @@ class ReCaptchaField(forms.CharField):
         recaptcha_response_value = smart_unicode(values[1])
 
         if os.environ.get('RECAPTCHA_TESTING', None) == 'True' and \
-                recaptcha_response_value == 'PASSED':
+                        recaptcha_response_value == 'PASSED':
             return values[0]
 
         if not self.required:
             return
 
-        if self.wizard and True in self.cached_result:
+        if self.wizard and self.get_cached_result():
             return values[0]
 
         try:
@@ -94,6 +119,8 @@ class ReCaptchaField(forms.CharField):
             )
         else:
             if self.wizard:
-                self.cached_result.append(check_captcha.is_valid)
+                self.set_cached_result()
+
+
 
         return values[0]

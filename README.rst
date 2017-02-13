@@ -3,10 +3,10 @@ Django reCAPTCHA
 **Django reCAPTCHA form field/widget integration app.**
 
 .. image:: https://travis-ci.org/praekelt/django-recaptcha.svg?branch=develop
-    :target: https://travis-ci.org/praekelt/django-recaptcha
+:target: https://travis-ci.org/praekelt/django-recaptcha
 
 .. contents:: Contents
-    :depth: 5
+:depth: 5
 
 Django reCAPTCHA uses a modified version of the `Python reCAPTCHA client
 <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the
@@ -85,22 +85,6 @@ To allow for runtime specification of keys you can optionally pass the
 If specified these parameters will be used instead of your reCAPTCHA project
 settings.
 
-Within a Form Wizard
-~~~~~
-
-
-If you're intending to use the reCaptcha field in a form wizard you can optionally pass the
-``wizard`` parameter to the constructor. For example:
-
-.. code-block:: python
-
-    captcha = ReCaptchaField(
-        wizard=True,
-    )
-
-This will cache the successful captcha validation response and prevent subsequent validation
-failures when the wizard reruns validation on your forms.
-
 The reCAPTCHA widget supports several `Javascript options variables
 <https://developers.google.com/recaptcha/docs/display#js_param>`_ that
 customize the behaviour of the widget, such as ``theme`` and ``lang``. You can
@@ -115,6 +99,28 @@ field, containing a dictionary of options. For example:
 
 The client takes the key/value pairs and writes out the ``RecaptchaOptions``
 value in JavaScript.
+
+Within a Form Wizard
+~~~~~~~~~~~~~~~~~~~~
+
+If you're intending to use the reCaptcha field in a form wizard you can optionally pass the
+``wizard`` parameter to the constructor. For example:
+
+.. code-block:: python
+
+    captcha = ReCaptchaField(
+        wizard=True,
+    )
+
+This will cache the successful captcha validation response and prevent subsequent validation
+failures when the wizard reruns validation on your forms.
+
+The result will be cached for 10 minutes by default.
+If you require a custom expiration period, add a ``RECAPTCHA_WIZARD_EXPIRY`` setting, for example:
+
+.. code-block:: python
+
+   RECAPTCHA_WIZARD_EXPIRY = 30
 
 
 Unit Testing
