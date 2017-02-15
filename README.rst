@@ -6,7 +6,7 @@ Django reCAPTCHA
     :target: https://travis-ci.org/praekelt/django-recaptcha
 
 .. contents:: Contents
-:depth: 5
+    :depth: 5
 
 Django reCAPTCHA uses a modified version of the `Python reCAPTCHA client
 <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the
