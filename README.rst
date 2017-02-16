@@ -116,12 +116,12 @@ This will cache the successful captcha validation response and prevent subsequen
 failures when the wizard reruns validation on your forms.
 
 The result will be cached for 10 minutes by default.
-If you require a custom expiration period, add a ``RECAPTCHA_WIZARD_EXPIRY`` setting, for example:
+If you require a custom expiration period, (specified in seconds) add a ``RECAPTCHA_WIZARD_EXPIRY`` setting.
+For example:
 
 .. code-block:: python
 
-   RECAPTCHA_WIZARD_EXPIRY = 30
-
+   RECAPTCHA_WIZARD_EXPIRY = 1800
 
 Unit Testing
 ~~~~~~~~~~~~

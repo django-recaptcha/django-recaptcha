@@ -26,7 +26,7 @@ class ReCaptchaField(forms.CharField):
     }
 
     def __init__(self, public_key=None, private_key=None, use_ssl=None,
-                 wizard=None, attrs=None, *args, **kwargs):
+                 attrs=None, *args, **kwargs):
         """
         ReCaptchaField can accepts attributes which is a dictionary of
         attributes to be passed to the ReCaptcha widget class. The widget will
@@ -42,7 +42,7 @@ class ReCaptchaField(forms.CharField):
             settings.RECAPTCHA_PRIVATE_KEY
         self.use_ssl = use_ssl if use_ssl is not None else getattr(
             settings, 'RECAPTCHA_USE_SSL', True)
-        self.wizard = wizard
+        self.wizard = kwargs.get("wizard", None)
 
         self.widget = ReCaptcha(
             public_key=public_key, use_ssl=self.use_ssl, attrs=attrs)
@@ -85,7 +85,7 @@ class ReCaptchaField(forms.CharField):
             now = datetime.datetime.now()
 
             expires_time = now + datetime.timedelta(
-                minutes=getattr(settings, 'RECAPTCHA_WIZARD_EXPIRY', 10)
+                minutes=getattr(settings, 'RECAPTCHA_WIZARD_EXPIRY', 10) / 60
             )
 
             request.session[key] = time.mktime(expires_time.timetuple())
