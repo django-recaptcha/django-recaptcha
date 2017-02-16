@@ -43,6 +43,7 @@ class ReCaptchaField(forms.CharField):
         self.use_ssl = use_ssl if use_ssl is not None else getattr(
             settings, 'RECAPTCHA_USE_SSL', True)
         self.wizard = kwargs.get("wizard", None)
+        kwargs["wizard"] = None;
 
         self.widget = ReCaptcha(
             public_key=public_key, use_ssl=self.use_ssl, attrs=attrs)
