@@ -6,6 +6,11 @@ Pending
 
 #. New release notes go here
 
+1.3.0 (2017-02-17)
+------------------
+
+#. The ``ReCaptchaField`` can now be used within a Django Form Wizard.
+
 1.2.0 (2016-12-19)
 ------------------
 
