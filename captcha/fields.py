@@ -70,7 +70,7 @@ class ReCaptchaField(forms.CharField):
     def get_cached_result(self):
         request = self.get_request_object()
         if request:
-            key = 'rcf-{path}cached-result'.format(path=request.path_info)
+            key = 'rcf-{path}cached-result'.format(path=request.get_full_path())
 
             if key in request.session:
                 expires_time = request.session[key]
@@ -81,7 +81,7 @@ class ReCaptchaField(forms.CharField):
     def set_cached_result(self):
         request = self.get_request_object()
         if request:
-            key = 'rcf-{path}cached-result'.format(path=request.path_info)
+            key = 'rcf-{path}cached-result'.format(path=request.get_full_path())
             now = datetime.datetime.now()
 
             expires_time = now + datetime.timedelta(
