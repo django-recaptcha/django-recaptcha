@@ -6,7 +6,7 @@ Pending
 
 #. New release notes go here
 
-1.2.0 (2017-01-23)
+1.2.1 (2017-01-23)
 ------------------
 
 #. Made reCAPTCHA test keys the default keys for easy use in development. The
