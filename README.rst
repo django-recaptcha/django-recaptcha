@@ -26,7 +26,7 @@ Installation
 
 #. `Sign up for reCAPTCHA <https://www.google.com/recaptcha/intro/index.html>`_.
 
-#. Install or add ``django-recaptcha`` to your Python path.
+#. Install with ``pip install django-recaptcha``.
 
 #. Add ``'captcha'`` to your ``INSTALLED_APPS`` setting.
 
