@@ -11,7 +11,7 @@ from .client import API_SERVER, WIDGET_TEMPLATE
 
 
 class ReCaptcha(forms.widgets.Widget):
-    if getattr(settings, "NOCAPTCHA", False):
+    if getattr(settings, 'NOCAPTCHA', False):
         recaptcha_response_name = 'g-recaptcha-response'
         recaptcha_challenge_name = 'g-recaptcha-response'
     else:
@@ -49,7 +49,10 @@ class ReCaptcha(forms.widgets.Widget):
             # Get the generic language code
             lang = get_language().split('-')[0]
 
-        context = super(ReCaptcha, self).get_context(name, value, attrs)
+        try:
+            context = super(ReCaptcha, self).get_context(name, value, attrs)
+        except AttributeError:
+            context = {}
         context.update({
             'api_server': API_SERVER,
             'public_key': self.public_key,
