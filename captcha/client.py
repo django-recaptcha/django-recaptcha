@@ -1,9 +1,6 @@
 import json
 
 from django.conf import settings
-from django.template.loader import render_to_string
-from django.utils.safestring import mark_safe
-from django.utils.translation import get_language
 
 from captcha._compat import (
     build_opener, ProxyHandler, PY2, Request, urlencode, urlopen, want_bytes
@@ -39,41 +36,6 @@ class RecaptchaResponse(object):
     def __init__(self, is_valid, error_code=None):
         self.is_valid = is_valid
         self.error_code = error_code
-
-
-def displayhtml(public_key,
-                attrs,
-                use_ssl=True,
-                error=None):
-    """Gets the HTML to display for reCAPTCHA
-
-    public_key -- The public api key
-    use_ssl -- Should the request be sent over ssl? (deprecated)
-    error -- An error message to display (from RecaptchaResponse.error_code)"""
-
-    error_param = ''
-    if error:
-        error_param = '&error=%s' % error
-
-    if use_ssl:
-        server = API_SSL_SERVER
-    else:
-        server = API_SERVER
-
-    try:
-        lang = attrs['lang']
-    except KeyError:
-        lang = get_language()[:2]
-
-    return render_to_string(
-        WIDGET_TEMPLATE,
-        {'api_server': server,
-         'public_key': public_key,
-         'error_param': error_param,
-         'lang': lang,
-         'options': mark_safe(json.dumps(attrs, indent=2)),
-         'options_dict': attrs,
-         })
 
 
 def request(*args, **kwargs):

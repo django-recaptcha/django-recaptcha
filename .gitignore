@@ -10,3 +10,4 @@ dist/
 .coverage
 coverage.xml
 pep8.txt
+.tox
