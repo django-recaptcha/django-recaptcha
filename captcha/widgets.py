@@ -11,12 +11,12 @@ from .client import API_SERVER, WIDGET_TEMPLATE
 
 
 class ReCaptcha(forms.widgets.Widget):
-    if getattr(settings, "NOCAPTCHA", False):
-        recaptcha_response_name = "g-recaptcha-response"
-        recaptcha_challenge_name = "g-recaptcha-response"
+    if getattr(settings, 'NOCAPTCHA', False):
+        recaptcha_response_name = 'g-recaptcha-response'
+        recaptcha_challenge_name = 'g-recaptcha-response'
     else:
-        recaptcha_challenge_name = "recaptcha_challenge_field"
-        recaptcha_response_name = "recaptcha_response_field"
+        recaptcha_challenge_name = 'recaptcha_challenge_field'
+        recaptcha_response_name = 'recaptcha_response_field'
 
     template_name = WIDGET_TEMPLATE
 
@@ -44,19 +44,19 @@ class ReCaptcha(forms.widgets.Widget):
     def get_context(self, name, value, attrs):
 
         try:
-            lang = attrs["lang"]
+            lang = attrs['lang']
         except KeyError:
             # Get the generic language code
-            lang = get_language().split("-")[0]
+            lang = get_language().split('-')[0]
 
         try:
             context = super(ReCaptcha, self).get_context(name, value, attrs)
         except AttributeError:
             context = {}
         context.update({
-            "api_server": API_SERVER,
-            "public_key": self.public_key,
-            "lang": lang,
-            "options": mark_safe(json.dumps(self.attrs, indent=2)),
+            'api_server': API_SERVER,
+            'public_key': self.public_key,
+            'lang': lang,
+            'options': mark_safe(json.dumps(self.attrs, indent=2)),
         })
         return context
