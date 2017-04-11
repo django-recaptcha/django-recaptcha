@@ -6,6 +6,12 @@ Pending
 
 #. New release notes go here
 
+1.3.0 (2017-04-10)
+------------------
+
+#. Support Django 1.11 in addition to 1.8, 1.9, and 1.10.
+
+
 1.2.1 (2017-01-23)
 ------------------
 
