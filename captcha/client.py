@@ -1,9 +1,6 @@
 import json
 
 from django.conf import settings
-from django.template.loader import render_to_string
-from django.utils.safestring import mark_safe
-from django.utils.translation import get_language
 
 from captcha._compat import (
     build_opener, ProxyHandler, PY2, Request, urlencode, urlopen, want_bytes
@@ -39,38 +36,6 @@ class RecaptchaResponse(object):
     def __init__(self, is_valid, error_code=None):
         self.is_valid = is_valid
         self.error_code = error_code
-
-
-def displayhtml(public_key,
-                attrs,
-                use_ssl=False,
-                error=None):
-    """Gets the HTML to display for reCAPTCHA
-
-    public_key -- The public api key
-    use_ssl -- Should the request be sent over ssl?
-    error -- An error message to display (from RecaptchaResponse.error_code)"""
-
-    error_param = ''
-    if error:
-        error_param = '&error=%s' % error
-
-    if use_ssl:
-        server = API_SSL_SERVER
-    else:
-        server = API_SERVER
-
-    if 'lang' not in attrs:
-        attrs['lang'] = get_language()[:2]
-
-    return render_to_string(
-        WIDGET_TEMPLATE,
-        {'api_server': server,
-         'public_key': public_key,
-         'error_param': error_param,
-         'lang': attrs['lang'],
-         'options': mark_safe(json.dumps(attrs, indent=2))
-         })
 
 
 def request(*args, **kwargs):
@@ -115,16 +80,16 @@ def submit(recaptcha_challenge_field,
 
     if getattr(settings, "NOCAPTCHA", False):
         params = urlencode({
-            'secret': want_bytes(private_key), 
-            'response': want_bytes(recaptcha_response_field), 
+            'secret': want_bytes(private_key),
+            'response': want_bytes(recaptcha_response_field),
             'remoteip': want_bytes(remoteip),
         })
     else:
         params = urlencode({
-        'privatekey': want_bytes(private_key),
-        'remoteip':  want_bytes(remoteip),
-        'challenge':  want_bytes(recaptcha_challenge_field),
-        'response':  want_bytes(recaptcha_response_field),
+            'privatekey': want_bytes(private_key),
+            'remoteip':  want_bytes(remoteip),
+            'challenge':  want_bytes(recaptcha_challenge_field),
+            'response':  want_bytes(recaptcha_response_field),
         })
 
     if not PY2:

@@ -1,15 +1,5 @@
-<script src='https://www.google.com/recaptcha/api.js{% if lang %}?hl={{ lang }}{% endif %}'></script>
-<script type="text/javascript">
-    var DjangoRecaptchaOptions = {{options}};
-    if (typeof RecaptchaOptions !== 'object') {
-        RecaptchaOptions = DjangoRecaptchaOptions;
-    } else {
-        for (key in DjangoRecaptchaOptions) {
-            RecaptchaOptions[key] = DjangoRecaptchaOptions[key];
-        }
-    }
-</script>
-<div class="g-recaptcha" data-sitekey="{{ public_key }}"></div>
+<script src="https://www.google.com/recaptcha/api.js{% if lang %}?hl={{ lang }}{% endif %}"></script>
+<div class="g-recaptcha" data-sitekey="{{ public_key }}" {% for option,value in widget.attrs.items %}data-{{ option }}="{{ value }}" {% endfor %}></div>
 <noscript>
   <div style="width: 302px; height: 352px;">
     <div style="width: 302px; height: 352px; position: relative;">
@@ -26,7 +16,7 @@
                   style="width: 250px; height: 80px; border: 1px solid #c1c1c1;
                          margin: 0px; padding: 0px; resize: none;" value="">
         </textarea>
-        <input type='hidden' name='recaptcha_response_field' value='manual_challenge' />
+        <input type="hidden" name="recaptcha_response_field" value="manual_challenge" />
       </div>
     </div>
   </div>

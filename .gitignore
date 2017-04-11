@@ -1,10 +1,13 @@
 *.swp
 *.pyc
 *.egg-info
+.eggs/
 ve/
 build/
 dist/
 *.swo
 /docs/_build
+.coverage
 coverage.xml
 pep8.txt
+.tox

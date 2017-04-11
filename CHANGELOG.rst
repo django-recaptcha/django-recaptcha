@@ -1,6 +1,48 @@
 Changelog
 =========
 
+Pending
+-------
+
+#. New release notes go here
+
+1.3.0 (2017-04-10)
+------------------
+
+#. Support Django 1.11 in addition to 1.8, 1.9, and 1.10.
+
+
+1.2.1 (2017-01-23)
+------------------
+
+#. Made reCAPTCHA test keys the default keys for easy use in development. The
+   captcha doesn't require any interaction, has a warning label that it's for
+   testing purposes only, and always validates.
+
+1.2.0 (2016-12-19)
+------------------
+
+#. Pass options as HTML data attributes instead of the ``RecaptchaOptions``
+   JavaScript object in the default template. Custom templates using
+   ``RecaptchaOptions`` should migrate to using HTML data attributes.
+
+1.1.0 (2016-10-28)
+------------------
+
+#. Dropped support for old Django versions. Only the upstream supported
+   versions are now supported, currently 1.8, 1.9, and 1.10.
+#. Made recaptcha checking use SSL by default. This can be disabled by setting
+   ``RECAPTCHA_USE_SSL = False`` in your Django settings or passing
+   ``use_ssl=False`` to the constructor of ``ReCaptchaField``.
+#. Made ReCaptchaField respect required=False
+
+1.0.6 (2016-10-05)
+------------------
+
+#. Confirmed tests pass on Django 1.10. Older versions should still work.
+#. Fixed a bug where the widget was always rendered in the first used language
+   due to ``attrs`` being a mutable default argument.
+
 1.0.5 (2016-01-04)
 ------------------
 #. Chinese translation (kz26).
