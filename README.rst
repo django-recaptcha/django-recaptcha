@@ -41,7 +41,14 @@ Installation
    These can also be specificied per field by passing the ``public_key`` or
    ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
 
-#. If you would like to use the new No Captcha reCaptcha add the setting
+#. If you would like to use the new Invisible reCaptcha add the setting
+   ``INVISIBLE_RECAPTCHA = True``. For example:
+
+   .. code-block:: python
+
+       INVISIBLE_RECAPTCHA = True
+
+#. If you would like to use the No Captcha reCaptcha add the setting
    ``NOCAPTCHA = True``. For example:
 
    .. code-block:: python

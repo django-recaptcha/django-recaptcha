@@ -1,0 +1,45 @@
+<div id="{{ id_for_label }}" class="g-recaptcha"></div>
+{% if allow_noscript %}
+<noscript>
+    <div class="django_recaptcha_noscript">
+        <div style="width: 302px; height: 422px; position: relative;">
+          <div style="width: 302px; height: 422px; position: absolute;">
+            <iframe src="https://www.google.com/recaptcha/api/fallback?k={{ public_key }}"
+                    frameborder="0" scrolling="no"
+                    style="width: 302px; height:422px; border-style: none;">
+            </iframe>
+          </div>
+        </div>
+        <div style="width: 300px; height: 60px; border-style: none;
+                       bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                       background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+          <textarea name="g-recaptcha-response"
+                    class="g-recaptcha-response"
+                    style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                           margin: 10px 25px; padding: 0px; resize: none;" >
+          </textarea>
+        </div>
+    </div>
+</noscript>
+{% endif %}
+<script type="text/javascript">
+    var {{ callback }} = function(token) {
+        // recaptcha has been processed
+        var captcha = document.getElementById('{{ id_for_label }}'),
+            fields = captcha.getElementsByTagName('textarea');
+        if(!fields.length) return;
+        fields[0].value = token;
+    };
+    var DjangoRecaptchaOnloadCallback = function(){
+        var el = document.getElementById('{{ id_for_label }}'),
+            widget_id,
+            opts = {{ options }};
+        if(!opts.sitekey) opts['sitekey'] = '{{ public_key }}' ;
+        if(!opts.callback) opts['callback'] = '{{ callback }}' ;
+        if(!opts.size) opts['size'] = 'invisible' ;
+        if(!opts.badge) opts['badge'] = 'inline' ;
+        widget_id = grecaptcha.render(el, opts);
+        grecaptcha.execute(widget_id);
+    };
+</script>
+<script src="https://www.google.com/recaptcha/api.js?onload=DjangoRecaptchaOnloadCallback&render=explicit&hl={{ lang }}" async defer></script>

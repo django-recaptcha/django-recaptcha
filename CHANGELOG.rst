@@ -5,6 +5,7 @@ Pending
 -------
 
 #. New release notes go here
+#. Add support for Invisible Recaptcha
 
 1.3.0 (2017-04-10)
 ------------------
