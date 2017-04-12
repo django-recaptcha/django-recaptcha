@@ -176,6 +176,24 @@ settings, or by passing ``use_ssl=False`` to the constructor of
 ``ReCaptchaField``.
 
 
+About Invisible ReCAPTCHA
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Currently (207-04-12), Invisible reCAPTCHA is really invisble (no action required for the user)
+only with Google Chrome. With other web-browsers, use will have to answer a picture challenge.
+
+To avoid users having to click on an element (link, checkbox...) to execute the captcha,
+it's executed when the form is submited. If you have already registered listeners on the
+submit event, it should be okay, unless with really specific javascript: you might encounter some
+compatibility problems. If this is the case, you just have to overwrite the`widget_invisible.html`
+template and modify the javascript to be compatible with you existing code.
+
+For old browsers which don't support "addEventListener"
+(see http://caniuse.com/#search=addEventListener), captcha is executed when the form is
+displayed. If you want a better degradation, be free to overwrite the template and add some
+thirdparty dependencies to have a woking javascript for all browsers (jQuery for eg.).
+
+
 Credits
 -------
 Inspired Marco Fucci's blogpost titled `Integrating reCAPTCHA with Django

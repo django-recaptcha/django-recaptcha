@@ -58,8 +58,12 @@ class ReCaptcha(forms.widgets.Widget):
                 context['id_for_label'] = attrs.pop('id')
             else:
                 context['id_for_label'] = 'id_captcha'
+            js_id = context['id_for_label'].replace('-', '_')
             if 'callback' not in attrs:
-                context['callback'] = 'Recaptcha%s' % context['id_for_label'].replace('-', '_')
+                context['callback'] = 'Recaptcha%s' % js_id
+            if 'onload_callback' not in attrs:
+                context['onload_callback'] = 'RecaptchaOnload%s' % js_id
+                
         context.update({
             'api_server': API_SERVER,
             'public_key': self.public_key,

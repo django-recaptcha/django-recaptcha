@@ -25,21 +25,46 @@
 <script type="text/javascript">
     var {{ callback }} = function(token) {
         // recaptcha has been processed
-        var captcha = document.getElementById('{{ id_for_label }}'),
-            fields = captcha.getElementsByTagName('textarea');
-        if(!fields.length) return;
-        fields[0].value = token;
+        var captcha_field = document.getElementById('{{ id_for_label }}').getElementsByTagName('textarea')[0],
+            form = captcha_field.form ;
+        captcha_field.value = token;
+        if(form.removeEventListener && typeof {{ onload_callback }}_submit == 'function'){
+            //be sure current browser will not trigger our submit listener
+            form.removeEventListener('submit', {{ onload_callback }}_submit);
+        }
+        form.submit();
     };
-    var DjangoRecaptchaOnloadCallback = function(){
+    var {{ onload_callback }} = function(){
         var el = document.getElementById('{{ id_for_label }}'),
-            widget_id,
-            opts = {{ options }};
+            opts = {{ options }},
+            widget_id, form;
         if(!opts.sitekey) opts['sitekey'] = '{{ public_key }}' ;
         if(!opts.callback) opts['callback'] = '{{ callback }}' ;
         if(!opts.size) opts['size'] = 'invisible' ;
         if(!opts.badge) opts['badge'] = 'inline' ;
         widget_id = grecaptcha.render(el, opts);
-        grecaptcha.execute(widget_id);
+        if(el.addEventListener){
+            function {{ onload_callback }}_init(){
+                form = el.getElementsByTagName('textarea')[0].form;
+                if(form){
+                    function {{ onload_callback }}_submit(e){
+                        e.preventDefault();
+                        grecaptcha.execute(widget_id);
+                    }
+                    form.addEventListener('submit', {{ onload_callback }}_submit);
+                }else{
+                    grecaptcha.execute(widget_id);
+                }
+            }
+            if(document.readyState != 'loading'){
+                {{ onload_callback }}_init();
+            }else{
+                {% comment %}because we are not sure the form is loaded at this stage{% endcomment %}
+                document.addEventListener('DOMContentLoaded', {{ onload_callback }}_init);
+            }
+        }else{
+            grecaptcha.execute(widget_id);
+        }
     };
 </script>
-<script src="https://www.google.com/recaptcha/api.js?onload=DjangoRecaptchaOnloadCallback&render=explicit&hl={{ lang }}" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?onload={{ onload_callback }}&render=explicit&hl={{ lang }}" async defer></script>
