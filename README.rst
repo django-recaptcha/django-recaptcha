@@ -179,7 +179,7 @@ settings, or by passing ``use_ssl=False`` to the constructor of
 About Invisible ReCAPTCHA
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Currently (207-04-12), Invisible reCAPTCHA is really invisble (no action required for the user)
+Currently (2017-04-12), Invisible reCAPTCHA is really invisble (no action required for the user)
 only with Google Chrome. With other web-browsers, use will have to answer a picture challenge.
 
 To avoid users having to click on an element (link, checkbox...) to execute the captcha,
