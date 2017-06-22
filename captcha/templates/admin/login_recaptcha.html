@@ -1,0 +1,14 @@
+{% extends 'admin/login.html' %}
+{% block content %}
+    {{ block.super }}
+    <div class="form-row" id="captcha-row">
+        {{ form.captcha.errors }}
+        {{ form.captcha.label_tag }} {{ form.captcha }}
+    </div>
+    <script type="application/javascript">
+        (function() {var form = document.getElementById('login-form')
+        var submitRow = form.getElementsByClassName('submit-row')[0]
+        var captchaRow = document.getElementById('captcha-row')
+        form.insertBefore(captchaRow, submitRow)})()
+    </script>
+{% endblock %}
