@@ -58,5 +58,6 @@ class ReCaptcha(forms.widgets.Widget):
             'public_key': self.public_key,
             'lang': lang,
             'options': mark_safe(json.dumps(self.attrs, indent=2)),
+            'attrs': self.attrs,
         })
         return context

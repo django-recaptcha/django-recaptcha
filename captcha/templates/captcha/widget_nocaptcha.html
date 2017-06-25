@@ -1,5 +1,5 @@
 <script src="https://www.google.com/recaptcha/api.js{% if lang %}?hl={{ lang }}{% endif %}"></script>
-<div class="g-recaptcha" data-sitekey="{{ public_key }}" {% for option,value in widget.attrs.items %}data-{{ option }}="{{ value }}" {% endfor %}></div>
+<div class="g-recaptcha" data-sitekey="{{ public_key }}" {% for option,value in attrs.items %}data-{{ option }}="{{ value }}" {% endfor %}></div>
 <noscript>
   <div style="width: 302px; height: 352px;">
     <div style="width: 302px; height: 352px; position: relative;">
