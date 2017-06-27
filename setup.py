@@ -6,10 +6,10 @@ long_desc = open('README.rst', 'rb').read().decode('utf-8') + '\n\n' + \
             open('CHANGELOG.rst', 'rb').read().decode('utf-8')
 setup(
     name='django-recaptcha',
-    version='1.3.0',
+    version='1.3.1',
     description='Django recaptcha form field/widget app.',
     long_description=long_desc,
-    author='Praekelt Foundation',
+    author='Praekelt Consulting',
     author_email='dev@praekelt.com',
     license='BSD',
     url='http://github.com/praekelt/django-recaptcha',
