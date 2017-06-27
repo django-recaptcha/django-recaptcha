@@ -3,10 +3,10 @@ Django reCAPTCHA
 **Django reCAPTCHA form field/widget integration app.**
 
 .. image:: https://travis-ci.org/praekelt/django-recaptcha.svg?branch=develop
-    :target: https://travis-ci.org/praekelt/django-recaptcha
+:target: https://travis-ci.org/praekelt/django-recaptcha
 
 .. contents:: Contents
-    :depth: 5
+:depth: 5
 
 Django reCAPTCHA uses a modified version of the `Python reCAPTCHA client
 <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the
@@ -168,6 +168,22 @@ You can disable it by setting ``RECAPTCHA_USE_SSL = False`` in your Django
 settings, or by passing ``use_ssl=False`` to the constructor of
 ``ReCaptchaField``.
 
+
+Admin Panel
+~~~~~~~~~~~
+
+To add a reCAPTCHA field to your admin panel login, set the ``login_form`` and
+``login_template`` attributes of your ``AdminSite`` instance. If you are using
+the default Django admin site, ensure one of your ``admin.py`` files contains
+the following.
+
+   .. code-block:: python
+
+       from django.contrib import admin
+       from captcha.forms import ReCAPTCHAAdminAuthenticationForm
+
+       admin.site.login_form = ReCAPTCHAAdminAuthenticationForm
+       admin.site.login_template = 'admin/login_recaptcha.html'
 
 Credits
 -------
