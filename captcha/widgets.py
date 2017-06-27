@@ -52,7 +52,11 @@ class ReCaptcha(forms.widgets.Widget):
         try:
             context = super(ReCaptcha, self).get_context(name, value, attrs)
         except AttributeError:
-            context = {}
+            context = {
+                "widget": {
+                    "attrs": self.build_attrs(attrs)
+                }
+            }
         context.update({
             'api_server': API_SERVER,
             'public_key': self.public_key,
