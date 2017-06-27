@@ -6,6 +6,11 @@ Pending
 
 #. New release notes go here
 
+1.3.1 (2017-06-27)
+------------------
+
+#. Fixed widget attributes regression for Django < 1.10.
+
 1.3.0 (2017-04-10)
 ------------------
 
