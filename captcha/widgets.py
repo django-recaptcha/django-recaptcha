@@ -31,6 +31,8 @@ class ReCaptcha(forms.widgets.Widget):
         ]
 
     def render(self, name, value, attrs=None, renderer=None):
+        if attrs is None:
+            attrs = self.attrs
         if django.VERSION < (1, 11):
             return mark_safe(render_to_string(
                 self.template_name,
