@@ -3,6 +3,10 @@ Changelog
 
 Pending
 -------
+#. New release notes go here.
+
+1.4.0 (2018-02-08)
+------------------
 
 #. Dropped support for Django < 1.11.
 #. Added testing for Django 2.0 (no code changes needed).
