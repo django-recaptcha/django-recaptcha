@@ -6,7 +6,7 @@ long_desc = open('README.rst', 'rb').read().decode('utf-8') + '\n\n' + \
             open('CHANGELOG.rst', 'rb').read().decode('utf-8')
 setup(
     name='django-recaptcha',
-    version='1.3.1',
+    version='1.4.0',
     description='Django recaptcha form field/widget app.',
     long_description=long_desc,
     author='Praekelt Consulting',
@@ -24,10 +24,8 @@ setup(
     include_package_data=True,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
+        'Framework :: Django :: 2.0',
         'Framework :: Django :: 1.11',
-        'Framework :: Django :: 1.10',
-        'Framework :: Django :: 1.8',
-        'Framework :: Django :: 1.9',
         'Framework :: Django',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
