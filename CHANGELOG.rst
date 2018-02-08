@@ -4,7 +4,7 @@ Changelog
 Pending
 -------
 
-#. New release notes go here
+#. Dropped support for Django < 1.11.
 
 1.3.1 (2017-06-27)
 ------------------
