@@ -24,6 +24,7 @@ setup(
     include_package_data=True,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
+        'Framework :: Django :: 2.0',
         'Framework :: Django :: 1.11',
         'Framework :: Django',
         'Intended Audience :: Developers',
