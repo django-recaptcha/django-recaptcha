@@ -18,9 +18,9 @@ class ReCaptcha(forms.widgets.Widget):
 
     template_name = WIDGET_TEMPLATE
 
-    def __init__(self, public_key, *args, **kwargs):
+    def __init__(self, public_key=None, *args, **kwargs):
         super(ReCaptcha, self).__init__(*args, **kwargs)
-        self.public_key = public_key
+        self.public_key = public_key or getattr(settings, 'RECAPTCHA_PUBLIC_KEY', TEST_PUBLIC_KEY)
 
     def value_from_datadict(self, data, files, name):
         return [
