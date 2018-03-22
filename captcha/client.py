@@ -1,18 +1,25 @@
 import json
-
+import datetime
 from django.conf import settings
 
 from captcha._compat import (
     build_opener, ProxyHandler, PY2, Request, urlencode, urlopen, want_bytes
 )
-
 DEFAULT_API_SSL_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
 DEFAULT_API_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
 DEFAULT_VERIFY_SERVER = "www.google.com"
-if getattr(settings, "NOCAPTCHA", False):
-    DEFAULT_WIDGET_TEMPLATE = 'captcha/widget_nocaptcha.html'
+
+if datetime.datetime.now() > datetime.datetime(2018, 3, 31, 0,0,0):
+    if getattr(settings, "NOCAPTCHA", True):
+        DEFAULT_WIDGET_TEMPLATE = 'captcha/widget.html'
+    else:
+        DEFAULT_WIDGET_TEMPLATE = 'captcha/widget_nocaptcha.html'
 else:
-    DEFAULT_WIDGET_TEMPLATE = 'captcha/widget.html'
+    if getattr(settings, "NOCAPTCHA", False):
+        DEFAULT_WIDGET_TEMPLATE = 'captcha/widget_nocaptcha.html'
+    else:
+        DEFAULT_WIDGET_TEMPLATE = 'captcha/widget.html'
+
 DEFAULT_WIDGET_TEMPLATE_AJAX = 'captcha/widget_ajax.html'
 
 API_SSL_SERVER = getattr(settings, "CAPTCHA_API_SSL_SERVER",

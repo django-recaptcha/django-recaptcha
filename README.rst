@@ -41,12 +41,19 @@ Installation
    These can also be specificied per field by passing the ``public_key`` or
    ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
 
-#. If you would like to use the new No Captcha reCaptcha add the setting
+#. If you would like to use the new No Captcha reCaptcha also known as reCaptcha v2 add the setting
    ``NOCAPTCHA = True``. For example:
 
    .. code-block:: python
 
        NOCAPTCHA = True
+
+   Note that Google will disable/disabled reCaptcha v1 on 2018-03-31. So after that date NOCAPTCHA will be default option.
+   To use older **not supported** version you have to explicity define:
+
+   .. code-block:: python
+
+       NOCAPTCHA = False
 
 #. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting, for example:
 
