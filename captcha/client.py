@@ -6,10 +6,11 @@ from captcha._compat import (
     build_opener, ProxyHandler, PY2, Request, urlencode, urlopen, want_bytes
 )
 
+IS_NOCAPTCHA = getattr(settings, "NOCAPTCHA", False)
 DEFAULT_API_SSL_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
 DEFAULT_API_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
 DEFAULT_VERIFY_SERVER = "www.google.com"
-if getattr(settings, "NOCAPTCHA", False):
+if IS_NOCAPTCHA:
     DEFAULT_WIDGET_TEMPLATE = 'captcha/widget_nocaptcha.html'
 else:
     DEFAULT_WIDGET_TEMPLATE = 'captcha/widget.html'
@@ -27,7 +28,6 @@ if getattr(settings, "CAPTCHA_AJAX", False):
 else:
     WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE",
                               DEFAULT_WIDGET_TEMPLATE)
-
 
 RECAPTCHA_SUPPORTED_LANUAGES = ('en', 'nl', 'fr', 'de', 'pt', 'ru', 'es', 'tr')
 
@@ -71,14 +71,14 @@ def submit(recaptcha_challenge_field,
     remoteip -- the user's ip address
     """
 
-    if not (recaptcha_response_field and recaptcha_challenge_field and
-            len(recaptcha_response_field) and len(recaptcha_challenge_field)):
+    if not (recaptcha_response_field and (IS_NOCAPTCHA or recaptcha_challenge_field) and
+            len(recaptcha_response_field) and (IS_NOCAPTCHA or len(recaptcha_challenge_field))):
         return RecaptchaResponse(
             is_valid=False,
             error_code='incorrect-captcha-sol'
         )
 
-    if getattr(settings, "NOCAPTCHA", False):
+    if IS_NOCAPTCHA:
         params = urlencode({
             'secret': want_bytes(private_key),
             'response': want_bytes(recaptcha_response_field),
@@ -87,9 +87,9 @@ def submit(recaptcha_challenge_field,
     else:
         params = urlencode({
             'privatekey': want_bytes(private_key),
-            'remoteip':  want_bytes(remoteip),
-            'challenge':  want_bytes(recaptcha_challenge_field),
-            'response':  want_bytes(recaptcha_response_field),
+            'remoteip': want_bytes(remoteip),
+            'challenge': want_bytes(recaptcha_challenge_field),
+            'response': want_bytes(recaptcha_response_field),
         })
 
     if not PY2:
@@ -100,7 +100,7 @@ def submit(recaptcha_challenge_field,
     else:
         verify_url = 'http://%s/recaptcha/api/verify' % VERIFY_SERVER
 
-    if getattr(settings, "NOCAPTCHA", False):
+    if IS_NOCAPTCHA:
         verify_url = 'https://%s/recaptcha/api/siteverify' % VERIFY_SERVER
 
     req = Request(
@@ -113,7 +113,7 @@ def submit(recaptcha_challenge_field,
     )
 
     httpresp = request(req)
-    if getattr(settings, "NOCAPTCHA", False):
+    if IS_NOCAPTCHA:
         data = json.loads(httpresp.read().decode('utf-8'))
         return_code = data['success']
         return_values = [return_code, None]
