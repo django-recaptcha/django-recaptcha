@@ -8,7 +8,7 @@
         }
     }
 </script>
-<script type="text/javascript" src="{{api_server}}/challenge?k={{ public_key }}&hl={{ lang }}"></script>
+<script type="text/javascript" src="{{api_server}}/challenge?k={{ public_key }}&hl={{ lang }}"{% if async %} async{%endif %}{% if defer %} defer{% endif %}></script>
 <noscript>
   <iframe src="{{ api_server }}/noscript?k={{ public_key }}&hl={{ lang }}" height="300" width="500" frameborder="0"></iframe><br />
   <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>

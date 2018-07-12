@@ -21,6 +21,10 @@ API_SERVER = getattr(settings, "CAPTCHA_API_SERVER", DEFAULT_API_SERVER)
 VERIFY_SERVER = getattr(settings, "CAPTCHA_VERIFY_SERVER",
                         DEFAULT_VERIFY_SERVER)
 
+ASYNC = getattr(settings, "CAPTCHA_ASYNC", False)
+DEFER = getattr(settings, "CAPTCHA_DEFER", False)
+
+
 if getattr(settings, "CAPTCHA_AJAX", False):
     WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE",
                               DEFAULT_WIDGET_TEMPLATE_AJAX)

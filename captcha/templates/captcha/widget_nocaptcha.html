@@ -1,4 +1,4 @@
-<script src="{{api_server}}.js{% if lang %}?hl={{ lang }}{% endif %}"></script>
+<script src="{{api_server}}.js{% if lang %}?hl={{ lang }}{% endif %}"{% if async %} async{%endif %}{% if defer %} defer{% endif %}></script>
 <div class="g-recaptcha" data-sitekey="{{ public_key }}" {% for option,value in widget.attrs.items %}data-{{ option }}="{{ value }}" {% endfor %}></div>
 <noscript>
   <div style="width: 302px; height: 352px;">

@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
 
-from .client import API_SERVER, WIDGET_TEMPLATE
+from .client import API_SERVER, ASYNC, DEFER, WIDGET_TEMPLATE
 
 
 class ReCaptcha(forms.widgets.Widget):
@@ -45,6 +45,8 @@ class ReCaptcha(forms.widgets.Widget):
                 }
             }
         context.update({
+            'async': ASYNC,
+            'defer': DEFER,
             'api_server': API_SERVER,
             'public_key': self.public_key,
             'lang': lang,
