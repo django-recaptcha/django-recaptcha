@@ -26,7 +26,7 @@ class ReCaptchaField(forms.CharField):
         attributes to be passed to the ReCaptcha widget class. The widget will
         loop over any options added and create the RecaptchaOptions
         JavaScript variables as specified in
-        https://code.google.com/apis/recaptcha/docs/customization.html
+        https://developers.google.com/recaptcha/docs/display#render_param
         """
         if attrs is None:
             attrs = {}
