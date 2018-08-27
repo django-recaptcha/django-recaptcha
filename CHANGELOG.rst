@@ -3,7 +3,8 @@ Changelog
 
 Pending
 -------
-#. New release notes go here.
+
+#. Added testing for Django 2.1 (no code changes needed).
 
 1.4.0 (2018-02-08)
 ------------------
