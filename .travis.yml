@@ -26,5 +26,7 @@ matrix:
 cache: pip
 install:
   - pip install tox
+  - pip install coveralls
 script:
   - tox
+  - coveralls

@@ -4,6 +4,10 @@ Django reCAPTCHA
 
 .. image:: https://travis-ci.org/praekelt/django-recaptcha.svg?branch=develop
     :target: https://travis-ci.org/praekelt/django-recaptcha
+.. image:: https://coveralls.io/repos/github/praekelt/django-recaptcha/badge.svg?branch=develop
+    :target: https://coveralls.io/github/praekelt/django-recaptcha?branch=develop
+.. image:: https://badge.fury.io/py/django-recaptcha.svg
+    :target: https://badge.fury.io/py/django-recaptcha
 
 .. contents:: Contents
     :depth: 5
@@ -18,7 +22,7 @@ Requirements
 
 Tested with:
 
-* Python: 2.7, 3.5
+* Python: 2.7, 3.5, 3.6, 3.7
 * Django: 1.11, 2.0, 2.1
 
 Installation
