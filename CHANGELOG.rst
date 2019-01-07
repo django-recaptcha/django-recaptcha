@@ -5,6 +5,8 @@ Pending
 -------
 
 #. Added testing for Django 2.1 (no code changes needed).
+#. Update tests to no longer test reCAPTCHA v1.
+#. Added deprecation warnings for reCAPTCHA v1 support.
 
 1.4.0 (2018-02-08)
 ------------------
