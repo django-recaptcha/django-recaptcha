@@ -71,6 +71,7 @@ class ReCaptchaField(forms.CharField):
                 recaptcha_response_value, private_key=self.private_key,
                 remoteip=self.get_remote_ip(), use_ssl=self.use_ssl)
 
+        # TODO: Does not catch urllib2.HTTPError correctly
         except socket.error:  # Catch timeouts, etc
             raise ValidationError(
                 self.error_messages['captcha_error']
