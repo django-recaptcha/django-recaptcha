@@ -1,0 +1,7 @@
+[run]
+branch = True
+source =
+    captcha
+
+[report]
+show_missing = True
