@@ -1,11 +1,25 @@
-sudo: false
-
 language: python
-python: '3.6'
+matrix:
+  include:
+    - python: "2.7"
+      env:
+        - TOXENV=django111-py27
+        - TOXENV=django2-py27
+        - TOXENV=django21-py27
+    - python: "3.6"
+      env:
+       - TOXENV=django111-py36
+       - TOXENV=django2-py36
+       - TOXENV=django21-py36
+    - python: "3.7"
+      sudo: required
+      dist: xenial
+      env:
+       - TOXENV=django111-py37
+       - TOXENV=django2-py37
+       - TOXENV=django21-py37
 cache: pip
-
 install:
   - pip install tox
-
 script:
   - tox
