@@ -43,9 +43,9 @@ class TestCase(TestCase):
 
             # Trigger warning on client.submit
             form.is_valid()
-            assert len(w) == 1 
+            assert len(w) == 1
             assert issubclass(w[-1].category, DeprecationWarning)
-            assert "reCAPTCHA v1 will no longer be supported" in str(w[-1].message)
+            assert "reCAPTCHA v1 will no longer be" in str(w[-1].message)
 
     def tearDown(self):
         del os.environ['RECAPTCHA_TESTING']
