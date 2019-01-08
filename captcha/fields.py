@@ -58,10 +58,6 @@ class ReCaptchaField(forms.CharField):
         recaptcha_challenge_value = force_text(values[0])
         recaptcha_response_value = force_text(values[1])
 
-        if os.environ.get('RECAPTCHA_TESTING', None) == 'True' and \
-                recaptcha_response_value == 'PASSED':
-            return values[0]
-
         if not self.required:
             return
 
