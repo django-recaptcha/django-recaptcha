@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from . import client
 from .constants import TEST_PUBLIC_KEY, TEST_PRIVATE_KEY
-from .widgets import ReCaptcha
+from .widgets import ReCaptcha, ReCaptchaV2Invisible
 
 
 class ReCaptchaField(forms.CharField):
@@ -37,7 +37,11 @@ class ReCaptchaField(forms.CharField):
         self.use_ssl = use_ssl if use_ssl is not None else getattr(
             settings, 'RECAPTCHA_USE_SSL', True)
 
-        self.widget = ReCaptcha(public_key=public_key, attrs=attrs)
+        # TODO: Widget selection to be cleaned up along with v1 removal.
+        if getattr(settings, 'RECAPTCHA_V2_INVISIBLE', False):
+            self.widget = ReCaptchaV2Invisible(public_key=public_key, attrs=attrs)
+        else:
+            self.widget = ReCaptcha(public_key=public_key, attrs=attrs)
         self.required = True
         super(ReCaptchaField, self).__init__(*args, **kwargs)
 

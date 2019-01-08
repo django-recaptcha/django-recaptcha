@@ -57,3 +57,42 @@ class ReCaptcha(forms.widgets.Widget):
             'options': mark_safe(json.dumps(self.attrs, indent=2)),
         })
         return context
+
+
+# TODO: Temporary low impact implementation, clean up when v1 is removed.
+class ReCaptchaV2Invisible(forms.widgets.Widget):
+    recaptcha_response_name = 'g-recaptcha-response'
+    template_name = 'captcha/widget_v2_invisible.html'
+
+    def __init__(self, public_key, *args, **kwargs):
+        super(ReCaptchaV2Invisible, self).__init__(*args, **kwargs)
+        self.public_key = public_key
+
+    def value_from_datadict(self, data, files, name):
+        return [
+            data.get(self.recaptcha_response_name, None),
+            data.get(self.recaptcha_response_name, None)
+        ]
+
+    def get_context(self, name, value, attrs):
+        try:
+            lang = attrs['lang']
+        except KeyError:
+            # Get the generic language code
+            lang = get_language().split('-')[0]
+
+        try:
+            context = super(ReCaptchaV2Invisible, self).get_context(name, value, attrs)
+        except AttributeError:
+            context = {
+                "widget": {
+                    "attrs": self.build_attrs(attrs)
+                }
+            }
+        context.update({
+            'api_server': API_SERVER,
+            'public_key': self.public_key,
+            'lang': lang,
+            'options': mark_safe(json.dumps(self.attrs, indent=2)),
+        })
+        return context
