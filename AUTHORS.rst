@@ -6,6 +6,8 @@ Praekelt Consulting
 * Shaun Sephton
 * Peter Pistorius
 * Hedley Roos
+* Altus Barry
+* Cilliers Blignaut
 
 bTaylor Design
 --------------
