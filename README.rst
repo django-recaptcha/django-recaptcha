@@ -21,7 +21,7 @@ NOTE:
 
 As of March 2018 the reCAPTCHA v1 Google endpoints no longer exist.
 Currently django-recaptcha still makes use of those endpoints when either
-CAPTCHA_AJAX or NOCAPTCHA = False. To make use of the default reCAPTCHA v2
+``CAPTCHA_AJAX = True`` or ``NOCAPTCHA = False``. To make use of the default reCAPTCHA v2
 checkbox, please ensure ``NOCAPTCHA = True`` and ``CAPTCHA_AJAX`` is not present in
 your project settings.
 Moving forward, this project will be removing the lingering reCAPTCHA v1 and
