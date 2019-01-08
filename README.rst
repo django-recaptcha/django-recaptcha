@@ -111,39 +111,6 @@ Local Development and Functional Testing
 Google provides test keys which are set as the default for ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA.
 
 
-Unit Testing
-~~~~~~~~~~~~
-
-Django reCAPTCHA introduces an environment variable ``RECAPTCHA_TESTING`` which
-helps facilitate tests. The environment variable should be set to ``"True"``,
-and cleared, using the ``setUp()`` and ``tearDown()`` methods in your test
-classes.
-
-Setting ``RECAPTCHA_TESTING`` to ``True`` causes Django reCAPTCHA to accept
-``"PASSED"`` as the ``recaptcha_response_field`` value. Note that if you are
-using the new No Captcha reCaptcha (ie. with ``NOCAPTCHA = True`` in your
-settings) the response field is called ``g-recaptcha-response``.
-
-Example:
-
-.. code-block:: python
-
-    import os
-    os.environ['RECAPTCHA_TESTING'] = 'True'
-
-    form_params = {'recaptcha_response_field': 'PASSED'} # use 'g-recaptcha-response' param name if using NOCAPTCHA
-    form = RegistrationForm(form_params) # assuming only one ReCaptchaField
-    form.is_valid() # True
-
-    os.environ['RECAPTCHA_TESTING'] = 'False'
-    form.is_valid() # False
-
-Passing any other values will cause Django reCAPTCHA to continue normal
-processing and return a form error.
-
-Check ``tests.py`` for a full example.
-
-
 AJAX
 ~~~~~
 
