@@ -7,7 +7,7 @@ Pending
 #. Added testing for Django 2.1 (no code changes needed).
 #. Update unit tests to no longer make use of reCAPTCHA v1.
 #. Added deprecation warnings for reCAPTCHA v1 support.
-#. Remove need for RECAPTCHA_TESTING environment variable during unit testing.
+#. Remove the need for RECAPTCHA_TESTING environment variable during unit testing.
 
 1.4.0 (2018-02-08)
 ------------------
