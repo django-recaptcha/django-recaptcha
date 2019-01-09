@@ -32,7 +32,7 @@ class TestCase(TestCase):
         form = TestForm(form_params)
         self.assertFalse(form.is_valid())
 
-    def test_deprecation_warning(self):
+    def test_client_integration(self):
        form_params = {'g-recaptcha-response': 'PASSED'}
        form = TestForm(form_params)
 
