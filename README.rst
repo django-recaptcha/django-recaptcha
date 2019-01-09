@@ -16,6 +16,16 @@ Django reCAPTCHA uses a modified version of the `Python reCAPTCHA client
 <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the
 package as ``client.py``.
 
+NOTE:
+-----
+
+As of March 2018 the reCAPTCHA v1 Google endpoints no longer exist.
+Currently django-recaptcha still makes use of those endpoints when either
+``CAPTCHA_AJAX = True`` or ``NOCAPTCHA = False``. To make use of the default reCAPTCHA v2
+checkbox, please ensure ``NOCAPTCHA = True`` and ``CAPTCHA_AJAX`` is not present in
+your project settings.
+Moving forward, this project will be removing the lingering reCAPTCHA v1 and
+the need to add ``NOCAPTCHA = True`` for reCAPTCHA v2 support.
 
 Requirements
 ------------
@@ -45,12 +55,20 @@ Installation
    These can also be specificied per field by passing the ``public_key`` or
    ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
 
-#. If you would like to use the new No Captcha reCaptcha add the setting
-   ``NOCAPTCHA = True``. For example:
+#. To ensure the reCAPTCHA V2 endpoints are used add the setting:
 
    .. code-block:: python
 
-       NOCAPTCHA = True
+       NOCAPTCHA = True # Marked for deprecation
+
+#. To make use of the invisible reCAPTCHA V2, ensure ``NOCAPTCHA = True`` is present in your settings and then also dd:
+
+   .. code-block:: python
+
+       RECAPTCHA_V2_INVISIBLE = True # Marked for deprecation
+
+Out of the box the invisible implementation only supports one form with the reCAPTCHA widget on a page. This widget must be wrapped in a form element.
+To alter the JavaScript behaviour to suit your project needs, override ``captcha/includes/js_v2_invisible.html`` in your local project template directory.
 
 #. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting, for example:
 
@@ -111,7 +129,7 @@ Local Development and Functional Testing
 Google provides test keys which are set as the default for ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA.
 
 
-AJAX
+AJAX(Marked for deprecation)
 ~~~~~
 
 To make reCAPTCHA work in ajax-loaded forms:
