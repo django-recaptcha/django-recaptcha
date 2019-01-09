@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Pending
--------
+1.5.0 (2019-01-09)
+------------------
 
 #. Added testing for Django 2.1 (no code changes needed).
 #. Update the unit tests to no longer make use of reCAPTCHA v1.
