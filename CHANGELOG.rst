@@ -8,6 +8,7 @@ Pending
 #. Update the unit tests to no longer make use of reCAPTCHA v1.
 #. Added deprecation warnings for reCAPTCHA v1 support.
 #. Remove the need for RECAPTCHA_TESTING environment variable during unit testing.
+#. Added Invisible reCAPTCHA V2 support.
 
 1.4.0 (2018-02-08)
 ------------------
