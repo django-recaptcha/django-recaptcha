@@ -65,7 +65,7 @@ Installation
 
    .. code-block:: python
 
-       RECAPTCHA_V2_INVISIBLE = True
+       RECAPTCHA_V2_INVISIBLE = True # Marked for deprecation
 
 Out of the box the invisible implementation only supports one form with the reCAPTCHA widget on a page. This widget must be wrapped in a form element.
 To alter the JavaScript behaviour to suit your project needs, override ``captcha/includes/js_v2_invisible.html`` in your local project template directory.
