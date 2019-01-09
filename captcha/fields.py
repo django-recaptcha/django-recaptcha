@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from . import client
 from .constants import TEST_PUBLIC_KEY, TEST_PRIVATE_KEY
-from .widgets import ReCaptcha
+from .widgets import ReCaptcha, ReCaptchaV2Invisible
 
 
 class ReCaptchaField(forms.CharField):
@@ -26,7 +26,7 @@ class ReCaptchaField(forms.CharField):
         attributes to be passed to the ReCaptcha widget class. The widget will
         loop over any options added and create the RecaptchaOptions
         JavaScript variables as specified in
-        https://code.google.com/apis/recaptcha/docs/customization.html
+        https://developers.google.com/recaptcha/docs/display#render_param
         """
         if attrs is None:
             attrs = {}
@@ -37,7 +37,11 @@ class ReCaptchaField(forms.CharField):
         self.use_ssl = use_ssl if use_ssl is not None else getattr(
             settings, 'RECAPTCHA_USE_SSL', True)
 
-        self.widget = ReCaptcha(public_key=public_key, attrs=attrs)
+        # TODO: Widget selection to be cleaned up along with v1 removal.
+        if getattr(settings, 'RECAPTCHA_V2_INVISIBLE', False):
+            self.widget = ReCaptchaV2Invisible(public_key=public_key, attrs=attrs)
+        else:
+            self.widget = ReCaptcha(public_key=public_key, attrs=attrs)
         self.required = True
         super(ReCaptchaField, self).__init__(*args, **kwargs)
 
@@ -58,10 +62,6 @@ class ReCaptchaField(forms.CharField):
         recaptcha_challenge_value = force_text(values[0])
         recaptcha_response_value = force_text(values[1])
 
-        if os.environ.get('RECAPTCHA_TESTING', None) == 'True' and \
-                recaptcha_response_value == 'PASSED':
-            return values[0]
-
         if not self.required:
             return
 
@@ -71,6 +71,7 @@ class ReCaptchaField(forms.CharField):
                 recaptcha_response_value, private_key=self.private_key,
                 remoteip=self.get_remote_ip(), use_ssl=self.use_ssl)
 
+        # TODO: Does not catch urllib2.HTTPError correctly
         except socket.error:  # Catch timeouts, etc
             raise ValidationError(
                 self.error_messages['captcha_error']

@@ -5,6 +5,7 @@ from django.conf import settings
 from captcha._compat import (
     build_opener, ProxyHandler, PY2, Request, urlencode, urlopen, want_bytes
 )
+from captcha.decorators import generic_deprecation
 
 DEFAULT_API_SSL_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
 DEFAULT_API_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
@@ -54,6 +55,10 @@ def request(*args, **kwargs):
         return urlopen(*args, **kwargs)
 
 
+@generic_deprecation(
+    "reCAPTCHA v1 will no longer be supported."
+    " See NOCAPTCHA settings documentation and ensure the value is set to True."
+)
 def submit(recaptcha_challenge_field,
            recaptcha_response_field,
            private_key,
