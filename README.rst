@@ -19,7 +19,7 @@ package as ``client.py``.
 NOTE:
 -----
 
-As of March 2018 the reCAPTCHA v1 was shutdown by Google (<https://developers.google.com/recaptcha/docs/versions>).
+As of March 2018 the reCAPTCHA v1 was shutdown by Google (<https://developers.google.com/recaptcha/docs/versions>`_).
 Currently django-recaptcha still makes use of the reCAPTCHA v1 endpoints when using either
 ``CAPTCHA_AJAX = True`` or ``NOCAPTCHA = False`` settings. 
 
