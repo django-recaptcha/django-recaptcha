@@ -59,13 +59,13 @@ Installation
 
    .. code-block:: python
 
-       NOCAPTCHA = True # Marked for deprecation
+       NOCAPTCHA = True # Marked for deprecation in version 2.0
 
 #. To make use of the invisible reCAPTCHA V2, ensure ``NOCAPTCHA = True`` is present in your settings and then also dd:
 
    .. code-block:: python
 
-       RECAPTCHA_V2_INVISIBLE = True # Marked for deprecation
+       RECAPTCHA_V2_INVISIBLE = True # Marked for deprecation in version 2.0
 
 Out of the box the invisible implementation only supports one form with the reCAPTCHA widget on a page. This widget must be wrapped in a form element.
 To alter the JavaScript behaviour to suit your project needs, override ``captcha/includes/js_v2_invisible.html`` in your local project template directory.
@@ -129,8 +129,8 @@ Local Development and Functional Testing
 Google provides test keys which are set as the default for ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA.
 
 
-AJAX(Marked for deprecation)
-~~~~~
+AJAX(Marked for deprecation in version 2.0)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To make reCAPTCHA work in ajax-loaded forms:
 
