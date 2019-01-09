@@ -19,13 +19,13 @@ package as ``client.py``.
 NOTE:
 -----
 
-As of March 2018 the reCAPTCHA v1 Google endpoints no longer exist.
-Currently django-recaptcha still makes use of those endpoints when either
-``CAPTCHA_AJAX = True`` or ``NOCAPTCHA = False``. To make use of the default reCAPTCHA v2
-checkbox, please ensure ``NOCAPTCHA = True`` and ``CAPTCHA_AJAX`` is not present in
-your project settings.
-Moving forward, this project will be removing the lingering reCAPTCHA v1 and
-the need to add ``NOCAPTCHA = True`` for reCAPTCHA v2 support.
+As of March 2018 the reCAPTCHA v1 was shutdown by Google (<https://developers.google.com/recaptcha/docs/versions>).
+Currently django-recaptcha still makes use of the reCAPTCHA v1 endpoints when using either
+``CAPTCHA_AJAX = True`` or ``NOCAPTCHA = False`` settings. 
+
+To make use of the default reCAPTCHA v2 - Checkbox, please ensure the ``NOCAPTCHA = True`` option was added and ``CAPTCHA_AJAX`` option is not present in your project settings.
+
+Moving forward, this project will remove reCAPTCHA v1 support and the need to add ``NOCAPTCHA = True``, reCAPTCHA v2 - Checkbox will become the default.
 
 Requirements
 ------------
@@ -59,13 +59,13 @@ Installation
 
    .. code-block:: python
 
-       NOCAPTCHA = True # Marked for deprecation in version 2.0
+       NOCAPTCHA = True # Marked for deprecation in version 2.0. reCAPTCHA v2 - Checkbox (NOCAPTCHA) will be changed to the default.
 
-#. To make use of the invisible reCAPTCHA V2, ensure ``NOCAPTCHA = True`` is present in your settings and then also dd:
+#. To make use of the invisible reCAPTCHA V2, ensure ``NOCAPTCHA = True`` is present in your settings and then also add:
 
    .. code-block:: python
 
-       RECAPTCHA_V2_INVISIBLE = True # Marked for deprecation in version 2.0
+       RECAPTCHA_V2_INVISIBLE = True # Marked for deprecation in version 2.0.
 
 Out of the box the invisible implementation only supports one form with the reCAPTCHA widget on a page. This widget must be wrapped in a form element.
 To alter the JavaScript behaviour to suit your project needs, override ``captcha/includes/js_v2_invisible.html`` in your local project template directory.
