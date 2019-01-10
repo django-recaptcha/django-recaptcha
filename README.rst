@@ -20,12 +20,7 @@ NOTE:
 -----
 
 As of March 2018 the reCAPTCHA v1 was shutdown by `Google <https://developers.google.com/recaptcha/docs/versions>`_.
-Currently django-recaptcha still makes use of the reCAPTCHA v1 endpoints when using either
-``CAPTCHA_AJAX = True`` or ``NOCAPTCHA = False`` settings. 
-
-To make use of the default reCAPTCHA v2 - Checkbox, please ensure the ``NOCAPTCHA = True`` option was added and ``CAPTCHA_AJAX`` option is not present in your project settings.
-
-Moving forward, this project will remove reCAPTCHA v1 support and the need to add ``NOCAPTCHA = True``, reCAPTCHA v2 - Checkbox will become the default.
+Support for reCAPTCHA v1 was removed, reCAPTCHA v2 - Checkbox is the default. To use reCAPTCHA v2 - Invisible add the ``RECAPTCHA_V2_INVISIBLE = True`` option to your project settings.
 
 Requirements
 ------------
@@ -55,13 +50,7 @@ Installation
    These can also be specificied per field by passing the ``public_key`` or
    ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
 
-#. To ensure the reCAPTCHA V2 endpoints are used add the setting:
-
-   .. code-block:: python
-
-       NOCAPTCHA = True # Marked for deprecation in version 2.0. reCAPTCHA v2 - Checkbox (NOCAPTCHA) will be changed to the default.
-
-#. To make use of the invisible reCAPTCHA V2, ensure ``NOCAPTCHA = True`` is present in your settings and then also add:
+#. By default the reCAPTCHA V2 -Checkbox widget will be used, to make use of the reCAPTCHA V2 - Invisible widget add the following setting:
 
    .. code-block:: python
 
@@ -127,24 +116,6 @@ Local Development and Functional Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Google provides test keys which are set as the default for ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA.
-
-
-AJAX(Marked for deprecation in version 2.0)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To make reCAPTCHA work in ajax-loaded forms:
-
-#. Import ``recaptcha_ajax.js`` on your page (not in the loaded template):
-
-   .. code-block:: html
-
-       <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
-
-#. Add to your Django settings:
-
-   .. code-block:: python
-
-       CAPTCHA_AJAX = True
 
 
 Disabling SSL

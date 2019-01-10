@@ -10,18 +10,8 @@ from .decorators import generic_deprecation
 
 
 class ReCaptcha(forms.widgets.Widget):
-    if getattr(settings, 'NOCAPTCHA', False):
-        recaptcha_response_name = 'g-recaptcha-response'
-        recaptcha_challenge_name = 'g-recaptcha-response'
-    else:
-        generic_deprecation(
-            "reCAPTCHA v1 will no longer be supported. See"
-            " See NOCAPTCHA settings documentation"
-            " and ensure the value is set to True."
-        )
-        recaptcha_challenge_name = 'recaptcha_challenge_field'
-        recaptcha_response_name = 'recaptcha_response_field'
-
+    recaptcha_response_name = 'g-recaptcha-response'
+    recaptcha_challenge_name = 'g-recaptcha-response'
     template_name = WIDGET_TEMPLATE
 
     def __init__(self, public_key, *args, **kwargs):

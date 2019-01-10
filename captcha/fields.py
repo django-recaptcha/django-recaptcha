@@ -61,7 +61,6 @@ class ReCaptchaField(forms.CharField):
         super(ReCaptchaField, self).clean(values[1])
         recaptcha_challenge_value = force_text(values[0])
         recaptcha_response_value = force_text(values[1])
-
         if not self.required:
             return
 
