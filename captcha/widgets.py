@@ -15,7 +15,10 @@ class ReCaptchaBase(widgets.Widget):
         project wide Google Site Key.
     """
     recaptcha_response_name = "g-recaptcha-response"
-    uuid = uuid.uuid4().hex
+
+    def __init__(self, *args, **kwargs):
+        super(ReCaptchaBase, self).__init__(*args, **kwargs)
+        self.uuid = uuid.uuid4().hex
 
     def value_from_datadict(self, data, files, name):
         return data.get(self.recaptcha_response_name, None)
