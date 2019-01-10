@@ -16,11 +16,6 @@ Django reCAPTCHA uses a modified version of the `Python reCAPTCHA client
 <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the
 package as ``client.py``.
 
-NOTE:
------
-
-As of March 2018 the reCAPTCHA v1 was shutdown by `Google <https://developers.google.com/recaptcha/docs/versions>`_.
-Support for reCAPTCHA v1 was removed, reCAPTCHA v2 - Checkbox is the default. To use reCAPTCHA v2 - Invisible add the ``RECAPTCHA_V2_INVISIBLE = True`` option to your project settings.
 
 Requirements
 ------------
@@ -39,40 +34,39 @@ Installation
 
 #. Add ``'captcha'`` to your ``INSTALLED_APPS`` setting.
 
+    .. code-block:: python
+
+        INSTALLED_APPS = [
+            ...,
+            'captcha',
+            ...
+        ]
+
 #. Add the keys reCAPTCHA have given you to your Django production settings (leave development settings blank to use the default test keys) as
-   ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. For example:
+    ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. For example:
 
-   .. code-block:: python
+    .. code-block:: python
 
-       RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
-       RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'
+        RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
+        RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'
 
-   These can also be specificied per field by passing the ``public_key`` or
-   ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
-
-#. By default the reCAPTCHA V2 -Checkbox widget will be used, to make use of the reCAPTCHA V2 - Invisible widget add the following setting:
-
-   .. code-block:: python
-
-       RECAPTCHA_V2_INVISIBLE = True # Marked for deprecation in version 2.0.
-
-Out of the box the invisible implementation only supports one form with the reCAPTCHA widget on a page. This widget must be wrapped in a form element.
-To alter the JavaScript behaviour to suit your project needs, override ``captcha/includes/js_v2_invisible.html`` in your local project template directory.
+    These can also be specificied per field by passing the ``public_key`` or
+    ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
 
 #. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting, for example:
 
-   .. code-block:: python
+    .. code-block:: python
 
-       RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
+        RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
 
 Usage
 -----
 
-Field
-~~~~~
+Fields
+~~~~~~
 
 The quickest way to add reCAPTCHA to a form is to use the included
-``ReCaptchaField`` field class. A ``ReCaptcha`` widget will be rendered with
+``ReCaptchaField`` field class. A ``ReCaptchaV2Checkbox`` widget will be rendered with
 the field validating itself without any further action required. For example:
 
 .. code-block:: python
@@ -82,6 +76,7 @@ the field validating itself without any further action required. For example:
 
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField()
+
 
 To allow for runtime specification of keys you can optionally pass the
 ``private_key`` or ``public_key`` parameters to the constructor. For example:
@@ -93,23 +88,57 @@ To allow for runtime specification of keys you can optionally pass the
         private_key='98dfg6df7g56df6gdfgdfg65JHJH656565GFGFGs',
     )
 
-If specified these parameters will be used instead of your reCAPTCHA project
-settings.
+If specified these parameters will be used instead of your reCAPTCHA project settings.
 
-The reCAPTCHA widget supports several `Javascript options variables
-<https://developers.google.com/recaptcha/docs/display#js_param>`_ that
-customize the behaviour of the widget, such as ``theme`` and ``lang``. You can
-forward these options to the widget by passing an ``attr`` parameter to the
-field, containing a dictionary of options. For example:
+Widgets
+~~~~~~~
+
+There are two widgets that can be used with the ``ReCaptchaField``;
+
+    ``ReCaptchaV2Checkbox`` for Google reCAPTCHA V2 - Checkbox
+
+    ``ReCaptchaV2Invisible`` for Google reCAPTCHA V2 - Invisible
+
+To make use of widgets other than the Google reCAPTCHA V2 - Checkbox, simply replace the ``ReCaptchaField`` widget. For example:
 
 .. code-block:: python
 
-    captcha = ReCaptchaField(attrs={
-      'theme' : 'clean',
-    })
+    from django import forms
+    from captcha.fields import ReCaptchaField
+    from captcha.widgets import ReCaptchaV2Invisible
 
-The client takes the key/value pairs and writes out the ``RecaptchaOptions``
-value in JavaScript.
+    class FormWithCaptcha(forms.Form):
+        captcha = ReCaptchaField(widget=ReCaptchaV2Invisible)
+
+The reCAPTCHA widget supports several `Javascript options variables
+<https://developers.google.com/recaptcha/docs/display#js_param>`_ that
+customize the behaviour of the widget, such as ``data-theme`` and ``language``. You can
+forward these options to the widget by passing an ``attrs`` parameter to the
+widget, containing a dictionary of options. For example:
+
+.. code-block:: python
+
+    captcha = fields.ReCaptchaField(
+        widget=widgets.ReCaptchaV2Checkbox(
+            attrs={
+                'data-theme': 'dark',
+                'data-size': 'compact',
+                'language': 'cs'
+            }
+        )
+    )
+    # The ReCaptchaV2Invisible widget, 
+    # ignores the "data-size" attribute in favor of 'data-size="invisible"'
+
+By default the widgets provided only support a single form with a single widget per page.
+
+However the JavaScript used by the widgets are in a separate template directory, that gets included at the top of the widget templates.
+
+These can easily be overridden to suit your project needs, by making use of `Django's template override <https://docs.djangoproject.com/en/2.1/howto/overriding-templates/>`_:
+
+    ``captcha/includes/js_v2_checkbox.html`` for the reCAPTCHA V2 - Checkbox
+
+    ``captcha/includes/js_v2_invisible.html`` for the reCAPTCHA V2 - Invisible
 
 
 Local Development and Functional Testing

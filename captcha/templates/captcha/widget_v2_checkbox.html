@@ -1,0 +1,5 @@
+{% include "captcha/includes/js_v2_checkbox.html" %}
+<div class="g-recaptcha"
+    {% for attr, value in widget.attrs.items %}{{ attr }}="{{ value }}" {% endfor %}
+>
+</div>

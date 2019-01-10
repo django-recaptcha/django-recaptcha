@@ -1,19 +1,21 @@
 {# The provided implementation caters for only one reCAPTCHA on a page. Override this template and its logic as needed. #}
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js{% if language %}?hl={{ language }}{% endif %}"></script>
 <script type="text/javascript">
     // Submit function to be called, after reCAPTCHA was successful.
-    var onSubmit = function(token) {
-        document.querySelector('.g-recaptcha').closest('form').submit();
+    var onSubmit_{{ widget_uuid }} = function(token) {
+        console.log("reCAPTCHA validated for 'data-widget-uuid=\"{{ widget_uuid }}\"'. Submitting form...")
+        document.querySelector('.g-recaptcha[data-widget-uuid="{{ widget_uuid }}"]').closest('form').submit();
     };
 
     // Helper function to prevent form submission and execute verification.
-    var verifyCaptcha = function(e) {
+    var verifyCaptcha{{ widget_uuid}} = function(e) {
         e.preventDefault();
         grecaptcha.execute();
     };
 
     // Bind the helper function to the form submit action.
     document.addEventListener( 'DOMContentLoaded', function () {
-        document.querySelector('.g-recaptcha').closest('form').addEventListener("submit", verifyCaptcha);
+        var element = document.querySelector('.g-recaptcha[data-widget-uuid="{{ widget_uuid }}"]');
+        element.closest('form').addEventListener('submit', verifyCaptcha{{ widget_uuid}});
     });
 </script>
