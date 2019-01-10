@@ -16,6 +16,12 @@ Django reCAPTCHA uses a modified version of the `Python reCAPTCHA client
 <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the
 package as ``client.py``.
 
+NOTE:
+-----
+
+As of March 2018 the reCAPTCHA v1 was shutdown by `Google <https://developers.google.com/recaptcha/docs/versions>`_.
+Support for reCAPTCHA v1 was removed, reCAPTCHA v2 - Checkbox is the default. To use reCAPTCHA v2 - Invisible add the `RECAPTCHA_V2_INVISIBLE = True`` option to your project settings.
+
 Requirements
 ------------
 
@@ -44,7 +50,7 @@ Installation
    These can also be specificied per field by passing the ``public_key`` or
    ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
 
-#. By default the Checkbox reCAPTCHA V2 widget will be used, to rather make use of the Invisible reCAPTCHA V2 widget add the following setting:
+#. By default the reCAPTCHA V2 -Checkbox widget will be used, to make use of the reCAPTCHA V2 - Invisible widget add the following setting:
 
    .. code-block:: python
 
