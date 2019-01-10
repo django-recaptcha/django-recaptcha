@@ -8,7 +8,7 @@
     };
 
     // Helper function to prevent form submission and execute verification.
-    var verifyCaptcha{{ widget_uuid}} = function(e) {
+    var verifyCaptcha_{{ widget_uuid}} = function(e) {
         e.preventDefault();
         grecaptcha.execute();
     };
@@ -16,6 +16,6 @@
     // Bind the helper function to the form submit action.
     document.addEventListener( 'DOMContentLoaded', function () {
         var element = document.querySelector('.g-recaptcha[data-widget-uuid="{{ widget_uuid }}"]');
-        element.closest('form').addEventListener('submit', verifyCaptcha{{ widget_uuid}});
+        element.closest('form').addEventListener('submit', verifyCaptcha_{{ widget_uuid}});
     });
 </script>

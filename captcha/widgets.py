@@ -15,10 +15,7 @@ class ReCaptchaBase(widgets.Widget):
         project wide Google Site Key.
     """
     recaptcha_response_name = "g-recaptcha-response"
-
-    def __init__(self, public_key=None, *args, **kwargs):
-        super(ReCaptchaBase, self).__init__(*args, **kwargs)
-        self.uuid = uuid.uuid4().hex
+    uuid = uuid.uuid4().hex
 
     def value_from_datadict(self, data, files, name):
         return data.get(self.recaptcha_response_name, None)
@@ -42,6 +39,7 @@ class ReCaptchaBase(widgets.Widget):
 
         # Support the ability to override some of the Google data attrs.
         attrs["data-callback"] = base_attrs.get("data-callback", "onSubmit_%s" % self.uuid)
+        attrs["data-size"] = base_attrs.get("data-size", "normal")
         return attrs
 
 
@@ -55,6 +53,6 @@ class ReCaptchaV2Invisible(ReCaptchaBase):
     def build_attrs(self, base_attrs, extra_attrs=None):
         attrs = super(ReCaptchaV2Invisible, self).build_attrs(base_attrs, extra_attrs)
 
-        # Support the ability to override some of the Google data attrs.
-        attrs["data-size"] = base_attrs.get("data-size", "invisible")
+        # Invisible reCAPTCHA should not have another size
+        attrs["data-size"] = "invisible"
         return attrs

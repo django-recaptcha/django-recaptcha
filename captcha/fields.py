@@ -22,7 +22,7 @@ class ReCaptchaField(forms.CharField):
     }
 
     def __init__(self, public_key=None, private_key=None, use_ssl=None,
-                 attrs=None, *args, **kwargs):
+                 *args, **kwargs):
         """
         ReCaptchaField can accepts attributes which is a dictionary of
         attributes to be passed to the ReCaptcha widget class. The widget will
