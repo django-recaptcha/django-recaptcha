@@ -20,7 +20,7 @@ NOTE:
 -----
 
 As of March 2018 the reCAPTCHA v1 was shutdown by `Google <https://developers.google.com/recaptcha/docs/versions>`_.
-Support for reCAPTCHA v1 was removed, reCAPTCHA v2 - Checkbox is the default. To use reCAPTCHA v2 - Invisible add the `RECAPTCHA_V2_INVISIBLE = True`` option to your project settings.
+Support for reCAPTCHA v1 was removed, reCAPTCHA v2 - Checkbox is the default. To use reCAPTCHA v2 - Invisible add the ``RECAPTCHA_V2_INVISIBLE = True`` option to your project settings.
 
 Requirements
 ------------
