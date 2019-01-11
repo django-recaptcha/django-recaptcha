@@ -42,7 +42,7 @@ Installation
             ...
         ]
 
-#. Add the keys reCAPTCHA have given you to your Django production settings (leave development settings blank to use the default test keys) as
+#. Add the keys reCAPTCHA has given you to your Django production settings. Note that omitting these settings will default to a set of test keys which can be used for development.
     ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. For example:
 
     .. code-block:: python
@@ -66,8 +66,7 @@ Fields
 ~~~~~~
 
 The quickest way to add reCAPTCHA to a form is to use the included
-``ReCaptchaField`` field class. A ``ReCaptchaV2Checkbox`` widget will be rendered with
-the field validating itself without any further action required. For example:
+``ReCaptchaField`` field class. A ``ReCaptchaV2Checkbox`` will be rendered by default. For example:
 
 .. code-block:: python
 
@@ -88,16 +87,16 @@ To allow for runtime specification of keys you can optionally pass the
         private_key='98dfg6df7g56df6gdfgdfg65JHJH656565GFGFGs',
     )
 
-If specified these parameters will be used instead of your reCAPTCHA project settings.
+If specified, these parameters will be used instead of your reCAPTCHA project settings.
 
 Widgets
 ~~~~~~~
 
-There are two widgets that can be used with the ``ReCaptchaField``;
+There are two widgets that can be used with the ``ReCaptchaField``:
 
-    ``ReCaptchaV2Checkbox`` for Google reCAPTCHA V2 - Checkbox
+    ``ReCaptchaV2Checkbox`` for `Google reCAPTCHA V2 - Checkbox <https://developers.google.com/recaptcha/docs/display>`_
 
-    ``ReCaptchaV2Invisible`` for Google reCAPTCHA V2 - Invisible
+    ``ReCaptchaV2Invisible`` for `Google reCAPTCHA V2 - Invisible <https://developers.google.com/recaptcha/docs/invisible>`_
 
 To make use of widgets other than the Google reCAPTCHA V2 - Checkbox, simply replace the ``ReCaptchaField`` widget. For example:
 
@@ -127,12 +126,12 @@ widget, containing a dictionary of options. For example:
             }
         )
     )
-    # The ReCaptchaV2Invisible widget, 
+    # The ReCaptchaV2Invisible widget
     # ignores the "data-size" attribute in favor of 'data-size="invisible"'
 
 By default the widgets provided only support a single form with a single widget per page.
 
-However the JavaScript used by the widgets are in a separate template directory, that gets included at the top of the widget templates.
+However, the JavaScript used by the widgets are in a separate template directory that gets included at the top of the widget templates.
 
 These can easily be overridden to suit your project needs, by making use of `Django's template override <https://docs.djangoproject.com/en/2.1/howto/overriding-templates/>`_:
 
