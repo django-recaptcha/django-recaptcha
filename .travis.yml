@@ -6,6 +6,7 @@ matrix:
         - TOXENV=django111-py27
         - TOXENV=django2-py27
         - TOXENV=django21-py27
+        - TOXENV=pycodestyle-py27
     - python: "3.5"
       env:
        - TOXENV=django111-py35
@@ -23,6 +24,7 @@ matrix:
        - TOXENV=django111-py37
        - TOXENV=django2-py37
        - TOXENV=django21-py37
+       - TOXENV=pycodestyle-py37
 cache: pip
 install:
   - pip install tox
