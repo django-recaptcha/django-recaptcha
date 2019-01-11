@@ -8,6 +8,7 @@ from django.utils.translation import get_language
 
 from captcha.client import API_SERVER, WIDGET_TEMPLATE
 
+
 class ReCaptchaBase(widgets.Widget):
     """
     Base widget to be used for Google ReCAPTCHA.
@@ -43,7 +44,9 @@ class ReCaptchaBase(widgets.Widget):
         attrs["data-widget-uuid"] = self.uuid
 
         # Support the ability to override some of the Google data attrs.
-        attrs["data-callback"] = base_attrs.get("data-callback", "onSubmit_%s" % self.uuid)
+        attrs["data-callback"] = base_attrs.get(
+            "data-callback", "onSubmit_%s" % self.uuid
+        )
         attrs["data-size"] = base_attrs.get("data-size", "normal")
         return attrs
 
@@ -56,7 +59,9 @@ class ReCaptchaV2Invisible(ReCaptchaBase):
     template_name = "captcha/widget_v2_invisible.html"
 
     def build_attrs(self, base_attrs, extra_attrs=None):
-        attrs = super(ReCaptchaV2Invisible, self).build_attrs(base_attrs, extra_attrs)
+        attrs = super(ReCaptchaV2Invisible, self).build_attrs(
+            base_attrs, extra_attrs
+        )
 
         # Invisible reCAPTCHA should not have another size
         attrs["data-size"] = "invisible"

@@ -15,10 +15,12 @@ DEFAULT_WIDGET_TEMPLATE = 'captcha/widget_nocaptcha.html'
 API_SSL_SERVER = getattr(settings, "CAPTCHA_API_SSL_SERVER",
                          DEFAULT_API_SSL_SERVER)
 API_SERVER = getattr(settings, "CAPTCHA_API_SERVER", DEFAULT_API_SERVER)
-VERIFY_SERVER = getattr(settings, "CAPTCHA_VERIFY_SERVER",
-                        DEFAULT_VERIFY_SERVER)
-WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE",
-    DEFAULT_WIDGET_TEMPLATE)
+VERIFY_SERVER = getattr(
+    settings, "CAPTCHA_VERIFY_SERVER", DEFAULT_VERIFY_SERVER
+)
+WIDGET_TEMPLATE = getattr(
+    settings, "CAPTCHA_WIDGET_TEMPLATE", DEFAULT_WIDGET_TEMPLATE
+)
 
 
 RECAPTCHA_SUPPORTED_LANUAGES = ('en', 'nl', 'fr', 'de', 'pt', 'ru', 'es', 'tr')

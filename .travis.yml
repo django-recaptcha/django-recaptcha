@@ -1,32 +1,53 @@
 language: python
-matrix:
-  include:
-    - python: "2.7"
-      env:
-        - TOXENV=django111-py27
-        - TOXENV=django2-py27
-        - TOXENV=django21-py27
-    - python: "3.5"
-      env:
-       - TOXENV=django111-py35
-       - TOXENV=django2-py35
-       - TOXENV=django21-py35
-    - python: "3.6"
-      env:
-       - TOXENV=django111-py36
-       - TOXENV=django2-py36
-       - TOXENV=django21-py36
-    - python: "3.7"
-      sudo: required
-      dist: xenial
-      env:
-       - TOXENV=django111-py37
-       - TOXENV=django2-py37
-       - TOXENV=django21-py37
-cache: pip
+
 install:
   - pip install tox
   - pip install coveralls
+
+matrix:
+  include:
+    - python: "2.7"
+      env: TOXENV=django111-py27
+    - python: "2.7"
+      env: TOXENV=django2-py27
+    - python: "2.7"
+      env: TOXENV=django21-py27
+    - python: "2.7"
+      env: TOXENV=pycodestyle-py27
+
+    - python: "3.5"
+      env: TOXENV=django111-py35
+    - python: "3.5"
+      env: TOXENV=django2-py35
+    - python: "3.5"
+      env: TOXENV=django21-py35
+
+    - python: "3.6"
+      env: TOXENV=django111-py36
+    - python: "3.6"
+      env: TOXENV=django2-py36
+    - python: "3.6"
+      env: TOXENV=django21-py36
+
+    - python: "3.7"
+      sudo: required
+      dist: xenial
+      env: TOXENV=django111-py37
+    - python: "3.7"
+      sudo: required
+      dist: xenial
+      env: TOXENV=django2-py37
+    - python: "3.7"
+      sudo: required
+      dist: xenial
+      env: TOXENV=django21-py37
+    - python: "3.7"
+      sudo: required
+      dist: xenial
+      env: TOXENV=pycodestyle-py37
+
+cache: pip
+
 script:
   - tox
   - coveralls

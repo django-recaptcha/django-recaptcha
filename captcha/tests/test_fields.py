@@ -14,6 +14,7 @@ from django.test import TestCase, override_settings
 from captcha import fields, widgets, constants
 from captcha.client import RecaptchaResponse
 
+
 class DefaultForm(forms.Form):
     captcha = fields.ReCaptchaField()
 
@@ -29,7 +30,9 @@ class TestFields(TestCase):
 
     @patch("captcha.fields.client.submit")
     def test_client_failure_response(self, mocked_submit):
-        mocked_submit.return_value = RecaptchaResponse(is_valid=False, error_code="410")
+        mocked_submit.return_value = RecaptchaResponse(
+            is_valid=False, error_code="410"
+        )
         form_params = {"g-recaptcha-response": "PASSED"}
         form = DefaultForm(form_params)
         self.assertFalse(form.is_valid())
@@ -71,14 +74,15 @@ class TestFields(TestCase):
 
             assert len(w) == 1
             assert issubclass(w[-1].category, RuntimeWarning)
-            assert "RECAPTCHA_PRIVATE_KEY or RECAPTCHA_PUBLIC_KEY" in str(w[-1].message)
+            assert "RECAPTCHA_PRIVATE_KEY or RECAPTCHA_PUBLIC_KEY" in str(
+                w[-1].message)
 
     def test_client_integration(self):
-       form_params = {'g-recaptcha-response': 'PASSED'}
-       form = DefaultForm(form_params)
+        form_params = {'g-recaptcha-response': 'PASSED'}
+        form = DefaultForm(form_params)
 
-       # Trigger client.submit
-       form.is_valid()
+        # Trigger client.submit
+        form.is_valid()
 
 
 class TestWidgets(TestCase):
@@ -92,7 +96,11 @@ class TestWidgets(TestCase):
 
         form = DefaultCheckForm()
         html = form.as_p()
-        self.assertIn('<script src="https://www.google.com/recaptcha/api.js?hl=en"></script>', html)
+        self.assertIn(
+            '<script src="https://www.google.com/recaptcha/api.js'
+            '?hl=en"></script>',
+            html
+        )
         self.assertIn('data-size="normal"', html)
         self.assertIn('class="g-recaptcha"', html)
         self.assertIn('data-callback="onSubmit_%s"' % test_hex, html)
@@ -120,7 +128,11 @@ class TestWidgets(TestCase):
 
         form = CheckboxAttrForm()
         html = form.as_p()
-        self.assertIn('<script src="https://www.google.com/recaptcha/api.js?hl=af"></script>', html)
+        self.assertIn(
+            '<script src="https://www.google.com/recaptcha/api.js'
+            '?hl=af"></script>',
+            html
+        )
         self.assertIn('data-theme="dark"', html)
         self.assertNotIn('data-callback="onSubmit_%s"' % test_hex, html)
         self.assertIn('data-callback="customCallback"', html)
@@ -143,7 +155,11 @@ class TestWidgets(TestCase):
 
         form = InvisForm()
         html = form.as_p()
-        self.assertIn('<script src="https://www.google.com/recaptcha/api.js?hl=en"></script>', html)
+        self.assertIn(
+            '<script src="https://www.google.com/recaptcha/api.js'
+            '?hl=en"></script>',
+            html
+        )
         self.assertIn('data-size="invisible"', html)
         self.assertIn('data-callback="onSubmit_%s"' % test_hex, html)
         self.assertIn('class="g-recaptcha"', html)
@@ -173,7 +189,11 @@ class TestWidgets(TestCase):
 
         form = InvisAttrForm()
         html = form.as_p()
-        self.assertIn('<script src="https://www.google.com/recaptcha/api.js?hl=cl"></script>', html)
+        self.assertIn(
+            '<script src="https://www.google.com/recaptcha/api.js'
+            '?hl=cl"></script>',
+            html
+        )
         self.assertNotIn('data-size="compact"', html)
         self.assertIn('data-size="invisible"', html)
         self.assertNotIn('data-callback="onSubmit_%s"' % test_hex, html)
