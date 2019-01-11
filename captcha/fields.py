@@ -61,7 +61,7 @@ class ReCaptchaField(forms.CharField):
             settings, "RECAPTCHA_USE_SSL", True)
 
         # Update widget attrs with data-sitekey.
-        self.widget.attrs.update({"data-sitekey": self.public_key})
+        self.widget.attrs["data-sitekey"] = self.public_key
 
     def get_remote_ip(self):
         f = sys._getframe()
