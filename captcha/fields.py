@@ -22,8 +22,7 @@ class ReCaptchaField(forms.CharField):
         "captcha_error": _("Error verifying input, please try again."),
     }
 
-    def __init__(self, public_key=None, private_key=None, use_ssl=None,
-                 *args, **kwargs):
+    def __init__(self, public_key=None, private_key=None, *args, **kwargs):
         """
         ReCaptchaField can accepts attributes which is a dictionary of
         attributes to be passed to the ReCaptcha widget class. The widget will
@@ -57,8 +56,6 @@ class ReCaptchaField(forms.CharField):
                 RuntimeWarning,
                 2
             )
-        self.use_ssl = use_ssl if use_ssl is not None else getattr(
-            settings, "RECAPTCHA_USE_SSL", True)
 
         # Update widget attrs with data-sitekey.
         self.widget.attrs["data-sitekey"] = self.public_key
@@ -79,11 +76,9 @@ class ReCaptchaField(forms.CharField):
 
         try:
             check_captcha = client.submit(
-                "g-recaptcha-response",
-                value,
+                recaptcha_response=value,
                 private_key=self.private_key,
                 remoteip=self.get_remote_ip(),
-                use_ssl=self.use_ssl
             )
 
         # TODO: Does not catch urllib2.HTTPError correctly

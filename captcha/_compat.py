@@ -9,9 +9,3 @@ else:
     from urllib.request import build_opener, ProxyHandler, Request, urlopen
     from urllib.parse import urlencode
     text_type = str
-
-
-def want_bytes(s, encoding='utf-8', errors='strict'):
-    if isinstance(s, text_type):
-        s = s.encode(encoding, errors)
-    return s

@@ -146,17 +146,6 @@ Local Development and Functional Testing
 Google provides test keys which are set as the default for ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA.
 
 
-Disabling SSL
-~~~~~~~~~~~~~
-
-This library used to not use SSL by default, but now it does. You can disable
-this if required, but you should think long and hard about it before you do so!
-
-You can disable it by setting ``RECAPTCHA_USE_SSL = False`` in your Django
-settings, or by passing ``use_ssl=False`` to the constructor of
-``ReCaptchaField``.
-
-
 Credits
 -------
 Inspired Marco Fucci's blogpost titled `Integrating reCAPTCHA with Django
