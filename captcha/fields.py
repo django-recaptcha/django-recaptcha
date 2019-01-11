@@ -66,13 +66,12 @@ class ReCaptchaField(forms.CharField):
     def get_remote_ip(self):
         f = sys._getframe()
         while f:
-            if "request" in f.f_locals:
-                request = f.f_locals["request"]
-                if request:
-                    remote_ip = request.META.get("REMOTE_ADDR", "")
-                    forwarded_ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
-                    ip = remote_ip if not forwarded_ip else forwarded_ip
-                    return ip
+            request = f.f_locals.get("request")
+            if request:
+                remote_ip = request.META.get("REMOTE_ADDR", "")
+                forwarded_ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
+                ip = remote_ip if not forwarded_ip else forwarded_ip
+                return ip
             f = f.f_back
 
     def validate(self, value):
