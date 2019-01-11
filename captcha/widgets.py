@@ -4,6 +4,7 @@ import uuid
 from django.conf import settings
 from django.forms import widgets
 from django.utils.safestring import mark_safe
+from django.utils.translation import get_language
 
 from captcha.client import API_SERVER, WIDGET_TEMPLATE
 
@@ -25,9 +26,10 @@ class ReCaptchaBase(widgets.Widget):
 
     def get_context(self, name, value, attrs):
         context = super(ReCaptchaBase, self).get_context(name, value, attrs)
-
-        # TODO make use of django.utils.translation import get_language
-        language = self.attrs.get("language", "en")
+        language = self.attrs.get(
+            "language",
+            get_language().split('-')[0] if get_language() else "en"
+        )
         context.update({
             "api_server": API_SERVER,
             "public_key": self.attrs["data-sitekey"],

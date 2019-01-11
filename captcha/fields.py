@@ -1,13 +1,14 @@
 import os
-import sys
 import socket
+import sys
+import warnings
 
 from django import forms
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from django.core.exceptions import ValidationError
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import ImproperlyConfigured
 
 from captcha import client
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
@@ -42,11 +43,20 @@ class ReCaptchaField(forms.CharField):
         self.required = True
 
         # Setup instance variables.
-        # TODO: Perhaps this should not default to the test keys, indicate test keys in Docs and error if no keys are present.
         self.private_key = private_key or getattr(
             settings, "RECAPTCHA_PRIVATE_KEY", TEST_PRIVATE_KEY)
         self.public_key = public_key or getattr(
             settings, "RECAPTCHA_PUBLIC_KEY", TEST_PUBLIC_KEY)
+
+        if self.private_key == TEST_PRIVATE_KEY or \
+                self.public_key == TEST_PUBLIC_KEY:
+            warnings.warn(
+                "RECAPTCHA_PRIVATE_KEY or RECAPTCHA_PUBLIC_KEY is making use"
+                " of the Google test keys and will not behave as expected in a"
+                " production environment",
+                RuntimeWarning,
+                2
+            )
         self.use_ssl = use_ssl if use_ssl is not None else getattr(
             settings, "RECAPTCHA_USE_SSL", True)
 
