@@ -1,7 +1,5 @@
 {% include "captcha/includes/js_v2_invisible.html" %}
 <div class="g-recaptcha"
-    data-sitekey="{{ public_key }}"
-    data-callback="onSubmit"
-    data-size="invisible"
-    {% for option, value in widget.attrs.items %}data-{{ option }}="{{ value }}" {% endfor %}>
+    {% for attr, value in widget.attrs.items %}{{ attr }}="{{ value }}" {% endfor  %}
+>
 </div>
