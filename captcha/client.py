@@ -32,7 +32,7 @@ def recaptcha_request(params):
     )
 
     # Add proxy values to opener if needed.
-    opener_args = ()
+    opener_args = []
     proxy_settings = getattr(settings, "RECAPTCHA_PROXY", {})
     if proxy_settings:
         opener_args = [ProxyHandler(proxy_settings)]
