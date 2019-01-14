@@ -35,7 +35,7 @@ def recaptcha_request(params):
     opener_args = ()
     proxy_settings = getattr(settings, "RECAPTCHA_PROXY", {})
     if proxy_settings:
-        opener_args = (ProxyHandler(proxy_settings))
+        opener_args = [ProxyHandler(proxy_settings)]
     opener = build_opener(*opener_args)
 
     # Get response from POST to Google endpoint.
