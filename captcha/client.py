@@ -33,9 +33,9 @@ def recaptcha_request(params):
 
     # Add proxy values to opener if needed.
     opener_args = []
-    proxy_settings = getattr(settings, "RECAPTCHA_PROXY", {})
-    if proxy_settings:
-        opener_args = [ProxyHandler(proxy_settings)]
+    proxies = getattr(settings, "RECAPTCHA_PROXY", {})
+    if proxies:
+        opener_args = [ProxyHandler(proxies)]
     opener = build_opener(*opener_args)
 
     # Get response from POST to Google endpoint.
@@ -62,6 +62,7 @@ def submit(recaptcha_response, private_key, remoteip):
 
     if not PY2:
         params = params.encode("utf-8")
+
     response = recaptcha_request(params)
     data = json.loads(response.read().decode("utf-8"))
     response.close()
