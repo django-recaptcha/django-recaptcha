@@ -36,7 +36,7 @@ class TestClient(TestCase):
         self.assertTrue(response.is_valid)
 
     @patch("captcha.client.recaptcha_request")
-    def test_client_success(self, mocked_response):
+    def test_client_failure1(self, mocked_response):
         read_mock = MagicMock()
         read_mock.read.return_value = b'{"success": false, "error-codes":' \
             b'["invalid-input-response", "invalid-input-secret"]}'
