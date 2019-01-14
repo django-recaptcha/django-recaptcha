@@ -16,7 +16,8 @@ class TestClient(TestCase):
     @patch("captcha.client.recaptcha_request")
     def test_client_success(self, mocked_response):
         read_mock = MagicMock()
-        read_mock.read.return_value = b'{"success": true, "challenge_ts": "2019-01-11T13:57:23Z", "hostname": "testkey.google.com"}'
+        read_mock.read.return_value = b'{"success": true, "challenge_ts":' \
+            b'"2019-01-11T13:57:23Z", "hostname": "testkey.google.com"}'
         mocked_response.return_value = read_mock
         uuid_hex = uuid.uuid4().hex
         response = client.submit(
@@ -24,17 +25,21 @@ class TestClient(TestCase):
             "somekey",
             "0.0.0.0",
         )
-        mocked_response.assert_called_with(
-            (
-                'secret=somekey&response=%s&remoteip=0.0.0.0' % uuid_hex
-            ).encode('utf-8')
+
+        # Quick way to test method call without needing to worry about Python 2
+        # dicts not being ordered by default.
+        self.assertIn("secret=somekey", mocked_response.call_args.__str__())
+        self.assertIn(
+            "response=%s" % uuid_hex, mocked_response.call_args.__str__()
         )
+        self.assertIn("remoteip=0.0.0.0", mocked_response.call_args.__str__())
         self.assertTrue(response.is_valid)
 
     @patch("captcha.client.recaptcha_request")
     def test_client_success(self, mocked_response):
         read_mock = MagicMock()
-        read_mock.read.return_value = b'{"success": false, "error-codes": ["invalid-input-response", "invalid-input-secret"]}'
+        read_mock.read.return_value = b'{"success": false, "error-codes":' \
+            b'["invalid-input-response", "invalid-input-secret"]}'
         mocked_response.return_value = read_mock
         uuid_hex = uuid.uuid4().hex
         response = client.submit(
@@ -42,11 +47,14 @@ class TestClient(TestCase):
             "somekey",
             "0.0.0.0",
         )
-        mocked_response.assert_called_with(
-            (
-                'secret=somekey&response=%s&remoteip=0.0.0.0' % uuid_hex
-            ).encode('utf-8')
+
+        # Quick way to test method call without needing to worry about Python 2
+        # dicts not being ordered by default.
+        self.assertIn("secret=somekey", mocked_response.call_args.__str__())
+        self.assertIn(
+            "response=%s" % uuid_hex, mocked_response.call_args.__str__()
         )
+        self.assertIn("remoteip=0.0.0.0", mocked_response.call_args.__str__())
         self.assertFalse(response.is_valid)
         self.assertEqual(
             response.error_codes.sort(),

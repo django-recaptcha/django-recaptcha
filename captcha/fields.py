@@ -1,3 +1,4 @@
+import logging
 import os
 import socket
 import sys
@@ -11,15 +12,19 @@ from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 
 from captcha import client
+from captcha._compat import HTTPError
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
 from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaBase
+
+
+logger = logging.getLogger(__name__)
 
 
 class ReCaptchaField(forms.CharField):
     widget = ReCaptchaV2Checkbox
     default_error_messages = {
-        "captcha_invalid": _("Incorrect, please try again."),
-        "captcha_error": _("Error verifying input, please try again."),
+        "captcha_invalid": _("Error verifying reCAPTCHA, please try again."),
+        "captcha_error": _("Error verifying reCAPTCHA, please try again."),
     }
 
     def __init__(self, public_key=None, private_key=None, *args, **kwargs):
@@ -81,14 +86,17 @@ class ReCaptchaField(forms.CharField):
                 remoteip=self.get_remote_ip(),
             )
 
-        # TODO: Does not catch urllib2.HTTPError correctly
-        except socket.error:  # Catch timeouts, etc
+        except HTTPError:  # Catch timeouts, etc
             raise ValidationError(
                 self.error_messages["captcha_error"],
                 code="captcha_error"
             )
 
         if not check_captcha.is_valid:
+            logger.error(
+                "ReCAPTCHA validation failed due to: %s" %
+                check_captcha.error_codes
+            )
             raise ValidationError(
                 self.error_messages["captcha_invalid"],
                 code="captcha_invalid"

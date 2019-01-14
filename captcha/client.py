@@ -39,7 +39,10 @@ def recaptcha_request(params):
     opener = build_opener(*opener_args)
 
     # Get response from POST to Google endpoint.
-    return opener.open(request_object)
+    return opener.open(
+        request_object,
+        timeout=getattr(settings, "RECAPTCHA_VERIFY_REQUEST_TIMEOUT", 10)
+    )
 
 
 def submit(recaptcha_response, private_key, remoteip):
@@ -66,9 +69,3 @@ def submit(recaptcha_response, private_key, remoteip):
         is_valid=data["success"],
         error_codes=data.get("error-codes")
     )
-    # TODO Errors that need to be catered for
-    # missing-input-secret	The secret parameter is missing.
-    # invalid-input-secret	The secret parameter is invalid or malformed.
-    # missing-input-response	The response parameter is missing.
-    # invalid-input-response	The response parameter is invalid or malformed.
-    # bad-request	The request is invalid or malformed.

@@ -3,9 +3,9 @@ import uuid
 import warnings
 
 try:
-    from unittest.mock import patch, PropertyMock
+    from unittest.mock import patch, PropertyMock, MagicMock
 except ImportError:
-    from mock import patch, PropertyMock
+    from mock import patch, PropertyMock, MagicMock
 
 from django import forms
 from django.core.exceptions import ImproperlyConfigured
@@ -13,6 +13,7 @@ from django.test import TestCase, override_settings
 
 from captcha import fields, widgets, constants
 from captcha.client import RecaptchaResponse
+from captcha._compat import HTTPError
 
 
 class DefaultForm(forms.Form):
@@ -61,6 +62,34 @@ class TestFields(TestCase):
         )
         html = form.as_p()
         self.assertIn('data-sitekey="NewPubKey"', html)
+
+    @patch("captcha.client.recaptcha_request")
+    def test_field_captcha_errors(self, mocked_response):
+        read_mock = MagicMock()
+        read_mock.read.return_value = b'{"success": false, "error-codes":' \
+            b'["invalid-input-response", "invalid-input-secret"]}'
+        mocked_response.return_value = read_mock
+        form_params = {"g-recaptcha-response": "PASSED"}
+        form = DefaultForm(form_params)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors["captcha"],
+            ["Error verifying reCAPTCHA, please try again."]
+        )
+
+        mocked_response.side_effect = HTTPError(
+            url="https://www.google.com/recaptcha/api/siteverify",
+            code=410,
+            fp=None,
+            msg="Oops",
+            hdrs=""
+        )
+        form = DefaultForm(form_params)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors["captcha"],
+            ["Error verifying reCAPTCHA, please try again."]
+        )
 
     @override_settings(RECAPTCHA_PRIVATE_KEY=constants.TEST_PRIVATE_KEY)
     def test_test_key_warning(self):
