@@ -53,11 +53,11 @@ Installation
     These can also be specificied per field by passing the ``public_key`` or
     ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
 
-#. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting, for example:
+#. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting dictionary:
 
     .. code-block:: python
 
-        RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
+        RECAPTCHA_PROXY = {'http://127.0.0.1:8000', 'https://127.0.0.1:8000'}
 
 #. If you need to alter the reCAPTCHA verify url, specify it in the ``RECAPTCHA_VERIFY_ENDPOINT`` setting:
 
