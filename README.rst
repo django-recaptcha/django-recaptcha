@@ -59,6 +59,12 @@ Installation
 
         RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
 
+#. If you need to alter the reCAPTCHA verify url, specify it in the ``RECAPTCHA_VERIFY_ENDPOINT`` setting:
+
+    .. code-block:: python
+
+        RECAPTCHA_VERIFY_ENDPOINT = 'http://www.google.com/recaptcha/api/siteverify'
+
 Usage
 -----
 
