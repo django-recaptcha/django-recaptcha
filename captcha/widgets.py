@@ -6,8 +6,6 @@ from django.forms import widgets
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
 
-from captcha.client import API_SERVER, WIDGET_TEMPLATE
-
 
 class ReCaptchaBase(widgets.Widget):
     """
@@ -32,7 +30,6 @@ class ReCaptchaBase(widgets.Widget):
             get_language().split('-')[0] if get_language() else "en"
         )
         context.update({
-            "api_server": API_SERVER,
             "public_key": self.attrs["data-sitekey"],
             "language": language,
             "widget_uuid": self.uuid,

@@ -53,11 +53,17 @@ Installation
     These can also be specificied per field by passing the ``public_key`` or
     ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
 
-#. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting, for example:
+#. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting (dictionary of proxies), for example:
 
     .. code-block:: python
 
-        RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
+        RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}
+
+#. If you need to alter the reCAPTCHA verify url, specify it in the ``RECAPTCHA_VERIFY_ENDPOINT`` setting:
+
+    .. code-block:: python
+
+        RECAPTCHA_VERIFY_ENDPOINT = 'http://www.google.com/recaptcha/api/siteverify'
 
 Usage
 -----
@@ -144,17 +150,6 @@ Local Development and Functional Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Google provides test keys which are set as the default for ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA.
-
-
-Disabling SSL
-~~~~~~~~~~~~~
-
-This library used to not use SSL by default, but now it does. You can disable
-this if required, but you should think long and hard about it before you do so!
-
-You can disable it by setting ``RECAPTCHA_USE_SSL = False`` in your Django
-settings, or by passing ``use_ssl=False`` to the constructor of
-``ReCaptchaField``.
 
 
 Credits
