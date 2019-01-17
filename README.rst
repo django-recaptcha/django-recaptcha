@@ -98,7 +98,7 @@ If specified, these parameters will be used instead of your reCAPTCHA project se
 Widgets
 ~~~~~~~
 
-There are two widgets that can be used with the ``ReCaptchaField``:
+There are three widgets that can be used with the ``ReCaptchaField``:
 
     ``ReCaptchaV2Checkbox`` for `Google reCAPTCHA V2 - Checkbox <https://developers.google.com/recaptcha/docs/display>`_
 
@@ -106,7 +106,7 @@ There are two widgets that can be used with the ``ReCaptchaField``:
 
     ``ReCaptchaV3`` for `Google reCAPTCHA V3 <https://developers.google.com/recaptcha/docs/v3>`_
 
-To make use of widgets other than the Google reCAPTCHA V2 - Checkbox, simply replace the ``ReCaptchaField`` widget. For example:
+To make use of widgets other than the default Google reCAPTCHA V2 - Checkbox, simply replace the ``ReCaptchaField`` widget. For example:
 
 .. code-block:: python
 
@@ -137,16 +137,19 @@ widget, containing a dictionary of options. For example:
     # The ReCaptchaV2Invisible widget
     # ignores the "data-size" attribute in favor of 'data-size="invisible"'
 
-By default the widgets provided only support a single form with a single widget per page.
+By default, the widgets provided only supports a single form with a single widget on each page.
 
-However, the JavaScript used by the widgets are in a separate template directory that gets included at the top of the widget templates.
+However, the JavaScript used by the widgets can easily be overridden on the templates.
 
-These can easily be overridden to suit your project needs, by making use of `Django's template override <https://docs.djangoproject.com/en/2.1/howto/overriding-templates/>`_:
+The templates are located in:
 
-    ``captcha/includes/js_v2_checkbox.html`` for the reCAPTCHA V2 - Checkbox
+    ``captcha/includes/js_v2_checkbox.html`` for using the reCAPTCHA V2 - Checkbox
 
     ``captcha/includes/js_v2_invisible.html`` for the reCAPTCHA V2 - Invisible
 
+    ``captcha/includes/js_v3.html`` for the reCAPTCHA V3
+
+ For more information overriding templates look at `Django's template override <https://docs.djangoproject.com/en/2.1/howto/overriding-templates/>`_
 
 Local Development and Functional Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
