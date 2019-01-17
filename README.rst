@@ -8,6 +8,8 @@ Django reCAPTCHA
     :target: https://coveralls.io/github/praekelt/django-recaptcha?branch=develop
 .. image:: https://badge.fury.io/py/django-recaptcha.svg
     :target: https://badge.fury.io/py/django-recaptcha
+.. image:: https://img.shields.io/pypi/djversions/django-recaptcha.svg
+    :target: https://pypi.python.org/pypi/django-recaptcha
 
 .. contents:: Contents
     :depth: 5
@@ -42,24 +44,25 @@ Installation
             ...
         ]
 
-#. Add the keys reCAPTCHA has given you to your Django production settings. Note that omitting these settings will default to a set of test keys which can be used for development.
-    ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. For example:
+#. Add the Google reCAPTCHA keys generated in step 1 to your Django production settings. Note that omitting these settings will default to a set of test keys which can be used for development.``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``.
+
+    For example:
 
     .. code-block:: python
 
         RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
         RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'
 
-    These can also be specificied per field by passing the ``public_key`` or
+    These can also be specified per field by passing the ``public_key`` or
     ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
 
-#. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting (dictionary of proxies), for example:
+#. (OPTIONAL) If you require a proxy, add a ``RECAPTCHA_PROXY`` setting (dictionary of proxies), for example:
 
     .. code-block:: python
 
         RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}
 
-#. If you need to alter the reCAPTCHA verify url, specify it in the ``RECAPTCHA_VERIFY_ENDPOINT`` setting:
+#. (OPTIONAL) If you need to alter the reCAPTCHA verify url, specify it in the ``RECAPTCHA_VERIFY_ENDPOINT`` setting:
 
     .. code-block:: python
 
@@ -149,7 +152,7 @@ The templates are located in:
 
     ``captcha/includes/js_v3.html`` for overriding the reCAPTCHA V3 template
 
- For more information overriding templates look at `Django's template override <https://docs.djangoproject.com/en/2.1/howto/overriding-templates/>`_
+ For more information about overriding templates look at `Django's template override <https://docs.djangoproject.com/en/2.1/howto/overriding-templates/>`_
 
 Local Development and Functional Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
