@@ -2,6 +2,6 @@
 <input class="g-recaptcha"
     type="hidden"
     name="{{ widget.name }}"
-    {% for attr, value in widget.attrs.items %}{{ attr }}="{{ value }}" {% endfor %}
+    {% for name, value in widget.attrs.items %}{% if value is not False %} {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}{% endif %}{% endfor %}
 >
 </div>
