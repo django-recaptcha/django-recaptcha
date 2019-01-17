@@ -1,0 +1,7 @@
+{% include "captcha/includes/js_v3.html" %}
+<input class="g-recaptcha"
+    type="hidden"
+    name="{{ widget.name }}"
+    {% for attr, value in widget.attrs.items %}{{ attr }}="{{ value }}" {% endfor %}
+>
+</div>
