@@ -5,7 +5,6 @@
         grecaptcha.execute('{{ public_key }}', {action: 'form'})
         .then(function(token) {
             console.log("reCAPTCHA validated for 'data-widget-uuid=\"{{ widget_uuid }}\"'. Submitting form...")
-            //document.querySelector('.g-recaptcha[data-widget-uuid="{{ widget_uuid }}"]').closest('form').submit();
             var element = document.querySelector('.g-recaptcha[data-widget-uuid="{{ widget_uuid }}"]');
             element.value = token;
         });
