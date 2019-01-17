@@ -104,6 +104,8 @@ There are two widgets that can be used with the ``ReCaptchaField``:
 
     ``ReCaptchaV2Invisible`` for `Google reCAPTCHA V2 - Invisible <https://developers.google.com/recaptcha/docs/invisible>`_
 
+    ``ReCaptchaV3`` for `Google reCAPTCHA V3 <https://developers.google.com/recaptcha/docs/v3>`_
+
 To make use of widgets other than the Google reCAPTCHA V2 - Checkbox, simply replace the ``ReCaptchaField`` widget. For example:
 
 .. code-block:: python
