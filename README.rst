@@ -157,8 +157,6 @@ widget, containing a dictionary of options. For example:
     )
     # The dictionary is urlencoded and appended to the reCAPTCHA api url.
 
-
-
 By default, the widgets provided only supports a single form with a single widget on each page.
 
 However, the JavaScript used by the widgets can easily be overridden in the templates.
