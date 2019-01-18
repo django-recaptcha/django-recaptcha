@@ -8,12 +8,14 @@ Django reCAPTCHA
     :target: https://coveralls.io/github/praekelt/django-recaptcha?branch=develop
 .. image:: https://badge.fury.io/py/django-recaptcha.svg
     :target: https://badge.fury.io/py/django-recaptcha
-
 .. image:: https://img.shields.io/pypi/pyversions/django-recaptcha.svg
     :target: https://pypi.python.org/pypi/django-recaptcha
 .. image:: https://img.shields.io/pypi/djversions/django-recaptcha.svg
     :target: https://pypi.python.org/pypi/django-recaptcha
 
+.. note::
+   django-recaptcha supports Google reCAPTCHA V2 - Checkbox (Default), Google reCAPTCHA V2 - Invisible and Google reCAPTCHA V3 please look at the widgets section for more information.
+   
 .. contents:: Contents
     :depth: 5
 
