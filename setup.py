@@ -22,7 +22,6 @@ setup(
         'tox',
     ],
     keywords=['django', 'reCAPTCHA', 'reCAPTCHA v2', 'reCAPTCHA v3'],
-    test_suite='setuptest.setuptest.SetupTestSuite',
     include_package_data=True,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
