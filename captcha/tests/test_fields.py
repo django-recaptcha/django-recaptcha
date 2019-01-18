@@ -124,7 +124,7 @@ class TestWidgets(TestCase):
         self.assertIn('data-size="normal"', html)
         self.assertIn('class="g-recaptcha"', html)
         self.assertIn('data-callback="onSubmit_%s"' % test_hex, html)
-        self.assertIn('required="True"', html)
+        self.assertIn("required", html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn("var onSubmit_%s = function(token) {" % test_hex, html)
@@ -158,7 +158,7 @@ class TestWidgets(TestCase):
         self.assertIn('data-callback="customCallback"', html)
         self.assertIn('data-size="compact"', html)
         self.assertIn('class="g-recaptcha"', html)
-        self.assertIn('required="True"', html)
+        self.assertIn("required", html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn("var onSubmit_%s = function(token) {" % test_hex, html)
@@ -183,7 +183,7 @@ class TestWidgets(TestCase):
         self.assertIn('data-size="invisible"', html)
         self.assertIn('data-callback="onSubmit_%s"' % test_hex, html)
         self.assertIn('class="g-recaptcha"', html)
-        self.assertIn('required="True"', html)
+        self.assertIn("required", html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn("var onSubmit_%s = function(token) {" % test_hex, html)
@@ -219,9 +219,67 @@ class TestWidgets(TestCase):
         self.assertNotIn('data-callback="onSubmit_%s"' % test_hex, html)
         self.assertIn('data-callback="customCallbackInvis"', html)
         self.assertIn('class="g-recaptcha"', html)
-        self.assertIn('required="True"', html)
+        self.assertIn("required", html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn("var onSubmit_%s = function(token) {" % test_hex, html)
         self.assertIn("var verifyCaptcha_%s = function(e) {" % test_hex, html)
+        self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
+
+    @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
+    def test_default_v3_html(self, mocked_uuid):
+        test_hex = "c7a86421ca394661acccea374931d260"
+        mocked_uuid.return_value = test_hex
+
+        class InvisForm(forms.Form):
+            captcha = fields.ReCaptchaField(
+                widget=widgets.ReCaptchaV3()
+            )
+
+        form = InvisForm()
+        html = form.as_p()
+        self.assertIn(
+            '<script src="https://www.google.com/recaptcha/api.js'
+            '?render=pubkey&hl=en"></script>',
+            html
+        )
+        self.assertIn('data-size="normal"', html)
+        self.assertIn('data-callback="onSubmit_%s"' % test_hex, html)
+        self.assertIn('class="g-recaptcha"', html)
+        self.assertIn("required", html)
+        self.assertIn('data-widget-uuid="%s"' % test_hex, html)
+        self.assertIn('data-sitekey="pubkey"', html)
+        self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
+
+    @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
+    def test_v3_attribute_changes_html(self, mocked_uuid):
+        test_hex = "f367f89a797a4985acd986275b3df22f"
+        mocked_uuid.return_value = test_hex
+
+        class InvisAttrForm(forms.Form):
+            captcha = fields.ReCaptchaField(
+                widget=widgets.ReCaptchaV3(
+                    attrs={
+                        "data-theme": "dark",
+                        "language": "cl",
+                        "data-callback": "customCallbackInvis",
+                        "data-size": "compact"
+                    }
+                )
+            )
+
+        form = InvisAttrForm()
+        html = form.as_p()
+        self.assertIn(
+            '<script src="https://www.google.com/recaptcha/api.js'
+            '?render=pubkey&hl=cl"></script>',
+            html
+        )
+        self.assertIn('data-size="compact"', html)
+        self.assertNotIn('data-callback="onSubmit_%s"' % test_hex, html)
+        self.assertIn('data-callback="customCallbackInvis"', html)
+        self.assertIn('class="g-recaptcha"', html)
+        self.assertIn("required", html)
+        self.assertIn('data-widget-uuid="%s"' % test_hex, html)
+        self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)

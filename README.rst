@@ -8,14 +8,18 @@ Django reCAPTCHA
     :target: https://coveralls.io/github/praekelt/django-recaptcha?branch=develop
 .. image:: https://badge.fury.io/py/django-recaptcha.svg
     :target: https://badge.fury.io/py/django-recaptcha
-
+.. image:: https://img.shields.io/pypi/pyversions/django-recaptcha.svg
+    :target: https://pypi.python.org/pypi/django-recaptcha
+.. image:: https://img.shields.io/pypi/djversions/django-recaptcha.svg
+    :target: https://pypi.python.org/pypi/django-recaptcha
+   
 .. contents:: Contents
     :depth: 5
 
-Django reCAPTCHA uses a modified version of the `Python reCAPTCHA client
-<http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the
-package as ``client.py``.
+.. note::
+   django-recaptcha supports Google reCAPTCHA V2 - Checkbox (Default), Google reCAPTCHA V2 - Invisible and Google reCAPTCHA V3 please look at the widgets section for more information.
 
+   Django reCAPTCHA uses a modified version of the `Python reCAPTCHA client <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the package as ``client.py``.
 
 Requirements
 ------------
@@ -42,24 +46,25 @@ Installation
             ...
         ]
 
-#. Add the keys reCAPTCHA has given you to your Django production settings. Note that omitting these settings will default to a set of test keys which can be used for development.
-    ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. For example:
+#. Add the Google reCAPTCHA keys generated in step 1 to your Django production settings. Note that omitting these settings will default to a set of test keys which can be used for development.``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``.
+
+    For example:
 
     .. code-block:: python
 
         RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
         RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'
 
-    These can also be specificied per field by passing the ``public_key`` or
+    These can also be specified per field by passing the ``public_key`` or
     ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
 
-#. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting (dictionary of proxies), for example:
+#. (OPTIONAL) If you require a proxy, add a ``RECAPTCHA_PROXY`` setting (dictionary of proxies), for example:
 
     .. code-block:: python
 
         RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}
 
-#. If you need to alter the reCAPTCHA verify url, specify it in the ``RECAPTCHA_VERIFY_ENDPOINT`` setting:
+#. (OPTIONAL) If you need to alter the reCAPTCHA verify url, specify it in the ``RECAPTCHA_VERIFY_ENDPOINT`` setting:
 
     .. code-block:: python
 
@@ -98,13 +103,15 @@ If specified, these parameters will be used instead of your reCAPTCHA project se
 Widgets
 ~~~~~~~
 
-There are two widgets that can be used with the ``ReCaptchaField``:
+There are three widgets that can be used with the ``ReCaptchaField`` class:
 
     ``ReCaptchaV2Checkbox`` for `Google reCAPTCHA V2 - Checkbox <https://developers.google.com/recaptcha/docs/display>`_
 
     ``ReCaptchaV2Invisible`` for `Google reCAPTCHA V2 - Invisible <https://developers.google.com/recaptcha/docs/invisible>`_
 
-To make use of widgets other than the Google reCAPTCHA V2 - Checkbox, simply replace the ``ReCaptchaField`` widget. For example:
+    ``ReCaptchaV3`` for `Google reCAPTCHA V3 <https://developers.google.com/recaptcha/docs/v3>`_
+
+To make use of widgets other than the default Google reCAPTCHA V2 - Checkbox widget, simply replace the ``ReCaptchaField`` widget. For example:
 
 .. code-block:: python
 
@@ -135,16 +142,19 @@ widget, containing a dictionary of options. For example:
     # The ReCaptchaV2Invisible widget
     # ignores the "data-size" attribute in favor of 'data-size="invisible"'
 
-By default the widgets provided only support a single form with a single widget per page.
+By default, the widgets provided only supports a single form with a single widget on each page.
 
-However, the JavaScript used by the widgets are in a separate template directory that gets included at the top of the widget templates.
+However, the JavaScript used by the widgets can easily be overridden in the templates.
 
-These can easily be overridden to suit your project needs, by making use of `Django's template override <https://docs.djangoproject.com/en/2.1/howto/overriding-templates/>`_:
+The templates are located in:
 
-    ``captcha/includes/js_v2_checkbox.html`` for the reCAPTCHA V2 - Checkbox
+    ``captcha/includes/js_v2_checkbox.html`` for overriding the reCAPTCHA V2 - Checkbox template
 
-    ``captcha/includes/js_v2_invisible.html`` for the reCAPTCHA V2 - Invisible
+    ``captcha/includes/js_v2_invisible.html`` for overriding the reCAPTCHA V2 - Invisible template
 
+    ``captcha/includes/js_v3.html`` for overriding the reCAPTCHA V3 template
+
+ For more information about overriding templates look at `Django's template override <https://docs.djangoproject.com/en/2.1/howto/overriding-templates/>`_
 
 Local Development and Functional Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

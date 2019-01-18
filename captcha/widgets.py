@@ -63,3 +63,16 @@ class ReCaptchaV2Invisible(ReCaptchaBase):
         # Invisible reCAPTCHA should not have another size
         attrs["data-size"] = "invisible"
         return attrs
+
+
+class ReCaptchaV3(ReCaptchaBase):
+    template_name = "captcha/widget_v3.html"
+
+    def build_attrs(self, base_attrs, extra_attrs=None):
+        attrs = super(ReCaptchaV3, self).build_attrs(
+            base_attrs, extra_attrs
+        )
+        return attrs
+
+    def value_from_datadict(self, data, files, name):
+        return data.get(name)
