@@ -4,6 +4,7 @@ from setuptools import setup, find_packages
 long_desc = open('README.rst', 'rb').read().decode('utf-8') + '\n\n' + \
             open('AUTHORS.rst', 'rb').read().decode('utf-8') + '\n\n' + \
             open('CHANGELOG.rst', 'rb').read().decode('utf-8')
+
 setup(
     name='django-recaptcha',
     version='1.5.0',
@@ -15,12 +16,12 @@ setup(
     url='http://github.com/praekelt/django-recaptcha',
     packages=find_packages(),
     install_requires=[
-        'django',
+        'django>1.11,<2.3',
     ],
     tests_require=[
-        'django-setuptest>=0.2.1',
+        'tox',
     ],
-    test_suite="setuptest.setuptest.SetupTestSuite",
+    keywords=['django', 'reCAPTCHA', 'reCAPTCHA v2', 'reCAPTCHA v3'],
     include_package_data=True,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
