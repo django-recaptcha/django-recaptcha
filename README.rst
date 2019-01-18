@@ -12,17 +12,14 @@ Django reCAPTCHA
     :target: https://pypi.python.org/pypi/django-recaptcha
 .. image:: https://img.shields.io/pypi/djversions/django-recaptcha.svg
     :target: https://pypi.python.org/pypi/django-recaptcha
-
-.. note::
-   django-recaptcha supports Google reCAPTCHA V2 - Checkbox (Default), Google reCAPTCHA V2 - Invisible and Google reCAPTCHA V3 please look at the widgets section for more information.
    
 .. contents:: Contents
     :depth: 5
 
-Django reCAPTCHA uses a modified version of the `Python reCAPTCHA client
-<http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the
-package as ``client.py``.
+.. note::
+   django-recaptcha supports Google reCAPTCHA V2 - Checkbox (Default), Google reCAPTCHA V2 - Invisible and Google reCAPTCHA V3 please look at the widgets section for more information.
 
+   Django reCAPTCHA uses a modified version of the `Python reCAPTCHA client <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the package as ``client.py``.
 
 Requirements
 ------------
