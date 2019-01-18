@@ -25,11 +25,11 @@ class TestInit(TestCase):
             self.assertEqual(error.exception.args, (
                 "Setting RECAPTCHA_VERIFY_REQUEST_TIMEOUT is not of type", int)
             )
-        with override_settings(RECAPTCHA_VERIFY_ENDPOINT=1):
+        with override_settings(RECAPTCHA_DOMAIN=1):
             with self.assertRaises(ImproperlyConfigured) as error:
                 reload(captcha)
             self.assertEqual(error.exception.args, (
-                "Setting RECAPTCHA_VERIFY_ENDPOINT is not of type", str)
+                "Setting RECAPTCHA_DOMAIN is not of type", str)
             )
         with override_settings(RECAPTCHA_PUBLIC_KEY=1):
             with self.assertRaises(ImproperlyConfigured) as error:

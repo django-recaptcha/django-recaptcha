@@ -3,10 +3,10 @@ from django.core.exceptions import ImproperlyConfigured
 
 
 SETTINGS_TYPES = {
-    "RECAPTCHA_PUBLIC_KEY": str,
+    "RECAPTCHA_DOMAIN": str,
     "RECAPTCHA_PRIVATE_KEY": str,
-    "RECAPTCHA_VERIFY_ENDPOINT": str,
     "RECAPTCHA_PROXY": dict,
+    "RECAPTCHA_PUBLIC_KEY": str,
     "RECAPTCHA_VERIFY_REQUEST_TIMEOUT": int,
 }
 

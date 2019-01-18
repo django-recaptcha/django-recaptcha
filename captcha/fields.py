@@ -12,7 +12,7 @@ from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 
 from captcha import client
-from captcha._compat import HTTPError
+from captcha._compat import HTTPError, urlencode
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
 from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaBase
 

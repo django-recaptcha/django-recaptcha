@@ -12,8 +12,8 @@ from django.core.exceptions import ImproperlyConfigured
 from django.test import TestCase, override_settings
 
 from captcha import fields, widgets, constants
-from captcha.client import RecaptchaResponse
 from captcha._compat import HTTPError
+from captcha.client import RecaptchaResponse
 
 
 class DefaultForm(forms.Form):
@@ -118,7 +118,7 @@ class TestWidgets(TestCase):
         html = form.as_p()
         self.assertIn(
             '<script src="https://www.google.com/recaptcha/api.js'
-            '?hl=en"></script>',
+            '"></script>',
             html
         )
         self.assertIn('data-size="normal"', html)
@@ -139,9 +139,11 @@ class TestWidgets(TestCase):
                 widget=widgets.ReCaptchaV2Checkbox(
                     attrs={
                         "data-theme": "dark",
-                        "language": "af",
                         "data-callback": "customCallback",
                         "data-size": "compact"
+                    },
+                    api_params={
+                        "hl": "af"
                     }
                 )
             )
@@ -163,6 +165,21 @@ class TestWidgets(TestCase):
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn("var onSubmit_%s = function(token) {" % test_hex, html)
 
+    @override_settings(RECAPTCHA_DOMAIN="www.recaptcha.net")
+    def test_default_v2_checkbox_domain_html(self):
+        class DomainForm(forms.Form):
+            captcha = fields.ReCaptchaField(
+                widget=widgets.ReCaptchaV2Checkbox()
+            )
+
+        form = DomainForm()
+        html = form.as_p()
+        self.assertIn(
+            '<script src="https://www.recaptcha.net/recaptcha/api.js">'
+            '</script>',
+            html
+        )
+
     @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_default_v2_invisible_html(self, mocked_uuid):
         test_hex = "72f853eb8b7e4022b808be0f5c3bc297"
@@ -177,7 +194,7 @@ class TestWidgets(TestCase):
         html = form.as_p()
         self.assertIn(
             '<script src="https://www.google.com/recaptcha/api.js'
-            '?hl=en"></script>',
+            '"></script>',
             html
         )
         self.assertIn('data-size="invisible"', html)
@@ -200,9 +217,11 @@ class TestWidgets(TestCase):
                 widget=widgets.ReCaptchaV2Invisible(
                     attrs={
                         "data-theme": "dark",
-                        "language": "cl",
                         "data-callback": "customCallbackInvis",
                         "data-size": "compact"
+                    },
+                    api_params={
+                        "hl": "cl"
                     }
                 )
             )
@@ -226,6 +245,21 @@ class TestWidgets(TestCase):
         self.assertIn("var verifyCaptcha_%s = function(e) {" % test_hex, html)
         self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
 
+    @override_settings(RECAPTCHA_DOMAIN="www.recaptcha.net")
+    def test_default_v2_invisible_domain_html(self):
+        class InvisDomainForm(forms.Form):
+            captcha = fields.ReCaptchaField(
+                widget=widgets.ReCaptchaV2Invisible()
+            )
+
+        form = InvisDomainForm()
+        html = form.as_p()
+        self.assertIn(
+            '<script src="https://www.recaptcha.net/recaptcha/api.js">'
+            '</script>',
+            html
+        )
+
     @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_default_v3_html(self, mocked_uuid):
         test_hex = "c7a86421ca394661acccea374931d260"
@@ -240,7 +274,7 @@ class TestWidgets(TestCase):
         html = form.as_p()
         self.assertIn(
             '<script src="https://www.google.com/recaptcha/api.js'
-            '?render=pubkey&hl=en"></script>',
+            '?render=pubkey"></script>',
             html
         )
         self.assertIn('data-size="normal"', html)
@@ -261,9 +295,11 @@ class TestWidgets(TestCase):
                 widget=widgets.ReCaptchaV3(
                     attrs={
                         "data-theme": "dark",
-                        "language": "cl",
                         "data-callback": "customCallbackInvis",
                         "data-size": "compact"
+                    },
+                    api_params={
+                        "hl": "cl"
                     }
                 )
             )
@@ -283,3 +319,18 @@ class TestWidgets(TestCase):
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
+
+    @override_settings(RECAPTCHA_DOMAIN="www.recaptcha.net")
+    def test_default_v3_domain_html(self):
+        class VThreeDomainForm(forms.Form):
+            captcha = fields.ReCaptchaField(
+                widget=widgets.ReCaptchaV3()
+            )
+
+        form = VThreeDomainForm()
+        html = form.as_p()
+        self.assertIn(
+            '<script src="https://www.recaptcha.net/recaptcha/api.js'
+            '?render=pubkey"></script>',
+            html
+        )
