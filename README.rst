@@ -159,6 +159,9 @@ widget, containing a dictionary of options. For example:
 
 By default, the widgets provided only supports a single form with a single widget on each page.
 
+The language can be set with the 'h1' parameter, look at `language codes
+<https://developers.google.com/recaptcha/docs/language>`_ for the language code options. Note that translations need to be added to this package for the errors to be shown correctly. Currently the package has error translations for the following language codes: es, fr, nl, pl, pt_BR, ru, zh_CN, zh_TW
+
 However, the JavaScript used by the widgets can easily be overridden in the templates.
 
 The templates are located in:
