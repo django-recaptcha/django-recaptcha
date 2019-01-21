@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Django-recapcha\n"
-"Report-Msgid-Bugs-To: michael.samoylov@gmail.com\n"
-"POT-Creation-Date: 2014-05-05 17:18+0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-01-21 09:40+0200\n"
 "PO-Revision-Date: 2014-05-05 17:18+0400\n"
 "Last-Translator: Michael Samoylov <michael.samoylov@gmail.com>\n"
 "Language-Team: \n"
@@ -19,6 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: fields.py:19
-msgid "Incorrect, please try again."
+#: captcha/fields.py:26 captcha/fields.py:27
+#, fuzzy
+#| msgid "Incorrect, please try again."
+msgid "Error verifying reCAPTCHA, please try again."
 msgstr "Неверно, попробуйте еще раз"

@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Django-recapcha\n"
-"Report-Msgid-Bugs-To: rafadev@gmail.com\n"
-"POT-Creation-Date: 2014-09-05 16:46-0300\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-01-21 09:36+0200\n"
 "PO-Revision-Date: 2014-09-15 16:47-0300\n"
 "Last-Translator: Rafael Ponieman <rafadev@gmail.com>\n"
 "Language-Team: \n"
@@ -19,6 +19,8 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: fields.py:19
-msgid "Incorrect, please try again."
+#: captcha/fields.py:26 captcha/fields.py:27
+#, fuzzy
+#| msgid "Incorrect, please try again."
+msgid "Error verifying reCAPTCHA, please try again."
 msgstr "Incorrecto, por favor intente nuevamente."

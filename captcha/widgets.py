@@ -1,98 +1,82 @@
 import json
+import uuid
 
-from django import forms
 from django.conf import settings
+from django.forms import widgets
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
 
-from .client import API_SERVER, WIDGET_TEMPLATE
-from .decorators import generic_deprecation
+from captcha._compat import urlencode
+from captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
 
 
-class ReCaptcha(forms.widgets.Widget):
-    if getattr(settings, 'NOCAPTCHA', False):
-        recaptcha_response_name = 'g-recaptcha-response'
-        recaptcha_challenge_name = 'g-recaptcha-response'
-    else:
-        generic_deprecation(
-            "reCAPTCHA v1 will no longer be supported. See"
-            " See NOCAPTCHA settings documentation"
-            " and ensure the value is set to True."
+class ReCaptchaBase(widgets.Widget):
+    """
+    Base widget to be used for Google ReCAPTCHA.
+
+    public_key -- String value: can optionally be passed to not make use of the
+        project wide Google Site Key.
+    """
+    recaptcha_response_name = "g-recaptcha-response"
+
+    def __init__(self, api_params=None, *args, **kwargs):
+        super(ReCaptchaBase, self).__init__(*args, **kwargs)
+        self.uuid = uuid.uuid4().hex
+        self.api_params = api_params or {}
+
+    def value_from_datadict(self, data, files, name):
+        return data.get(self.recaptcha_response_name, None)
+
+    def get_context(self, name, value, attrs):
+        context = super(ReCaptchaBase, self).get_context(name, value, attrs)
+        params = urlencode(self.api_params)
+        context.update({
+            "public_key": self.attrs["data-sitekey"],
+            "widget_uuid": self.uuid,
+            "api_params": params,
+            "recaptcha_domain": getattr(
+                settings, "RECAPTCHA_DOMAIN", DEFAULT_RECAPTCHA_DOMAIN
+            ),
+        })
+        return context
+
+    def build_attrs(self, base_attrs, extra_attrs=None):
+        attrs = super(ReCaptchaBase, self).build_attrs(base_attrs, extra_attrs)
+        attrs["data-widget-uuid"] = self.uuid
+
+        # Support the ability to override some of the Google data attrs.
+        attrs["data-callback"] = base_attrs.get(
+            "data-callback", "onSubmit_%s" % self.uuid
         )
-        recaptcha_challenge_name = 'recaptcha_challenge_field'
-        recaptcha_response_name = 'recaptcha_response_field'
-
-    template_name = WIDGET_TEMPLATE
-
-    def __init__(self, public_key, *args, **kwargs):
-        super(ReCaptcha, self).__init__(*args, **kwargs)
-        self.public_key = public_key
-
-    def value_from_datadict(self, data, files, name):
-        return [
-            data.get(self.recaptcha_challenge_name, None),
-            data.get(self.recaptcha_response_name, None)
-        ]
-
-    def get_context(self, name, value, attrs):
-
-        try:
-            lang = attrs['lang']
-        except KeyError:
-            # Get the generic language code
-            lang = get_language().split('-')[0]
-
-        try:
-            context = super(ReCaptcha, self).get_context(name, value, attrs)
-        except AttributeError:
-            context = {
-                "widget": {
-                    "attrs": self.build_attrs(attrs)
-                }
-            }
-        context.update({
-            'api_server': API_SERVER,
-            'public_key': self.public_key,
-            'lang': lang,
-            'options': mark_safe(json.dumps(self.attrs, indent=2)),
-        })
-        return context
+        attrs["data-size"] = base_attrs.get("data-size", "normal")
+        return attrs
 
 
-# TODO: Temporary low impact implementation, clean up when v1 is removed.
-class ReCaptchaV2Invisible(forms.widgets.Widget):
-    recaptcha_response_name = 'g-recaptcha-response'
-    template_name = 'captcha/widget_v2_invisible.html'
+class ReCaptchaV2Checkbox(ReCaptchaBase):
+    template_name = "captcha/widget_v2_checkbox.html"
 
-    def __init__(self, public_key, *args, **kwargs):
-        super(ReCaptchaV2Invisible, self).__init__(*args, **kwargs)
-        self.public_key = public_key
+
+class ReCaptchaV2Invisible(ReCaptchaBase):
+    template_name = "captcha/widget_v2_invisible.html"
+
+    def build_attrs(self, base_attrs, extra_attrs=None):
+        attrs = super(ReCaptchaV2Invisible, self).build_attrs(
+            base_attrs, extra_attrs
+        )
+
+        # Invisible reCAPTCHA should not have another size
+        attrs["data-size"] = "invisible"
+        return attrs
+
+
+class ReCaptchaV3(ReCaptchaBase):
+    template_name = "captcha/widget_v3.html"
+
+    def build_attrs(self, base_attrs, extra_attrs=None):
+        attrs = super(ReCaptchaV3, self).build_attrs(
+            base_attrs, extra_attrs
+        )
+        return attrs
 
     def value_from_datadict(self, data, files, name):
-        return [
-            data.get(self.recaptcha_response_name, None),
-            data.get(self.recaptcha_response_name, None)
-        ]
-
-    def get_context(self, name, value, attrs):
-        try:
-            lang = attrs['lang']
-        except KeyError:
-            # Get the generic language code
-            lang = get_language().split('-')[0]
-
-        try:
-            context = super(ReCaptchaV2Invisible, self).get_context(name, value, attrs)
-        except AttributeError:
-            context = {
-                "widget": {
-                    "attrs": self.build_attrs(attrs)
-                }
-            }
-        context.update({
-            'api_server': API_SERVER,
-            'public_key': self.public_key,
-            'lang': lang,
-            'options': mark_safe(json.dumps(self.attrs, indent=2)),
-        })
-        return context
+        return data.get(name)

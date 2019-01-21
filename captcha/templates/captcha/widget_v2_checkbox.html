@@ -1,4 +1,4 @@
-{% include "captcha/includes/js_v2_invisible.html" %}
+{% include "captcha/includes/js_v2_checkbox.html" %}
 <div class="g-recaptcha"
     {% for name, value in widget.attrs.items %}{% if value is not False %} {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}{% endif %}{% endfor %}
 >

@@ -1,0 +1,12 @@
+{# The provided implementation caters for only one reCAPTCHA on a page. Override this template and its logic as needed. #}
+<script src="https://{{ recaptcha_domain }}/recaptcha/api.js?render={{ public_key }}{% if api_params %}&{{ api_params }}{% endif %}"></script>
+<script type="text/javascript">
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{ public_key }}', {action: 'form'})
+        .then(function(token) {
+            console.log("reCAPTCHA validated for 'data-widget-uuid=\"{{ widget_uuid }}\"'. Setting input value...")
+            var element = document.querySelector('.g-recaptcha[data-widget-uuid="{{ widget_uuid }}"]');
+            element.value = token;
+        });
+    });
+</script>

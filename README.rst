@@ -8,24 +8,18 @@ Django reCAPTCHA
     :target: https://coveralls.io/github/praekelt/django-recaptcha?branch=develop
 .. image:: https://badge.fury.io/py/django-recaptcha.svg
     :target: https://badge.fury.io/py/django-recaptcha
-
+.. image:: https://img.shields.io/pypi/pyversions/django-recaptcha.svg
+    :target: https://pypi.python.org/pypi/django-recaptcha
+.. image:: https://img.shields.io/pypi/djversions/django-recaptcha.svg
+    :target: https://pypi.python.org/pypi/django-recaptcha
+   
 .. contents:: Contents
     :depth: 5
 
-Django reCAPTCHA uses a modified version of the `Python reCAPTCHA client
-<http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the
-package as ``client.py``.
+.. note::
+   django-recaptcha supports Google reCAPTCHA V2 - Checkbox (Default), Google reCAPTCHA V2 - Invisible and Google reCAPTCHA V3 please look at the widgets section for more information.
 
-NOTE:
------
-
-As of March 2018 the reCAPTCHA v1 Google endpoints no longer exist.
-Currently django-recaptcha still makes use of those endpoints when either
-``CAPTCHA_AJAX = True`` or ``NOCAPTCHA = False``. To make use of the default reCAPTCHA v2
-checkbox, please ensure ``NOCAPTCHA = True`` and ``CAPTCHA_AJAX`` is not present in
-your project settings.
-Moving forward, this project will be removing the lingering reCAPTCHA v1 and
-the need to add ``NOCAPTCHA = True`` for reCAPTCHA v2 support.
+   Django reCAPTCHA uses a modified version of the `Python reCAPTCHA client <http://pypi.python.org/pypi/recaptcha-client>`_ which is included in the package as ``client.py``.
 
 Requirements
 ------------
@@ -44,47 +38,48 @@ Installation
 
 #. Add ``'captcha'`` to your ``INSTALLED_APPS`` setting.
 
-#. Add the keys reCAPTCHA have given you to your Django production settings (leave development settings blank to use the default test keys) as
-   ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. For example:
+    .. code-block:: python
 
-   .. code-block:: python
+        INSTALLED_APPS = [
+            ...,
+            'captcha',
+            ...
+        ]
 
-       RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
-       RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'
+#. Add the Google reCAPTCHA keys generated in step 1 to your Django production settings. Note that omitting these settings will default to a set of test keys which can be used for development.``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``.
 
-   These can also be specificied per field by passing the ``public_key`` or
-   ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
+    For example:
 
-#. To ensure the reCAPTCHA V2 endpoints are used add the setting:
+    .. code-block:: python
 
-   .. code-block:: python
+        RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
+        RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'
 
-       NOCAPTCHA = True # Marked for deprecation
+    These can also be specified per field by passing the ``public_key`` or
+    ``private_key`` parameters to ``ReCaptchaField`` - see field usage below.
 
-#. To make use of the invisible reCAPTCHA V2, ensure ``NOCAPTCHA = True`` is present in your settings and then also dd:
+#. (OPTIONAL) If you require a proxy, add a ``RECAPTCHA_PROXY`` setting (dictionary of proxies), for example:
 
-   .. code-block:: python
+    .. code-block:: python
 
-       RECAPTCHA_V2_INVISIBLE = True # Marked for deprecation
+        RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}
 
-Out of the box the invisible implementation only supports one form with the reCAPTCHA widget on a page. This widget must be wrapped in a form element.
-To alter the JavaScript behaviour to suit your project needs, override ``captcha/includes/js_v2_invisible.html`` in your local project template directory.
+#. (OPTIONAL) In the event ``www.google.com`` is not accessible the ``RECAPTCHA_DOMAIN`` setting can be changed to ``www.recaptcha.net`` as per the `reCAPTCHA FAQ <https://developers.google.com/recaptcha/docs/faq#can-i-use-recaptcha-globally>`_:
 
-#. If you require a proxy, add a ``RECAPTCHA_PROXY`` setting, for example:
+    .. code-block:: python
 
-   .. code-block:: python
+        RECAPTCHA_DOMAIN = 'www.recaptcha.net'
 
-       RECAPTCHA_PROXY = 'http://127.0.0.1:8000'
+This will change the Google JavaScript api domain as well as the client side field verification domain.
 
 Usage
 -----
 
-Field
-~~~~~
+Fields
+~~~~~~
 
 The quickest way to add reCAPTCHA to a form is to use the included
-``ReCaptchaField`` field class. A ``ReCaptcha`` widget will be rendered with
-the field validating itself without any further action required. For example:
+``ReCaptchaField`` field class. A ``ReCaptchaV2Checkbox`` will be rendered by default. For example:
 
 .. code-block:: python
 
@@ -93,6 +88,7 @@ the field validating itself without any further action required. For example:
 
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField()
+
 
 To allow for runtime specification of keys you can optionally pass the
 ``private_key`` or ``public_key`` parameters to the constructor. For example:
@@ -104,58 +100,84 @@ To allow for runtime specification of keys you can optionally pass the
         private_key='98dfg6df7g56df6gdfgdfg65JHJH656565GFGFGs',
     )
 
-If specified these parameters will be used instead of your reCAPTCHA project
-settings.
+If specified, these parameters will be used instead of your reCAPTCHA project settings.
 
-The reCAPTCHA widget supports several `Javascript options variables
-<https://developers.google.com/recaptcha/docs/display#js_param>`_ that
-customize the behaviour of the widget, such as ``theme`` and ``lang``. You can
-forward these options to the widget by passing an ``attr`` parameter to the
-field, containing a dictionary of options. For example:
+Widgets
+~~~~~~~
+
+There are three widgets that can be used with the ``ReCaptchaField`` class:
+
+    ``ReCaptchaV2Checkbox`` for `Google reCAPTCHA V2 - Checkbox <https://developers.google.com/recaptcha/docs/display>`_
+
+    ``ReCaptchaV2Invisible`` for `Google reCAPTCHA V2 - Invisible <https://developers.google.com/recaptcha/docs/invisible>`_
+
+    ``ReCaptchaV3`` for `Google reCAPTCHA V3 <https://developers.google.com/recaptcha/docs/v3>`_
+
+To make use of widgets other than the default Google reCAPTCHA V2 - Checkbox widget, simply replace the ``ReCaptchaField`` widget. For example:
 
 .. code-block:: python
 
-    captcha = ReCaptchaField(attrs={
-      'theme' : 'clean',
-    })
+    from django import forms
+    from captcha.fields import ReCaptchaField
+    from captcha.widgets import ReCaptchaV2Invisible
 
-The client takes the key/value pairs and writes out the ``RecaptchaOptions``
-value in JavaScript.
+    class FormWithCaptcha(forms.Form):
+        captcha = ReCaptchaField(widget=ReCaptchaV2Invisible)
 
+The reCAPTCHA widget supports several `data attributes
+<https://developers.google.com/recaptcha/docs/display#render_param>`_ that
+customize the behaviour of the widget, such as ``data-theme``, ``data-size``, etc. You can
+forward these options to the widget by passing an ``attrs`` parameter to the
+widget, containing a dictionary of options. For example:
+
+.. code-block:: python
+
+    captcha = fields.ReCaptchaField(
+        widget=widgets.ReCaptchaV2Checkbox(
+            attrs={
+                'data-theme': 'dark',
+                'data-size': 'compact',
+            }
+        )
+    )
+    # The ReCaptchaV2Invisible widget
+    # ignores the "data-size" attribute in favor of 'data-size="invisible"'
+
+The reCAPTCHA api supports several `paramaters
+<https://developers.google.com/recaptcha/docs/display#js_param>`_. To customise
+the paramaters that get sent along pass an ``api_params`` paramater to the
+widget, containing a dictionary of options. For example:
+
+.. code-block:: python
+
+    captcha = fields.ReCaptchaField(
+        widget=widgets.ReCaptchaV2Checkbox(
+            api_params={'hl': 'cl', 'onload': 'onLoadFunc'}
+        )
+    )
+    # The dictionary is urlencoded and appended to the reCAPTCHA api url.
+
+By default, the widgets provided only supports a single form with a single widget on each page.
+
+The language can be set with the 'h1' parameter, look at `language codes
+<https://developers.google.com/recaptcha/docs/language>`_ for the language code options. Note that translations need to be added to this package for the errors to be shown correctly. Currently the package has error translations for the following language codes: es, fr, nl, pl, pt_BR, ru, zh_CN, zh_TW
+
+However, the JavaScript used by the widgets can easily be overridden in the templates.
+
+The templates are located in:
+
+    ``captcha/includes/js_v2_checkbox.html`` for overriding the reCAPTCHA V2 - Checkbox template
+
+    ``captcha/includes/js_v2_invisible.html`` for overriding the reCAPTCHA V2 - Invisible template
+
+    ``captcha/includes/js_v3.html`` for overriding the reCAPTCHA V3 template
+
+ For more information about overriding templates look at `Django's template override <https://docs.djangoproject.com/en/2.1/howto/overriding-templates/>`_
 
 Local Development and Functional Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Google provides test keys which are set as the default for ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA.
-
-
-AJAX(Marked for deprecation)
-~~~~~
-
-To make reCAPTCHA work in ajax-loaded forms:
-
-#. Import ``recaptcha_ajax.js`` on your page (not in the loaded template):
-
-   .. code-block:: html
-
-       <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
-
-#. Add to your Django settings:
-
-   .. code-block:: python
-
-       CAPTCHA_AJAX = True
-
-
-Disabling SSL
-~~~~~~~~~~~~~
-
-This library used to not use SSL by default, but now it does. You can disable
-this if required, but you should think long and hard about it before you do so!
-
-You can disable it by setting ``RECAPTCHA_USE_SSL = False`` in your Django
-settings, or by passing ``use_ssl=False`` to the constructor of
-``ReCaptchaField``.
 
 
 Credits

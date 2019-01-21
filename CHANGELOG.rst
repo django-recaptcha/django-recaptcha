@@ -1,6 +1,17 @@
 Changelog
 =========
 
+2.0.0
+-----
+
+#. ReCAPTCHA v3 support added.
+#. Remove all mention of the V1 reCAPTCHA endpoint.
+#. Refactor client, fields and widgets code.
+#. Added widgets for each type of reCAPTCHA: ``V2 Checkbox``, ``V2 Invisible``, ``V3``
+#. Remove the need for the widget template to be selected based on certain settings values, each widget has its own template.
+#. Introduced a large number of new unit tests, update tests to make use of tox venvs.
+#. Regenerated po and mo files.
+
 1.5.0 (2019-01-09)
 ------------------
 

@@ -7,17 +7,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: django-recapcha\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-19 17:20+0100\n"
+"POT-Creation-Date: 2019-01-21 09:40+0200\n"
 "PO-Revision-Date: 2013-09-18 16:37-0300\n"
 "Last-Translator: Rodrigo Primo <rodrigo@hacklab.com.br>\n"
 "Language-Team: Hacklab <contato@hacklab.com.br>\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
-"Language: pt_BR\n"
 
-#: fields.py:15
-msgid "Incorrect, please try again."
+#: captcha/fields.py:26 captcha/fields.py:27
+#, fuzzy
+#| msgid "Incorrect, please try again."
+msgid "Error verifying reCAPTCHA, please try again."
 msgstr "Incorreto, por favor tente de novo."
