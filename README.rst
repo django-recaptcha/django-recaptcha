@@ -64,11 +64,13 @@ Installation
 
         RECAPTCHA_PROXY = {'http': 'http://127.0.0.1:8000', 'https': 'https://127.0.0.1:8000'}
 
-#. (OPTIONAL) If you need to alter the reCAPTCHA verify url, specify it in the ``RECAPTCHA_VERIFY_ENDPOINT`` setting:
+#. (OPTIONAL) In the event ``www.google.com`` is not accessible the ``RECAPTCHA_DOMAIN`` setting can be changed to ``www.recaptcha.net`` as per the `reCAPTCHA FAQ <https://developers.google.com/recaptcha/docs/faq#can-i-use-recaptcha-globally>`_:
 
     .. code-block:: python
 
-        RECAPTCHA_VERIFY_ENDPOINT = 'http://www.google.com/recaptcha/api/siteverify'
+        RECAPTCHA_DOMAIN = 'www.recaptcha.net'
+
+This will change the Google JavaScript api domain as well as the client side field verification domain.
 
 Usage
 -----
@@ -122,9 +124,9 @@ To make use of widgets other than the default Google reCAPTCHA V2 - Checkbox wid
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField(widget=ReCaptchaV2Invisible)
 
-The reCAPTCHA widget supports several `Javascript options variables
-<https://developers.google.com/recaptcha/docs/display#js_param>`_ that
-customize the behaviour of the widget, such as ``data-theme`` and ``language``. You can
+The reCAPTCHA widget supports several `data attributes
+<https://developers.google.com/recaptcha/docs/display#render_param>`_ that
+customize the behaviour of the widget, such as ``data-theme``, ``data-size``, etc. You can
 forward these options to the widget by passing an ``attrs`` parameter to the
 widget, containing a dictionary of options. For example:
 
@@ -135,14 +137,30 @@ widget, containing a dictionary of options. For example:
             attrs={
                 'data-theme': 'dark',
                 'data-size': 'compact',
-                'language': 'cs'
             }
         )
     )
     # The ReCaptchaV2Invisible widget
     # ignores the "data-size" attribute in favor of 'data-size="invisible"'
 
+The reCAPTCHA api supports several `paramaters
+<https://developers.google.com/recaptcha/docs/display#js_param>`_. To customise
+the paramaters that get sent along pass an ``api_params`` paramater to the
+widget, containing a dictionary of options. For example:
+
+.. code-block:: python
+
+    captcha = fields.ReCaptchaField(
+        widget=widgets.ReCaptchaV2Checkbox(
+            api_params={'hl': 'cl', 'onload': 'onLoadFunc'}
+        )
+    )
+    # The dictionary is urlencoded and appended to the reCAPTCHA api url.
+
 By default, the widgets provided only supports a single form with a single widget on each page.
+
+The language can be set with the 'h1' parameter, look at `language codes
+<https://developers.google.com/recaptcha/docs/language>`_ for the language code options. Note that translations need to be added to this package for the errors to be shown correctly. Currently the package has error translations for the following language codes: es, fr, nl, pl, pt_BR, ru, zh_CN, zh_TW
 
 However, the JavaScript used by the widgets can easily be overridden in the templates.
 

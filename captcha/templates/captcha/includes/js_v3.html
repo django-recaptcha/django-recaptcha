@@ -1,5 +1,5 @@
 {# The provided implementation caters for only one reCAPTCHA on a page. Override this template and its logic as needed. #}
-<script src="https://www.google.com/recaptcha/api.js?render={{ public_key }}{% if language %}&hl={{ language }}{% endif %}"></script>
+<script src="https://{{ recaptcha_domain }}/recaptcha/api.js?render={{ public_key }}{% if api_params %}&{{ api_params }}{% endif %}"></script>
 <script type="text/javascript">
     grecaptcha.ready(function() {
         grecaptcha.execute('{{ public_key }}', {action: 'form'})

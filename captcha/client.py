@@ -5,10 +5,11 @@ from django.conf import settings
 from captcha._compat import (
     build_opener, ProxyHandler, PY2, Request, urlencode, urlopen
 )
+from captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
 from captcha.decorators import generic_deprecation
 
 
-RECAPTCHA_SUPPORTED_LANUAGES = ('en', 'nl', 'fr', 'de', 'pt', 'ru', 'es', 'tr')
+RECAPTCHA_SUPPORTED_LANUAGES = ("en", "nl", "fr", "de", "pt", "ru", "es", "tr")
 
 
 class RecaptchaResponse(object):
@@ -19,10 +20,8 @@ class RecaptchaResponse(object):
 
 def recaptcha_request(params):
     request_object = Request(
-        url=getattr(
-            settings,
-            "RECAPTCHA_VERIFY_ENDPOINT",
-            "https://www.google.com/recaptcha/api/siteverify"
+        url="https://%s/recaptcha/api/siteverify" % getattr(
+            settings, "RECAPTCHA_DOMAIN", DEFAULT_RECAPTCHA_DOMAIN
         ),
         data=params,
         headers={
