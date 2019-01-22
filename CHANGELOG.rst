@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.0.1
+-----
+
+#. Bugfix: Remove extra div in widget_v3 template
+
 2.0.0
 -----
 
