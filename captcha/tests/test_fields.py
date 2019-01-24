@@ -91,19 +91,6 @@ class TestFields(TestCase):
             ["Error verifying reCAPTCHA, please try again."]
         )
 
-    @override_settings(RECAPTCHA_PRIVATE_KEY=constants.TEST_PRIVATE_KEY)
-    def test_test_key_warning(self):
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always")
-
-            class ImporperForm(forms.Form):
-                captcha = fields.ReCaptchaField()
-
-            assert len(w) == 1
-            assert issubclass(w[-1].category, RuntimeWarning)
-            assert "RECAPTCHA_PRIVATE_KEY or RECAPTCHA_PUBLIC_KEY" in str(
-                w[-1].message)
-
 
 class TestWidgets(TestCase):
     @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
