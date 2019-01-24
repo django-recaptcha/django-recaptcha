@@ -46,9 +46,7 @@ Installation
             ...
         ]
 
-#. Add the Google reCAPTCHA keys generated in step 1 to your Django production settings.
-Note that omitting these settings will default to a set of test keys which can be used for development.``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``.
-Ensure ``SILENCED_SYSTEM_CHECKS = [..., 'captcha.recaptcha_test_key_error', ...]`` is set to bypass the security check that prevents the test keys from being used unknowingly.
+#. Add the Google reCAPTCHA keys generated in step 1 to your Django production settings. Note that omitting these settings will default to a set of test keys which can be used for development.``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. Also ensure ``SILENCED_SYSTEM_CHECKS = [..., 'captcha.recaptcha_test_key_error', ...]`` is set to bypass the security check that prevents the test keys from being used unknowingly.
 
     For example:
 
