@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.0.2
+-----
+#. Moved field based Google dev key check to an app ready registered security check.
+
 2.0.1
 -----
 

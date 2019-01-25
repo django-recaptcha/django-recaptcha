@@ -52,16 +52,6 @@ class ReCaptchaField(forms.CharField):
         self.public_key = public_key or getattr(
             settings, "RECAPTCHA_PUBLIC_KEY", TEST_PUBLIC_KEY)
 
-        if self.private_key == TEST_PRIVATE_KEY or \
-                self.public_key == TEST_PUBLIC_KEY:
-            warnings.warn(
-                "RECAPTCHA_PRIVATE_KEY or RECAPTCHA_PUBLIC_KEY is making use"
-                " of the Google test keys and will not behave as expected in a"
-                " production environment",
-                RuntimeWarning,
-                2
-            )
-
         # Update widget attrs with data-sitekey.
         self.widget.attrs["data-sitekey"] = self.public_key
 
