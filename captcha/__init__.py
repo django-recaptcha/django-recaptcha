@@ -17,3 +17,5 @@ for variable, instance_type in SETTINGS_TYPES.items():
         raise ImproperlyConfigured(
             "Setting %s is not of type" % variable, instance_type
         )
+
+default_app_config = "captcha.apps.CaptchaConfig"
