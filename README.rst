@@ -12,7 +12,7 @@ Django reCAPTCHA
     :target: https://pypi.python.org/pypi/django-recaptcha
 .. image:: https://img.shields.io/pypi/djversions/django-recaptcha.svg
     :target: https://pypi.python.org/pypi/django-recaptcha
-   
+
 .. contents:: Contents
     :depth: 5
 
@@ -27,7 +27,7 @@ Requirements
 Tested with:
 
 * Python: 2.7, 3.5, 3.6, 3.7
-* Django: 1.11, 2.0, 2.1
+* Django: 1.11, 2.0, 2.1, 2.2
 
 Installation
 ------------
