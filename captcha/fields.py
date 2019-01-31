@@ -1,3 +1,4 @@
+import hashlib
 import logging
 import os
 import socket
@@ -6,8 +7,8 @@ import warnings
 
 from django import forms
 from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
-from django.core.exceptions import ValidationError
+from django.core import signing
+from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 
@@ -26,8 +27,11 @@ class ReCaptchaField(forms.CharField):
         "captcha_invalid": _("Error verifying reCAPTCHA, please try again."),
         "captcha_error": _("Error verifying reCAPTCHA, please try again."),
     }
+    cache_key_salt = "recaptcha_field_result_cache"
+    cache_key_base = "%s-captcha-cached-result"
 
-    def __init__(self, public_key=None, private_key=None, *args, **kwargs):
+    def __init__(self, public_key=None, private_key=None,
+                 wizard_persist_is_valid=None, *args, **kwargs):
         """
         ReCaptchaField can accepts attributes which is a dictionary of
         attributes to be passed to the ReCaptcha widget class. The widget will
@@ -45,6 +49,7 @@ class ReCaptchaField(forms.CharField):
 
         # reCAPTCHA fields are always required.
         self.required = True
+        self.wizard_persist_is_valid = wizard_persist_is_valid or False
 
         # Setup instance variables.
         self.private_key = private_key or getattr(
@@ -55,18 +60,67 @@ class ReCaptchaField(forms.CharField):
         # Update widget attrs with data-sitekey.
         self.widget.attrs["data-sitekey"] = self.public_key
 
-    def get_remote_ip(self):
+    def request(self):
         f = sys._getframe()
         while f:
             request = f.f_locals.get("request")
             if request:
-                remote_ip = request.META.get("REMOTE_ADDR", "")
-                forwarded_ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
-                ip = remote_ip if not forwarded_ip else forwarded_ip
-                return ip
+                return request
             f = f.f_back
+        return None
+
+    def get_remote_ip(self):
+        request = self.request()
+        if request:
+            remote_ip = request.META.get("REMOTE_ADDR", "")
+            forwarded_ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
+            ip = remote_ip if not forwarded_ip else forwarded_ip
+            return ip
+
+    def _cache_key(self, path):
+        return hashlib.sha256(
+            (self.cache_key_base % path).encode("utf-8")
+        ).hexdigest()
+
+    def _get_result(self):
+        is_valid = False
+        request = self.request()
+        token = request.session.get(
+            self._cache_key(request.get_full_path()), None
+        )
+        if not token:
+            return is_valid
+
+        # Make use of the signing package to ensure the token has not expired.
+        try:
+            # TODO: max_age, global setting or field kwarg
+            is_valid = signing.loads(
+                token,
+                salt=self.cache_key_salt,
+                max_age=10
+            )
+        except signing.SignatureExpired:
+            return is_valid
+
+        return is_valid
+
+    def _set_result(self):
+        request = self.request()
+        token = signing.dumps(
+            True,
+            salt=self.cache_key_salt
+        )
+        request.session[self._cache_key(request.get_full_path())] = token
 
     def validate(self, value):
+        # Do not do any further validation. This field has already
+        # been validated successfully.
+        # NOTE: Needs to happen before super, not all the widget templates have
+        # inputs that actually get updated, as such required and additional
+        # checks will also fail.
+        if self.wizard_persist_is_valid and self._get_result() is True:
+            return None
+
         super(ReCaptchaField, self).validate(value)
 
         try:
@@ -91,3 +145,5 @@ class ReCaptchaField(forms.CharField):
                 self.error_messages["captcha_invalid"],
                 code="captcha_invalid"
             )
+        if self.wizard_persist_is_valid:
+            self._set_result()
