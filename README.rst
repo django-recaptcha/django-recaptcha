@@ -179,7 +179,7 @@ Local Development and Functional Testing
 
 Google provides test keys which are set as the default for ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA.
 
-To bypass the security check that prevents the test keys from being used unknowingly add ``SILENCED_SYSTEM_CHECKS = [..., 'captcha.recaptcha_test_key_error', ...]`` to you settings, here is an example:
+To bypass the security check that prevents the test keys from being used unknowingly add ``SILENCED_SYSTEM_CHECKS = [..., 'captcha.recaptcha_test_key_error', ...]`` to your settings, here is an example:
 
     .. code-block:: python
 
