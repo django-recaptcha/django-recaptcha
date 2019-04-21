@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.0.3
+-----
+#. Added testing for Django 2.2 (no code changes needed).
+
 2.0.2
 -----
 #. Moved field based Google dev key check to an app ready registered security check.
