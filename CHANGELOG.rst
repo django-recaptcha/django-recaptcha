@@ -1,7 +1,7 @@
 Changelog
 =========
 
-X.Y.Z
+2.0.3
 -----
 #. Added testing for Django 2.2 (no code changes needed).
 
