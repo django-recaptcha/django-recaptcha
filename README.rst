@@ -26,7 +26,7 @@ Requirements
 
 Tested with:
 
-* Python: 2.7, 3.5.6, 3.6.7, 3.7
+* Python: 2.7, 3.5.7, 3.6.8, 3.7
 * Django: 1.11, 2.0, 2.1, 2.2
 
 
