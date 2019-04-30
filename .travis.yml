@@ -21,7 +21,7 @@ matrix:
       env: TOXENV=django2-py35
     - python: "3.5"
       env: TOXENV=django21-py35
-    - python: "3.5"
+    - python: "3.5.7"
       env: TOXENV=django22-py357
 
     - python: "3.6"
@@ -30,7 +30,7 @@ matrix:
       env: TOXENV=django2-py36
     - python: "3.6"
       env: TOXENV=django21-py36
-    - python: "3.6"
+    - python: "3.6.8"
       env: TOXENV=django22-py368
 
     - python: "3.7"
