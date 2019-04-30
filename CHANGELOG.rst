@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.0.4
+-----
+#. Fixed travis tests for django 2.2
+
 2.0.3
 -----
 #. Added testing for Django 2.2 (no code changes needed).

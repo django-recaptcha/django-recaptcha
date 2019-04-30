@@ -26,8 +26,13 @@ Requirements
 
 Tested with:
 
-* Python: 2.7, 3.5, 3.6, 3.7
+* Python: 2.7, 3.5.7, 3.6.8, 3.7
 * Django: 1.11, 2.0, 2.1, 2.2
+
+
+.. note::
+   Django 2.2 requires SQLite 3.8.3 or later, from the Django 2.2 release notes:
+   Django 2.2 supports Python 3.5, 3.6, and 3.7. We highly recommend and only officially support the latest release of each series.
 
 Installation
 ------------
