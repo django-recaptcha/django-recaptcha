@@ -12,7 +12,7 @@ Django reCAPTCHA
     :target: https://pypi.python.org/pypi/django-recaptcha
 .. image:: https://img.shields.io/pypi/djversions/django-recaptcha.svg
     :target: https://pypi.python.org/pypi/django-recaptcha
-   
+
 .. contents:: Contents
     :depth: 5
 
@@ -26,8 +26,13 @@ Requirements
 
 Tested with:
 
-* Python: 2.7, 3.5, 3.6, 3.7
-* Django: 1.11, 2.0, 2.1
+* Python: 2.7, 3.5.7, 3.6.8, 3.7
+* Django: 1.11, 2.0, 2.1, 2.2
+
+
+.. note::
+   Django 2.2 requires SQLite 3.8.3 or later, from the Django 2.2 release notes:
+   Django 2.2 supports Python 3.5, 3.6, and 3.7. We highly recommend and only officially support the latest release of each series.
 
 Installation
 ------------
@@ -179,7 +184,7 @@ Local Development and Functional Testing
 
 Google provides test keys which are set as the default for ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA.
 
-To bypass the security check that prevents the test keys from being used unknowingly add ``SILENCED_SYSTEM_CHECKS = [..., 'captcha.recaptcha_test_key_error', ...]`` to you settings, here is an example:
+To bypass the security check that prevents the test keys from being used unknowingly add ``SILENCED_SYSTEM_CHECKS = [..., 'captcha.recaptcha_test_key_error', ...]`` to your settings, here is an example:
 
     .. code-block:: python
 
