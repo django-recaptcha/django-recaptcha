@@ -14,7 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 from captcha import client
 from captcha._compat import HTTPError, urlencode
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
-from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaBase
+from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaBase, ReCaptchaV3
 
 
 logger = logging.getLogger(__name__)
@@ -91,3 +91,19 @@ class ReCaptchaField(forms.CharField):
                 self.error_messages["captcha_invalid"],
                 code="captcha_invalid"
             )
+
+        if isinstance(self.widget, ReCaptchaV3):
+            score = self.widget.attrs.get("score-threshold") or getattr(
+                settings, "RECAPTCHA_SCORE_THRESHOLD", None)
+            if not score:
+                return
+            score_response = check_captcha.extra_data['score']
+            if score_response < score:
+                logger.error(
+                    "ReCaptchaV3: score=%s less than score threshold=%s" %
+                    (score_response, score)
+                )
+                raise ValidationError(
+                    self.error_messages["captcha_invalid"],
+                    code="captcha_invalid"
+                )
