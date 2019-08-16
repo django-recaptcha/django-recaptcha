@@ -1,9 +1,11 @@
 import uuid
 
 try:
-    from unittest.mock import patch, PropertyMock, MagicMock
-except ImportError:
+    # Python 2.7 does not have the mock module included, Python 3.5 has some
+    # features missing. We only install mock for those two versions.
     from mock import patch, PropertyMock, MagicMock
+except ImportError:
+    from unittest.mock import patch, PropertyMock, MagicMock
 
 from django import forms
 from django.conf import settings
