@@ -16,7 +16,7 @@ class RecaptchaResponse(object):
     def __init__(self, is_valid, error_codes=None, extra_data=None):
         self.is_valid = is_valid
         self.error_codes = error_codes or []
-        self.extra_data = extra_data
+        self.extra_data = extra_data or {}
 
 
 def recaptcha_request(params):

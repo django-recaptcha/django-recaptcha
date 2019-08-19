@@ -92,16 +92,25 @@ class ReCaptchaField(forms.CharField):
                 code="captcha_invalid"
             )
 
-        if isinstance(self.widget, ReCaptchaV3):
-            score = self.widget.attrs.get("score-threshold") or getattr(
-                settings, "RECAPTCHA_SCORE_THRESHOLD", None)
-            if not score:
-                return
-            score_response = check_captcha.extra_data['score']
-            if score_response < score:
+        required_score = self.widget.attrs.get("required_score")
+        if required_score:
+            # Our score values need to be floats, as that is the expected
+            # response from the Google endpoint. Rather than ensure that on
+            # the widget, we do it on the field to better support user
+            # subclassing of the widgets.
+            required_score = float(required_score)
+
+            # If a score was expected but non was returned, default to a 0,
+            # which is the lowest score that it can return. This is to do our
+            # best to assure a failure here, we can not assume that a form
+            # that needed the threshold should be valid if we didn't get a
+            # value back.
+            score = float(check_captcha.extra_data.get("score", 0))
+
+            if required_score > score:
                 logger.error(
-                    "ReCaptchaV3: score=%s less than score threshold=%s" %
-                    (score_response, score)
+                    "ReCAPTCHA validation failed due to its score of %s"
+                    " being lower than the required amount." % score
                 )
                 raise ValidationError(
                     self.error_messages["captcha_invalid"],
