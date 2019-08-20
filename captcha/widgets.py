@@ -72,6 +72,15 @@ class ReCaptchaV2Invisible(ReCaptchaBase):
 class ReCaptchaV3(ReCaptchaBase):
     template_name = "captcha/widget_v3.html"
 
+    def __init__(self, api_params=None, *args, **kwargs):
+        super(ReCaptchaV3, self).__init__(
+            api_params=api_params, *args, **kwargs
+        )
+        if not self.attrs.get("required_score", None):
+            self.attrs["required_score"] = getattr(
+                settings, "RECAPTCHA_REQUIRED_SCORE", None
+            )
+
     def build_attrs(self, base_attrs, extra_attrs=None):
         attrs = super(ReCaptchaV3, self).build_attrs(
             base_attrs, extra_attrs
