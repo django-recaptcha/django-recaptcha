@@ -179,6 +179,34 @@ The templates are located in:
 
  For more information about overriding templates look at `Django's template override <https://docs.djangoproject.com/en/2.1/howto/overriding-templates/>`_
 
+reCAPTCHA v3 Score
+~~~~~~~~~~~~~~~~~~
+
+As of version 3, reCAPTCHA also returns a score value. This can be used to determine the likelihood of the page interaction being a bot. See the Google `documentation <https://developers.google.com/recaptcha/docs/v3#score>`_ for more details.
+
+To set a project wide score limit use the ``RECAPTCHA_REQUIRED_SCORE`` setting.
+
+    For example:
+
+    .. code-block:: python
+
+        RECAPTCHA_REQUIRED_SCORE = 0.85
+
+For per field, runtime, specification the attribute can also be passed to the widget:
+
+    .. code-block:: python
+
+        captcha = fields.ReCaptchaField(
+            widget=ReCaptchaV3(
+                attrs={
+                    'required_score':0.85,
+                    ...
+                }
+            )
+        )
+
+In the event the score does not meet the requirements, the field validation will fail as expected and an error message will be logged.
+
 Local Development and Functional Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

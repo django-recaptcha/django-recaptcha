@@ -14,7 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 from captcha import client
 from captcha._compat import HTTPError, urlencode
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
-from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaBase
+from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaBase, ReCaptchaV3
 
 
 logger = logging.getLogger(__name__)
@@ -91,3 +91,28 @@ class ReCaptchaField(forms.CharField):
                 self.error_messages["captcha_invalid"],
                 code="captcha_invalid"
             )
+
+        required_score = self.widget.attrs.get("required_score")
+        if required_score:
+            # Our score values need to be floats, as that is the expected
+            # response from the Google endpoint. Rather than ensure that on
+            # the widget, we do it on the field to better support user
+            # subclassing of the widgets.
+            required_score = float(required_score)
+
+            # If a score was expected but non was returned, default to a 0,
+            # which is the lowest score that it can return. This is to do our
+            # best to assure a failure here, we can not assume that a form
+            # that needed the threshold should be valid if we didn't get a
+            # value back.
+            score = float(check_captcha.extra_data.get("score", 0))
+
+            if required_score > score:
+                logger.error(
+                    "ReCAPTCHA validation failed due to its score of %s"
+                    " being lower than the required amount." % score
+                )
+                raise ValidationError(
+                    self.error_messages["captcha_invalid"],
+                    code="captcha_invalid"
+                )
