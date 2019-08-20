@@ -1,6 +1,10 @@
 Changelog
 =========
 
+next
+----
+#. Added settings and kwargs that allow for the validation of reCAPTCHA v3 score values.
+
 2.0.4
 -----
 #. Fixed travis tests for django 2.2
