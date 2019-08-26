@@ -13,9 +13,10 @@ RECAPTCHA_SUPPORTED_LANUAGES = ("en", "nl", "fr", "de", "pt", "ru", "es", "tr")
 
 
 class RecaptchaResponse(object):
-    def __init__(self, is_valid, error_codes=None):
+    def __init__(self, is_valid, error_codes=None, extra_data=None):
         self.is_valid = is_valid
         self.error_codes = error_codes or []
+        self.extra_data = extra_data or {}
 
 
 def recaptcha_request(params):
@@ -66,6 +67,7 @@ def submit(recaptcha_response, private_key, remoteip):
     data = json.loads(response.read().decode("utf-8"))
     response.close()
     return RecaptchaResponse(
-        is_valid=data["success"],
-        error_codes=data.get("error-codes")
+        is_valid=data.pop("success"),
+        error_codes=data.pop("error-codes", None),
+        extra_data=data
     )
