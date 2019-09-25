@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.0.6
+-----
+#. Changed log level of check failures from error to warning.
+
 2.0.5
 -----
 #. Added settings and kwargs that allow for the validation of reCAPTCHA v3 score values.
