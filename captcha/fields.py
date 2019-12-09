@@ -92,6 +92,19 @@ class ReCaptchaField(forms.CharField):
                 code="captcha_invalid"
             )
 
+        validate_hostname = self.widget.attrs.get("validate_hostname")
+        if validate_hostname:
+            hostname = check_captcha.extra_data.get("hostname")
+            if not validate_hostname(hostname):
+                logger.error(
+                    "ReCAPTCHA validation failed because hostname %s rejected"
+                    % hostname
+                )
+                raise ValidationError(
+                    self.error_messages["captcha_invalid"],
+                    code="captcha_invalid"
+                )
+
         required_score = self.widget.attrs.get("required_score")
         if required_score:
             # Our score values need to be floats, as that is the expected

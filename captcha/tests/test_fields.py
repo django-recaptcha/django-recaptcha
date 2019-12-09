@@ -1,4 +1,5 @@
 import os
+import re
 import uuid
 import warnings
 
@@ -18,6 +19,16 @@ from captcha.client import RecaptchaResponse
 
 class DefaultForm(forms.Form):
     captcha = fields.ReCaptchaField()
+
+
+def validate_hostname(hostname):
+    """
+    Validates a hostname against a pattern
+    :param hostname: a str that is a hostname that should match the pattern
+    :return: True if the hostname matches the pattern
+    """
+    pattern = "^.*\.valid\.com$"
+    return re.compile(pattern).match(hostname)
 
 
 class TestFields(TestCase):
@@ -90,6 +101,60 @@ class TestFields(TestCase):
             form.errors["captcha"],
             ["Error verifying reCAPTCHA, please try again."]
         )
+
+    @patch("captcha.fields.client.submit")
+    def test_validate_hostname_success_using_attr(self, mocked_submit):
+        mocked_submit.return_value = RecaptchaResponse(
+            is_valid=True,
+            extra_data={'hostname': 'example.valid.com'}
+        )
+        form_params = {"g-recaptcha-response": "PASSED"}
+
+        class HostnameForm(forms.Form):
+            captcha = fields.ReCaptchaField(
+                widget=widgets.ReCaptchaBase(
+                    attrs={
+                        "validate_hostname": validate_hostname,
+                    },
+                )
+            )
+
+        form = HostnameForm(form_params)
+        self.assertTrue(form.is_valid())
+
+    @patch("captcha.fields.client.submit")
+    @override_settings(RECAPTCHA_VALIDATE_HOSTNAME=validate_hostname)
+    def test_validate_hostname_success(self, mocked_submit):
+        mocked_submit.return_value = RecaptchaResponse(
+            is_valid=True,
+            extra_data={'hostname': 'example.valid.com'}
+        )
+        form_params = {"g-recaptcha-response": "PASSED"}
+
+        class HostnameForm(forms.Form):
+            captcha = fields.ReCaptchaField(
+                widget=widgets.ReCaptchaBase()
+            )
+
+        form = HostnameForm(form_params)
+        self.assertTrue(form.is_valid())
+
+    @patch("captcha.fields.client.submit")
+    @override_settings(RECAPTCHA_VALIDATE_HOSTNAME=validate_hostname)
+    def test_validate_hostname_failure(self, mocked_submit):
+        mocked_submit.return_value = RecaptchaResponse(
+            is_valid=True,
+            extra_data={'hostname': 'example.invalid.com'}
+        )
+        form_params = {"g-recaptcha-response": "PASSED"}
+
+        class HostnameForm(forms.Form):
+            captcha = fields.ReCaptchaField(
+                widget=widgets.ReCaptchaBase()
+            )
+
+        form = HostnameForm(form_params)
+        self.assertFalse(form.is_valid())
 
 
 class TestWidgets(TestCase):
