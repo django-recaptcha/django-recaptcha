@@ -73,6 +73,18 @@ Installation
 
 This will change the Google JavaScript api domain as well as the client side field verification domain.
 
+#. (OPTIONAL) When `Verify the origin of reCAPTCHA solutions` is unchecked in the reCaptcha settings, then you are required to check the hostname on your server  verifying a solution as per the `reCAPTCHA Domain/Package Name Validation <https://developers.google.com/recaptcha/docs/domain_validation>`_. Set the RECAPTCHA_VALIDATE_HOSTNAME to a function that takes a str and returns True when when the domain is expected:
+
+    .. code-block:: python
+
+        def validate_hostname(hostname):
+            return re.compile("^.*\.valid\.com$").match(hostname)
+
+        RECAPTCHA_VALIDATE_HOSTNAME = validate_hostname
+
+    This will change the Google JavaScript api domain as well as the client side field verification domain.
+
+
 Usage
 -----
 
