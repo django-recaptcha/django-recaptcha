@@ -21,7 +21,7 @@ def validate_hostname(hostname):
     :param hostname: a str that is a hostname that should match the pattern
     :return: True if the hostname matches the pattern
     """
-    pattern = "^.*\.valid\.com$"
+    pattern = r"^.*\.valid\.com$"
     return re.compile(pattern).match(hostname)
 
 
