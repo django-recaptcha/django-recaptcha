@@ -21,10 +21,8 @@ matrix:
       env: TOXENV=django2-py35
     - python: "3.5"
       env: TOXENV=django21-py35
-    - python: "3.5.7"
-      sudo: required
-      dist: xenial
-      env: TOXENV=django22-py357
+    - python: "3.5"
+      env: TOXENV=django22-py35
 
     - python: "3.6"
       env: TOXENV=django111-py36
@@ -32,10 +30,10 @@ matrix:
       env: TOXENV=django2-py36
     - python: "3.6"
       env: TOXENV=django21-py36
-    - python: "3.6.8"
-      sudo: required
-      dist: xenial
-      env: TOXENV=django22-py368
+    - python: "3.6"
+      env: TOXENV=django22-py36
+    - python: "3.6"
+      env: TOXENV=django3-py36
 
     - python: "3.7"
       sudo: required
@@ -56,7 +54,20 @@ matrix:
     - python: "3.7"
       sudo: required
       dist: xenial
+      env: TOXENV=django3-py37
+    - python: "3.7"
+      sudo: required
+      dist: xenial
       env: TOXENV=pycodestyle-py37
+
+    - python: "3.8"
+      sudo: required
+      dist: xenial
+      env: TOXENV=django3-py38
+    - python: "3.8"
+      sudo: required
+      dist: xenial
+      env: TOXENV=pycodestyle-py38
 
 cache: pip
 

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.0.6
+-----
+#. Added testing for Django 3 (no code changes needed).
+
 2.0.5
 -----
 #. Added settings and kwargs that allow for the validation of reCAPTCHA v3 score values.
