@@ -32,3 +32,4 @@ Other
 * `Alexey Subbotin <https://github.com/dotsbb>`_
 * `Sean Stewart <https://github.com/mindcruzer>`_
 * `Rob Charlwood <https://github.com/robcharlwood>`_
+* `Ryan Sullivan <https://github.com/rgs258>`_
