@@ -28,6 +28,9 @@ class ReCaptchaBase(widgets.Widget):
             self.attrs["validate_hostname"] = getattr(
                 settings, "RECAPTCHA_VALIDATE_HOSTNAME", None
             )
+        if not self.attrs.get("class", None):
+            self.attrs["class"] = "g-recaptcha"
+
 
     def value_from_datadict(self, data, files, name):
         return data.get(self.recaptcha_response_name, None)
