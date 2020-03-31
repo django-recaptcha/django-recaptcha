@@ -8,7 +8,7 @@
     });
     function recaptchaFormSubmit(event) {
         event.preventDefault();
-        grecaptcha.execute('{{ public_key }}', {action: 'form'})
+        grecaptcha.execute('{{ public_key }}', {action: '{{ action }}')
         .then(function(token) {
             console.log("reCAPTCHA validated for 'data-widget-uuid=\"{{ widget_uuid }}\"'. Setting input value...")
             element.value = token;
