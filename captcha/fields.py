@@ -2,6 +2,8 @@ import logging
 import sys
 from urllib.error import HTTPError
 
+from captcha.exceptions import CaptchaScoreError, CaptchaValidationError, \
+    CaptchaHTTPError
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
@@ -72,16 +74,17 @@ class ReCaptchaField(forms.CharField):
                 remoteip=self.get_remote_ip(),
             )
 
-        except HTTPError:  # Catch timeouts, etc
-            raise ValidationError(
+        except HTTPError as e:  # Catch timeouts, etc
+            raise CaptchaHTTPError(
                 self.error_messages["captcha_error"], code="captcha_error"
-            )
+            ) from e
 
         if not check_captcha.is_valid:
-            logger.warning(
+            logger.log(
+                getattr(settings, "RECAPTCHA_LOG_LEVEL_VALIDATE", logging.ERROR),
                 "ReCAPTCHA validation failed due to: %s" % check_captcha.error_codes
             )
-            raise ValidationError(
+            raise CaptchaValidationError(
                 self.error_messages["captcha_invalid"], code="captcha_invalid"
             )
 
@@ -101,10 +104,11 @@ class ReCaptchaField(forms.CharField):
             score = float(check_captcha.extra_data.get("score", 0))
 
             if required_score > score:
-                logger.warning(
+                logger.error(
+                    getattr(settings, "RECAPTCHA_LOG_LEVEL_SCORE", logging.ERROR),
                     "ReCAPTCHA validation failed due to its score of %s"
                     " being lower than the required amount." % score
                 )
-                raise ValidationError(
+                raise CaptchaScoreError(
                     self.error_messages["captcha_invalid"], code="captcha_invalid"
                 )
