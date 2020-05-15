@@ -1,21 +1,16 @@
 import logging
-import os
-import socket
 import sys
-import warnings
 
+from captcha import client
+from captcha._compat import HTTPError
+from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
+from captcha.exceptions import CaptchaScoreError, CaptchaHostnameError, \
+    CaptchaValidationError, CaptchaHTTPError
+from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaBase
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.core.exceptions import ValidationError
-from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
-
-from captcha import client
-from captcha._compat import HTTPError, urlencode
-from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
-from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaBase, ReCaptchaV3
-
 
 logger = logging.getLogger(__name__)
 
@@ -76,18 +71,18 @@ class ReCaptchaField(forms.CharField):
                 remoteip=self.get_remote_ip(),
             )
 
-        except HTTPError:  # Catch timeouts, etc
-            raise ValidationError(
+        except HTTPError as e:  # Catch timeouts, etc
+            raise CaptchaHTTPError(
                 self.error_messages["captcha_error"],
                 code="captcha_error"
-            )
+            ) from e
 
         if not check_captcha.is_valid:
-            logger.error(
-                "ReCAPTCHA validation failed due to: %s" %
-                check_captcha.error_codes
+            logger.log(
+                getattr(settings, "RECAPTCHA_LOG_LEVEL_VALIDATE", logging.ERROR),
+                "ReCAPTCHA validation failed due to: %s" % check_captcha.error_codes
             )
-            raise ValidationError(
+            raise CaptchaValidationError(
                 self.error_messages["captcha_invalid"],
                 code="captcha_invalid"
             )
@@ -96,11 +91,12 @@ class ReCaptchaField(forms.CharField):
         if validate_hostname:
             hostname = check_captcha.extra_data.get("hostname")
             if not validate_hostname(hostname):
-                logger.error(
-                    "ReCAPTCHA validation failed because hostname %s rejected"
-                    % hostname
+                logger.log(
+                    getattr(settings, "RECAPTCHA_LOG_LEVEL_HOSTNAME", logging.ERROR),
+                    "ReCAPTCHA validation failed because hostname %s rejected" %
+                    hostname
                 )
-                raise ValidationError(
+                raise CaptchaHostnameError(
                     self.error_messages["captcha_invalid"],
                     code="captcha_invalid"
                 )
@@ -121,11 +117,12 @@ class ReCaptchaField(forms.CharField):
             score = float(check_captcha.extra_data.get("score", 0))
 
             if required_score > score:
-                logger.error(
+                logger.log(
+                    getattr(settings, "RECAPTCHA_LOG_LEVEL_SCORE", logging.ERROR),
                     "ReCAPTCHA validation failed due to its score of %s"
                     " being lower than the required amount." % score
                 )
-                raise ValidationError(
+                raise CaptchaScoreError(
                     self.error_messages["captcha_invalid"],
                     code="captcha_invalid"
                 )
