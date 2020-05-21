@@ -6,7 +6,7 @@
         .then(function(token) {
             console.log("reCAPTCHA validated for 'data-widget-uuid=\"{{ widget_uuid }}\"'. Setting input value...")
             var element = document.querySelector('.g-recaptcha[data-widget-uuid="{{ widget_uuid }}"]');
-            element.value = token;
+            element.value = token || "-";
         });
     });
 </script>
