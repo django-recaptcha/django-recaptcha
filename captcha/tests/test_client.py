@@ -6,10 +6,9 @@ except ImportError:
     from mock import patch, PropertyMock, MagicMock
 
 from django import forms
-from django.conf import settings
 from django.test import TestCase, override_settings
 
-from captcha import client, constants, fields
+from captcha import client, fields
 
 
 class DefaultForm(forms.Form):
