@@ -97,6 +97,19 @@ The quickest way to add reCAPTCHA to a form is to use the included
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField()
 
+If you are using a custom template for your form, you need to include the captcha field and errors. For example:
+
+.. code-block:: htmldjango
+
+    {% extends "layout.html" %}
+    {% load static %}
+    {% load i18n %}
+    {% block content %}
+    <form enctype="multipart/form-data" method="post" action="{{request.some_action_here}}">
+        {% ... lots of form markup here ... %}
+        {{form.captcha.errors}}{{form.captcha}}
+    </form>
+    {% endblock %}
 
 To allow for runtime specification of keys you can optionally pass the
 ``private_key`` or ``public_key`` parameters to the constructor. For example:
