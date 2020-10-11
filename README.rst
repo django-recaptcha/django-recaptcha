@@ -210,6 +210,20 @@ For per field, runtime, specification the attribute can also be passed to the wi
 
 In the event the score does not meet the requirements, the field validation will fail as expected and an error message will be logged.
 
+After validating the form, the score value returned by Google will be present in the widget attribute ``returned_score``. In the case of any error the value of ``returned_score`` will remain it's initial value of ``None``. The ``returned_score`` can be accessed in a view like so:
+
+    .. code-block:: python
+
+        if form.is_valid():
+            # code here
+        else:
+            # more code here
+        
+        # after running is_valid() returned_score should be set, if there were no errors:
+        if not form.fields['captcha'].widget.attrs['returned_score'] is None:
+            print('Google returned a score of:' + form.fields['captcha'].widget.attrs['returned_score'])
+        
+
 Local Development and Functional Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

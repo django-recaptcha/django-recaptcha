@@ -107,6 +107,9 @@ class ReCaptchaField(forms.CharField):
             # value back.
             score = float(check_captcha.extra_data.get("score", 0))
 
+            # Update widget attrs with returned_score
+            self.widget.attrs["returned_score"] = score
+
             if required_score > score:
                 logger.error(
                     "ReCAPTCHA validation failed due to its score of %s"
