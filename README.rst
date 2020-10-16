@@ -151,9 +151,9 @@ widget, containing a dictionary of options. For example:
     # The ReCaptchaV2Invisible widget
     # ignores the "data-size" attribute in favor of 'data-size="invisible"'
 
-The reCAPTCHA api supports several `paramaters
+The reCAPTCHA api supports several `parameters
 <https://developers.google.com/recaptcha/docs/display#js_param>`_. To customise
-the paramaters that get sent along pass an ``api_params`` paramater to the
+the parameters that get sent along pass an ``api_params`` paramater to the
 widget, containing a dictionary of options. For example:
 
 .. code-block:: python
