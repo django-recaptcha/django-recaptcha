@@ -1,7 +1,3 @@
-import os
-import uuid
-import warnings
-
 try:
     from unittest.mock import patch, PropertyMock, MagicMock
 except ImportError:
@@ -11,7 +7,7 @@ from django import forms
 from django.core.exceptions import ImproperlyConfigured
 from django.test import TestCase, override_settings
 
-from captcha import fields, widgets, constants
+from captcha import fields, widgets
 from captcha._compat import HTTPError
 from captcha.client import RecaptchaResponse
 
