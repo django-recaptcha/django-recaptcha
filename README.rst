@@ -97,6 +97,7 @@ The quickest way to add reCAPTCHA to a form is to use the included
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField()
 
+Be sure to include the captcha field in your forms. There are many ways to add fields to forms in Django. We recommend you refer to the `form rendering options <https://docs.djangoproject.com/en/dev/topics/forms/#form-rendering-options>`_ and `rendering fields manually <https://docs.djangoproject.com/en/dev/topics/forms/#rendering-fields-manually>`_ sections of the `official Django documentation for forms <https://docs.djangoproject.com/en/dev/topics/forms>`_.
 
 To allow for runtime specification of keys you can optionally pass the
 ``private_key`` or ``public_key`` parameters to the constructor. For example:
