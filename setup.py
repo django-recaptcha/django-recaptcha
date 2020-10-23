@@ -16,7 +16,7 @@ setup(
     url='http://github.com/praekelt/django-recaptcha',
     packages=find_packages(),
     install_requires=[
-        'django>1.11,<4.0',
+        'django>1.11,<3.2',
     ],
     tests_require=[
         'tox',
@@ -25,6 +25,7 @@ setup(
     include_package_data=True,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
+        'Framework :: Django :: 3.1',
         'Framework :: Django :: 3.0',
         'Framework :: Django :: 2.2',
         'Framework :: Django :: 2.1',

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+X.Y.Z
+-----
+#. Added testing for Django 3.1 (no code changes needed).
+
 2.0.6
 -----
 #. Added testing for Django 3 (no code changes needed).

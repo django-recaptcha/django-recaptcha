@@ -36,6 +36,8 @@ jobs:
       env: TOXENV=django22-py36
     - python: "3.6"
       env: TOXENV=django3-py36
+    - python: "3.6"
+      env: TOXENV=django31-py36
 
     - python: "3.7"
       env: TOXENV=django111-py37
@@ -48,10 +50,14 @@ jobs:
     - python: "3.7"
       env: TOXENV=django3-py37
     - python: "3.7"
+      env: TOXENV=django31-py37
+    - python: "3.7"
       env: TOXENV=pycodestyle-py37
 
     - python: "3.8"
       env: TOXENV=django3-py38
+    - python: "3.8"
+      env: TOXENV=django31-py38
     - python: "3.8"
       env: TOXENV=pycodestyle-py38
 
