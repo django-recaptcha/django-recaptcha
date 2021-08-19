@@ -31,6 +31,7 @@ class ReCaptchaBase(widgets.Widget):
             "public_key": self.attrs["data-sitekey"],
             "widget_uuid": self.uuid,
             "api_params": params,
+            "action": self.attrs["action"],
             "recaptcha_domain": getattr(
                 settings, "RECAPTCHA_DOMAIN", DEFAULT_RECAPTCHA_DOMAIN
             ),
@@ -77,6 +78,8 @@ class ReCaptchaV3(ReCaptchaBase):
             self.attrs["required_score"] = getattr(
                 settings, "RECAPTCHA_REQUIRED_SCORE", None
             )
+        if not self.attrs.get("action", None):
+            self.attrs["action"] = "default"
 
     def build_attrs(self, base_attrs, extra_attrs=None):
         attrs = super(ReCaptchaV3, self).build_attrs(
