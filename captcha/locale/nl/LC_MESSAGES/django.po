@@ -19,7 +19,5 @@ msgstr ""
 "X-Generator: Poedit 1.5.5\n"
 
 #: captcha/fields.py:26 captcha/fields.py:27
-#, fuzzy
-#| msgid "Incorrect, please try again."
 msgid "Error verifying reCAPTCHA, please try again."
 msgstr "Incorrect, probeer het opnieuw."

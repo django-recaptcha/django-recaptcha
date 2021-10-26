@@ -13,10 +13,5 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: captcha/fields.py:26 captcha/fields.py:27
-#, fuzzy
-#| msgid "Error verifying input, please try again."
 msgid "Error verifying reCAPTCHA, please try again."
 msgstr "無法驗證輸入，請重試。"
-
-#~ msgid "Incorrect, please try again."
-#~ msgstr "不正確，請重試。"
