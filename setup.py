@@ -16,7 +16,7 @@ setup(
     url='http://github.com/praekelt/django-recaptcha',
     packages=find_packages(),
     install_requires=[
-        'django>1.11,<4.0',
+        'django>1.11',
     ],
     tests_require=[
         'tox',

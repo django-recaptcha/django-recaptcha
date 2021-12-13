@@ -67,6 +67,10 @@ matrix:
     - python: "3.8"
       sudo: required
       dist: xenial
+      env: TOXENV=django4-py38
+    - python: "3.8"
+      sudo: required
+      dist: xenial
       env: TOXENV=pycodestyle-py38
 
 cache: pip
