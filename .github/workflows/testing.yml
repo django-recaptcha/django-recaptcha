@@ -1,0 +1,141 @@
+name: testing
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  py27:
+    name: Python ${{ matrix.python-version }} / ${{ matrix.toxenv }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [2.7]
+        toxenv: [django111, django2, django21, pycodestyle]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install requirements
+        run: |
+            pip install tox coveralls
+
+      - name: Execute tests
+        run: |
+            TOXENV="${{ matrix.toxenv }}-py$(echo ${{ matrix.python-version }} | tr -d '.' )"
+            tox -e $TOXENV
+            # coveralls
+
+  py35:
+    name: Python ${{ matrix.python-version }} / ${{ matrix.toxenv }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.5]
+        toxenv: [django111, django2, django21, django22]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install requirements
+        run: |
+            pip install tox coveralls
+
+      - name: Execute tests
+        run: |
+            TOXENV="${{ matrix.toxenv }}-py$(echo ${{ matrix.python-version }} | tr -d '.' )"
+            tox -e $TOXENV
+            # coveralls
+
+  py36:
+    name: Python ${{ matrix.python-version }} / ${{ matrix.toxenv }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.6]
+        toxenv: [django111, django2, django21, django22, django3]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install requirements
+        run: |
+            pip install tox coveralls
+
+      - name: Execute tests
+        run: |
+            TOXENV="${{ matrix.toxenv }}-py$(echo ${{ matrix.python-version }} | tr -d '.' )"
+            tox -e $TOXENV
+            # coveralls
+
+  py37:
+    name: Python ${{ matrix.python-version }} / ${{ matrix.toxenv }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.7]
+        toxenv: [django111, django2, django21, django22, django3, pycodestyle]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install requirements
+        run: |
+            pip install tox coveralls
+
+      - name: Execute tests
+        run: |
+            TOXENV="${{ matrix.toxenv }}-py$(echo ${{ matrix.python-version }} | tr -d '.' )"
+            tox -e $TOXENV
+            # coveralls
+
+  py38:
+    name: Python ${{ matrix.python-version }} / ${{ matrix.toxenv }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.7]
+        toxenv: [django3, pycodestyle]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install requirements
+        run: |
+            pip install tox coveralls
+
+      - name: Execute tests
+        run: |
+            TOXENV="${{ matrix.toxenv }}-py$(echo ${{ matrix.python-version }} | tr -d '.' )"
+            tox -e $TOXENV
+            # coveralls
