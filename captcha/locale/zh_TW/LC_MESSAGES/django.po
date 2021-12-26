@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: captcha/fields.py:26 captcha/fields.py:27
+#: fields.py:20 fields.py:21
 #, fuzzy
 #| msgid "Error verifying input, please try again."
 msgid "Error verifying reCAPTCHA, please try again."

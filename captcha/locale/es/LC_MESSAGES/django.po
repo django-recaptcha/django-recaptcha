@@ -19,7 +19,7 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: captcha/fields.py:26 captcha/fields.py:27
+#: fields.py:20 fields.py:21
 #, fuzzy
 #| msgid "Incorrect, please try again."
 msgid "Error verifying reCAPTCHA, please try again."
