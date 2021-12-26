@@ -1,6 +1,11 @@
 Authors
 =======
 
+Current Maintainer
+------------------
+
+* `Andrew Chen Wang <https://github.com/Andrew-Chen-Wang>`_
+
 Praekelt Consulting
 -------------------
 * Shaun Sephton

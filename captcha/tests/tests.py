@@ -1,7 +1,4 @@
-try:
-    from importlib import reload
-except ImportError:
-    pass
+from importlib import reload
 
 from django.core.checks import Error
 from django.core.exceptions import ImproperlyConfigured

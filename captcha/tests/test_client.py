@@ -1,9 +1,5 @@
 import uuid
-
-try:
-    from unittest.mock import MagicMock, PropertyMock, patch
-except ImportError:
-    from mock import patch, PropertyMock, MagicMock
+from unittest.mock import MagicMock, patch
 
 from django import forms
 from django.test import TestCase, override_settings

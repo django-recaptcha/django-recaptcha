@@ -1,18 +1,13 @@
 import logging
 import sys
+from urllib.error import HTTPError
 
-import django
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
-
-if django.VERSION[0] < 2:
-    from django.utils.translation import ugettext_lazy as _
-else:
-    from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from captcha import client
-from captcha._compat import HTTPError
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
 from captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox
 

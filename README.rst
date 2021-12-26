@@ -2,16 +2,16 @@ Django reCAPTCHA
 ================
 **Django reCAPTCHA form field/widget integration app.**
 
-.. image:: https://github.com/praekelt/django-recaptcha/workflows/Tests/badge.svg?branch=develop
-    :target: https://github.com/praekelt/django-recaptcha/actions
-.. image:: https://coveralls.io/repos/github/praekelt/django-recaptcha/badge.svg?branch=develop
-    :target: https://coveralls.io/github/praekelt/django-recaptcha?branch=develop
+.. image:: https://github.com/noripyt/django-cachalot/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/noripyt/django-cachalot/actions/workflows/ci.yml
+.. image:: https://coveralls.io/repos/github/praekelt/django-recaptcha/badge.svg?branch=main
+    :target: https://coveralls.io/github/Andrew-Chen-Wang/django-recaptcha429?branch=main
 .. image:: https://badge.fury.io/py/django-recaptcha.svg
-    :target: https://badge.fury.io/py/django-recaptcha
+    :target: https://badge.fury.io/py/django-recaptcha429
 .. image:: https://img.shields.io/pypi/pyversions/django-recaptcha.svg
-    :target: https://pypi.python.org/pypi/django-recaptcha
+    :target: https://pypi.python.org/pypi/django-recaptcha429
 .. image:: https://img.shields.io/pypi/djversions/django-recaptcha.svg
-    :target: https://pypi.python.org/pypi/django-recaptcha
+    :target: https://pypi.python.org/pypi/django-recaptcha429
 
 .. contents:: Contents
     :depth: 5
@@ -26,15 +26,11 @@ Requirements
 
 Tested with:
 
-* Python: 2.7, 3.5, 3.6, 3.7, 3.8
-* Django: 1.11, 2.0, 2.1, 2.2, 3.0
-
+* Python: 3.7, 3.8, 3.9, 3.10
+* Django: 2.2, 3.2, 4.0
 
 .. note::
-* Django 2.2 requires SQLite 3.8.3
-* Django 2.2 supports Python 3.5, 3.6, and 3.7. 
-* Django 3.0 supports Python 3.6, 3.7 and 3.8.
-We highly recommend and only officially support the latest release of each series.
+* You can view the `Python-Django support matrix here <https://docs.djangoproject.com/en/dev/faq/install/#what-python-version-can-i-use-with-django>`_
 
 This package only supports modern, “evergreen” desktop and mobile browsers. For IE11 support, make sure to add a `polyfill for Element.closest <https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill>`_.
 
@@ -43,7 +39,7 @@ Installation
 
 #. `Sign up for reCAPTCHA <https://www.google.com/recaptcha/intro/index.html>`_.
 
-#. Install with ``pip install django-recaptcha``.
+#. Install with ``pip install django-recaptcha429``.
 
 #. Add ``'captcha'`` to your ``INSTALLED_APPS`` setting.
 
@@ -225,6 +221,10 @@ To bypass the security check that prevents the test keys from being used unknowi
 
 Credits
 -------
+Current Maintainer is `Andrew Chen Wang <https://github.com/Andrew-Chen-Wang>`_
+
+Originally developed by `Praekelt Consulting <https://github.com/praekelt/django-recaptcha>`_
+
 Inspired Marco Fucci's blogpost titled `Integrating reCAPTCHA with Django
 <http://www.marcofucci.com/tumblelog/26/jul/2009/integrating-recaptcha-with-django>`_
 

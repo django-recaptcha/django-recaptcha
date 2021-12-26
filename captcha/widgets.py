@@ -1,9 +1,9 @@
 import uuid
+from urllib.parse import urlencode
 
 from django.conf import settings
 from django.forms import widgets
 
-from captcha._compat import urlencode
 from captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
 
 
