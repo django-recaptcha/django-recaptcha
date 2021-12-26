@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 1.5.5\n"
 
-#: captcha/fields.py:26 captcha/fields.py:27
+#: fields.py:20 fields.py:21
 #, fuzzy
 #| msgid "Incorrect, please try again."
 msgid "Error verifying reCAPTCHA, please try again."
