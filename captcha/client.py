@@ -1,8 +1,9 @@
 import json
+from urllib.parse import urlencode
+from urllib.request import ProxyHandler, Request, build_opener
 
 from django.conf import settings
 
-from captcha._compat import PY2, ProxyHandler, Request, build_opener, urlencode
 from captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
 
 RECAPTCHA_SUPPORTED_LANUAGES = ("en", "nl", "fr", "de", "pt", "ru", "es", "tr")
@@ -57,8 +58,7 @@ def submit(recaptcha_response, private_key, remoteip):
         }
     )
 
-    if not PY2:
-        params = params.encode("utf-8")
+    params = params.encode("utf-8")
 
     response = recaptcha_request(params)
     data = json.loads(response.read().decode("utf-8"))
