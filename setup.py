@@ -13,6 +13,7 @@ setup(
     version="2.1.0",
     description="Django recaptcha form field/widget app.",
     long_description=long_desc,
+    long_description_content_type="text/x-rst",
     author="Andrew Chen Wang",
     author_email="acwangpython@gmail.com",
     license="BSD",

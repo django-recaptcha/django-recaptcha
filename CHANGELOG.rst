@@ -8,6 +8,7 @@ Unreleased
 #. Changed log level of check failures from error to warning.
 #. Added testing for Django 3.2 and 4.0
 #. Removed support for Django 1.11 and Python 2
+#. Removed upper Django dependency constraint
 
 2.0.6
 -----
