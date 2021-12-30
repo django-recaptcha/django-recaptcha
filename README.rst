@@ -2,15 +2,15 @@ Django reCAPTCHA
 ================
 **Django reCAPTCHA form field/widget integration app.**
 
-.. image:: https://github.com/noripyt/django-cachalot/actions/workflows/ci.yml/badge.svg
-    :target: https://github.com/noripyt/django-cachalot/actions/workflows/ci.yml
-.. image:: https://coveralls.io/repos/github/praekelt/django-recaptcha/badge.svg?branch=main
+.. image:: https://github.com/Andrew-Chen-Wang/django-recaptcha429/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/Andrew-Chen-Wang/django-recaptcha429/actions/workflows/ci.yml
+.. image:: https://coveralls.io/repos/github/Andrew-Chen-Wang/django-recaptcha429/badge.svg?branch=main
     :target: https://coveralls.io/github/Andrew-Chen-Wang/django-recaptcha429?branch=main
-.. image:: https://badge.fury.io/py/django-recaptcha.svg
+.. image:: https://badge.fury.io/py/django-recaptcha429.svg
     :target: https://badge.fury.io/py/django-recaptcha429
-.. image:: https://img.shields.io/pypi/pyversions/django-recaptcha.svg
+.. image:: https://img.shields.io/pypi/pyversions/django-recaptcha429.svg
     :target: https://pypi.python.org/pypi/django-recaptcha429
-.. image:: https://img.shields.io/pypi/djversions/django-recaptcha.svg
+.. image:: https://img.shields.io/pypi/djversions/django-recaptcha429.svg
     :target: https://pypi.python.org/pypi/django-recaptcha429
 
 .. contents:: Contents
