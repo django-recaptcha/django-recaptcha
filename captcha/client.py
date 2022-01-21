@@ -6,9 +6,9 @@ from captcha._compat import (
     build_opener, ProxyHandler, PY2, Request, urlencode, urlopen, want_bytes
 )
 
-DEFAULT_API_SSL_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
-DEFAULT_API_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
-DEFAULT_VERIFY_SERVER = "www.google.com"
+DEFAULT_API_SSL_SERVER = "//www.recaptcha.net/recaptcha/api"  # made ssl agnostic
+DEFAULT_API_SERVER = "//www.recaptcha.net/recaptcha/api"  # made ssl agnostic
+DEFAULT_VERIFY_SERVER = "www.recaptcha.net"
 if getattr(settings, "NOCAPTCHA", False):
     DEFAULT_WIDGET_TEMPLATE = 'captcha/widget_nocaptcha.html'
 else:
