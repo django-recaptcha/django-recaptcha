@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+#. Only provide default_app_config for django.VERSIONs lower than 3.2
+
 2.0.6
 -----
 #. Added testing for Django 3 (no code changes needed).
