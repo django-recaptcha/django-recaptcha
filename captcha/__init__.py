@@ -1,3 +1,4 @@
+import django
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
@@ -18,4 +19,5 @@ for variable, instance_type in SETTINGS_TYPES.items():
             "Setting %s is not of type" % variable, instance_type
         )
 
-default_app_config = "captcha.apps.CaptchaConfig"
+if django.VERSION < (3, 2):
+    default_app_config = "captcha.apps.CaptchaConfig"
