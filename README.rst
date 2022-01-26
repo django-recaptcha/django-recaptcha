@@ -2,8 +2,8 @@ Django reCAPTCHA
 ================
 **Django reCAPTCHA form field/widget integration app.**
 
-.. image:: https://travis-ci.org/praekelt/django-recaptcha.svg?branch=develop
-    :target: https://travis-ci.org/praekelt/django-recaptcha
+.. image:: https://github.com/praekelt/django-recaptcha/workflows/Tests/badge.svg?branch=develop
+    :target: https://github.com/praekelt/django-recaptcha/actions
 .. image:: https://coveralls.io/repos/github/praekelt/django-recaptcha/badge.svg?branch=develop
     :target: https://coveralls.io/github/praekelt/django-recaptcha?branch=develop
 .. image:: https://badge.fury.io/py/django-recaptcha.svg
