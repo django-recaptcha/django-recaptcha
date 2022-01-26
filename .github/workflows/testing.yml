@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-\  py37:
+  py37:
     name: Python ${{ matrix.python-version }} / ${{ matrix.toxenv }}
     runs-on: ubuntu-latest
     strategy:
