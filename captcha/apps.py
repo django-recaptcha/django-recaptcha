@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-from django.core.checks import register, Tags
+from django.core.checks import Tags, register
 
 from captcha.checks import recaptcha_key_check
 

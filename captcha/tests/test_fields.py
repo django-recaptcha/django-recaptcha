@@ -1,5 +1,5 @@
 try:
-    from unittest.mock import patch, PropertyMock, MagicMock
+    from unittest.mock import MagicMock, PropertyMock, patch
 except ImportError:
     from mock import patch, PropertyMock, MagicMock
 
@@ -17,7 +17,6 @@ class DefaultForm(forms.Form):
 
 
 class TestFields(TestCase):
-
     @patch("captcha.fields.client.submit")
     def test_client_success_response(self, mocked_submit):
         mocked_submit.return_value = RecaptchaResponse(is_valid=True)
@@ -36,6 +35,7 @@ class TestFields(TestCase):
 
     def test_widget_check(self):
         with self.assertRaises(ImproperlyConfigured):
+
             class ImporperForm(forms.Form):
                 captcha = fields.ReCaptchaField(widget=forms.Textarea)
 
@@ -62,15 +62,16 @@ class TestFields(TestCase):
     @patch("captcha.client.recaptcha_request")
     def test_field_captcha_errors(self, mocked_response):
         read_mock = MagicMock()
-        read_mock.read.return_value = b'{"success": false, "error-codes":' \
+        read_mock.read.return_value = (
+            b'{"success": false, "error-codes":'
             b'["invalid-input-response", "invalid-input-secret"]}'
+        )
         mocked_response.return_value = read_mock
         form_params = {"g-recaptcha-response": "PASSED"}
         form = DefaultForm(form_params)
         self.assertFalse(form.is_valid())
         self.assertEqual(
-            form.errors["captcha"],
-            ["Error verifying reCAPTCHA, please try again."]
+            form.errors["captcha"], ["Error verifying reCAPTCHA, please try again."]
         )
 
         mocked_response.side_effect = HTTPError(
@@ -78,13 +79,12 @@ class TestFields(TestCase):
             code=410,
             fp=None,
             msg="Oops",
-            hdrs=""
+            hdrs="",
         )
         form = DefaultForm(form_params)
         self.assertFalse(form.is_valid())
         self.assertEqual(
-            form.errors["captcha"],
-            ["Error verifying reCAPTCHA, please try again."]
+            form.errors["captcha"], ["Error verifying reCAPTCHA, please try again."]
         )
 
 
@@ -100,9 +100,7 @@ class TestWidgets(TestCase):
         form = DefaultCheckForm()
         html = form.as_p()
         self.assertIn(
-            '<script src="https://www.google.com/recaptcha/api.js'
-            '"></script>',
-            html
+            '<script src="https://www.google.com/recaptcha/api.js' '"></script>', html
         )
         self.assertIn('data-size="normal"', html)
         self.assertIn('class="g-recaptcha"', html)
@@ -123,20 +121,17 @@ class TestWidgets(TestCase):
                     attrs={
                         "data-theme": "dark",
                         "data-callback": "customCallback",
-                        "data-size": "compact"
+                        "data-size": "compact",
                     },
-                    api_params={
-                        "hl": "af"
-                    }
+                    api_params={"hl": "af"},
                 )
             )
 
         form = CheckboxAttrForm()
         html = form.as_p()
         self.assertIn(
-            '<script src="https://www.google.com/recaptcha/api.js'
-            '?hl=af"></script>',
-            html
+            '<script src="https://www.google.com/recaptcha/api.js' '?hl=af"></script>',
+            html,
         )
         self.assertIn('data-theme="dark"', html)
         self.assertNotIn('data-callback="onSubmit_%s"' % test_hex, html)
@@ -151,16 +146,13 @@ class TestWidgets(TestCase):
     @override_settings(RECAPTCHA_DOMAIN="www.recaptcha.net")
     def test_default_v2_checkbox_domain_html(self):
         class DomainForm(forms.Form):
-            captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV2Checkbox()
-            )
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV2Checkbox())
 
         form = DomainForm()
         html = form.as_p()
         self.assertIn(
-            '<script src="https://www.recaptcha.net/recaptcha/api.js">'
-            '</script>',
-            html
+            '<script src="https://www.recaptcha.net/recaptcha/api.js">' "</script>",
+            html,
         )
 
     @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
@@ -169,16 +161,12 @@ class TestWidgets(TestCase):
         mocked_uuid.return_value = test_hex
 
         class InvisForm(forms.Form):
-            captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV2Invisible()
-            )
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV2Invisible())
 
         form = InvisForm()
         html = form.as_p()
         self.assertIn(
-            '<script src="https://www.google.com/recaptcha/api.js'
-            '"></script>',
-            html
+            '<script src="https://www.google.com/recaptcha/api.js' '"></script>', html
         )
         self.assertIn('data-size="invisible"', html)
         self.assertIn('data-callback="onSubmit_%s"' % test_hex, html)
@@ -201,20 +189,17 @@ class TestWidgets(TestCase):
                     attrs={
                         "data-theme": "dark",
                         "data-callback": "customCallbackInvis",
-                        "data-size": "compact"
+                        "data-size": "compact",
                     },
-                    api_params={
-                        "hl": "cl"
-                    }
+                    api_params={"hl": "cl"},
                 )
             )
 
         form = InvisAttrForm()
         html = form.as_p()
         self.assertIn(
-            '<script src="https://www.google.com/recaptcha/api.js'
-            '?hl=cl"></script>',
-            html
+            '<script src="https://www.google.com/recaptcha/api.js' '?hl=cl"></script>',
+            html,
         )
         self.assertNotIn('data-size="compact"', html)
         self.assertIn('data-size="invisible"', html)
@@ -231,16 +216,13 @@ class TestWidgets(TestCase):
     @override_settings(RECAPTCHA_DOMAIN="www.recaptcha.net")
     def test_default_v2_invisible_domain_html(self):
         class InvisDomainForm(forms.Form):
-            captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV2Invisible()
-            )
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV2Invisible())
 
         form = InvisDomainForm()
         html = form.as_p()
         self.assertIn(
-            '<script src="https://www.recaptcha.net/recaptcha/api.js">'
-            '</script>',
-            html
+            '<script src="https://www.recaptcha.net/recaptcha/api.js">' "</script>",
+            html,
         )
 
     @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
@@ -249,16 +231,14 @@ class TestWidgets(TestCase):
         mocked_uuid.return_value = test_hex
 
         class InvisForm(forms.Form):
-            captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV3()
-            )
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
 
         form = InvisForm()
         html = form.as_p()
         self.assertIn(
             '<script src="https://www.google.com/recaptcha/api.js'
             '?render=pubkey"></script>',
-            html
+            html,
         )
         self.assertIn('data-size="normal"', html)
         self.assertIn('data-callback="onSubmit_%s"' % test_hex, html)
@@ -279,11 +259,9 @@ class TestWidgets(TestCase):
                     attrs={
                         "data-theme": "dark",
                         "data-callback": "customCallbackInvis",
-                        "data-size": "compact"
+                        "data-size": "compact",
                     },
-                    api_params={
-                        "hl": "cl"
-                    }
+                    api_params={"hl": "cl"},
                 )
             )
 
@@ -292,7 +270,7 @@ class TestWidgets(TestCase):
         self.assertIn(
             '<script src="https://www.google.com/recaptcha/api.js'
             '?render=pubkey&hl=cl"></script>',
-            html
+            html,
         )
         self.assertIn('data-size="compact"', html)
         self.assertNotIn('data-callback="onSubmit_%s"' % test_hex, html)
@@ -306,27 +284,25 @@ class TestWidgets(TestCase):
     @override_settings(RECAPTCHA_DOMAIN="www.recaptcha.net")
     def test_default_v3_domain_html(self):
         class VThreeDomainForm(forms.Form):
-            captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV3()
-            )
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
 
         form = VThreeDomainForm()
         html = form.as_p()
         self.assertIn(
             '<script src="https://www.recaptcha.net/recaptcha/api.js'
             '?render=pubkey"></script>',
-            html
+            html,
         )
 
     @patch("captcha.fields.client.submit")
     def test_client_success_response_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
             captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV3(attrs={'required_score': 0.8})
+                widget=widgets.ReCaptchaV3(attrs={"required_score": 0.8})
             )
+
         mocked_submit.return_value = RecaptchaResponse(
-            is_valid=True,
-            extra_data={'score': 0.9}
+            is_valid=True, extra_data={"score": 0.9}
         )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
@@ -336,11 +312,11 @@ class TestWidgets(TestCase):
     def test_client_failure_response_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
             captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV3(attrs={'required_score': 0.8})
+                widget=widgets.ReCaptchaV3(attrs={"required_score": 0.8})
             )
+
         mocked_submit.return_value = RecaptchaResponse(
-            is_valid=True,
-            extra_data={'score': 0.1}
+            is_valid=True, extra_data={"score": 0.1}
         )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
@@ -349,12 +325,10 @@ class TestWidgets(TestCase):
     @patch("captcha.fields.client.submit")
     def test_client_empty_score_threshold_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
-            captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV3()
-            )
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
+
         mocked_submit.return_value = RecaptchaResponse(
-            is_valid=True,
-            extra_data={'score': 0.1}
+            is_valid=True, extra_data={"score": 0.1}
         )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
@@ -364,12 +338,10 @@ class TestWidgets(TestCase):
     @override_settings(RECAPTCHA_REQUIRED_SCORE=0.0)
     def test_required_score_human_setting(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
-            captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV3()
-            )
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
+
         mocked_submit.return_value = RecaptchaResponse(
-            is_valid=True,
-            extra_data={'score': 0.85}
+            is_valid=True, extra_data={"score": 0.85}
         )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
@@ -379,12 +351,11 @@ class TestWidgets(TestCase):
     @override_settings(RECAPTCHA_REQUIRED_SCORE=0.85)
     def test_required_score_bot_setting(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
-            captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV3()
-            )
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
+
         mocked_submit.return_value = RecaptchaResponse(
-            is_valid=True,
-            extra_data={'score': 0})
+            is_valid=True, extra_data={"score": 0}
+        )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
         self.assertFalse(form.is_valid())
