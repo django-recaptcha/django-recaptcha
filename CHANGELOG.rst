@@ -1,9 +1,15 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+#. Only provide default_app_config for django.VERSIONs lower than 3.2
+#. Changed log level of check failures from error to warning.
+
 2.0.6
 -----
-#. Changed log level of check failures from error to warning.
+#. Added testing for Django 3 (no code changes needed).
 
 2.0.5
 -----

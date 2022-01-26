@@ -3,10 +3,9 @@ import json
 from django.conf import settings
 
 from captcha._compat import (
-    build_opener, ProxyHandler, PY2, Request, urlencode, urlopen
+    build_opener, ProxyHandler, PY2, Request, urlencode
 )
 from captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
-from captcha.decorators import generic_deprecation
 
 
 RECAPTCHA_SUPPORTED_LANUAGES = ("en", "nl", "fr", "de", "pt", "ru", "es", "tr")

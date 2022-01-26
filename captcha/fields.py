@@ -1,20 +1,21 @@
 import logging
-import os
-import socket
 import sys
-import warnings
 
+import django
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.exceptions import ValidationError
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext_lazy as _
+
+if django.VERSION[0] < 2:
+    from django.utils.translation import ugettext_lazy as _
+else:
+    from django.utils.translation import gettext_lazy as _
 
 from captcha import client
-from captcha._compat import HTTPError, urlencode
+from captcha._compat import HTTPError
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
-from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaBase, ReCaptchaV3
+from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaBase
 
 
 logger = logging.getLogger(__name__)

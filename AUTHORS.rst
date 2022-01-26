@@ -26,3 +26,4 @@ Other
 * `pbf <https://github.com/pbf>`_
 * `Alexey Subbotin <https://github.com/dotsbb>`_
 * `Sean Stewart <https://github.com/mindcruzer>`_
+* `Rob Charlwood <https://github.com/robcharlwood>`_
