@@ -5,6 +5,7 @@ Unreleased
 ----------
 
 #. Only provide default_app_config for django.VERSIONs lower than 3.2
+#. Changed log level of check failures from error to warning.
 
 2.0.6
 -----

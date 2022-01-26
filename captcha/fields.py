@@ -84,7 +84,7 @@ class ReCaptchaField(forms.CharField):
             )
 
         if not check_captcha.is_valid:
-            logger.error(
+            logger.warning(
                 "ReCAPTCHA validation failed due to: %s" %
                 check_captcha.error_codes
             )
@@ -109,7 +109,7 @@ class ReCaptchaField(forms.CharField):
             score = float(check_captcha.extra_data.get("score", 0))
 
             if required_score > score:
-                logger.error(
+                logger.warning(
                     "ReCAPTCHA validation failed due to its score of %s"
                     " being lower than the required amount." % score
                 )
