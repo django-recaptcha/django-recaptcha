@@ -36,6 +36,7 @@ Tested with:
 * Django 3.0 supports Python 3.6, 3.7 and 3.8.
 We highly recommend and only officially support the latest release of each series.
 
+This package only supports modern, “evergreen” desktop and mobile browsers. For IE11 support, make sure to add a `polyfill for Element.closest <https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill>`_.
 
 Installation
 ------------
