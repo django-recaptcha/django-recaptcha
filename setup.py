@@ -20,7 +20,6 @@ setup(
     url="https://github.com/torchbox/django-recaptcha",
     packages=find_packages(),
     install_requires=["django"],
-    tests_require=["tox"],
     keywords=["django", "reCAPTCHA", "reCAPTCHA v2", "reCAPTCHA v3"],
     include_package_data=True,
     classifiers=[
