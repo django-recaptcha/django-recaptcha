@@ -2,9 +2,9 @@ Django reCAPTCHA
 ================
 **Django reCAPTCHA form field/widget integration app.**
 
-.. image:: https://img.shields.io/pypi/v/django-pattern-library.svg
+.. image:: https://img.shields.io/pypi/v/django-recaptcha.svg
     :target: https://pypi.org/project/django-recaptcha/
-.. image:: https://img.shields.io/pypi/dm/django-pattern-library.svg
+.. image:: https://img.shields.io/pypi/dm/django-recaptcha.svg
     :target: https://pypi.org/project/django-recaptcha/
 .. image:: https://github.com/torchbox/django-recaptcha/workflows/CI/badge.svg
     :target: https://github.com/torchbox/django-recaptcha/actions
