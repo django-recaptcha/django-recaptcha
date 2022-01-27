@@ -94,8 +94,7 @@ class ReCaptchaField(forms.CharField):
                     % hostname
                 )
                 raise ValidationError(
-                    self.error_messages["captcha_invalid"],
-                    code="captcha_invalid"
+                    self.error_messages["captcha_invalid"], code="captcha_invalid"
                 )
 
         required_score = self.widget.attrs.get("required_score")
