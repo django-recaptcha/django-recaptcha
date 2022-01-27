@@ -9,15 +9,15 @@ long_desc = (
 )
 
 setup(
-    name="django-recaptcha429",
+    name="django-recaptcha",
     version="2.1.0",
     description="Django recaptcha form field/widget app.",
     long_description=long_desc,
     long_description_content_type="text/x-rst",
-    author="Andrew Chen Wang",
-    author_email="acwangpython@gmail.com",
+    author="Praekelt Consulting",
+    author_email="dev@praekelt.com",
     license="BSD",
-    url="http://github.com/Andrew-Chen-Wang/django-recaptcha429",
+    url="https://github.com/torchbox/django-recaptcha",
     packages=find_packages(),
     install_requires=["django"],
     tests_require=["tox"],

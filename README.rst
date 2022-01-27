@@ -2,16 +2,14 @@ Django reCAPTCHA
 ================
 **Django reCAPTCHA form field/widget integration app.**
 
-.. image:: https://github.com/Andrew-Chen-Wang/django-recaptcha429/actions/workflows/ci.yml/badge.svg
-    :target: https://github.com/Andrew-Chen-Wang/django-recaptcha429/actions/workflows/ci.yml
-.. image:: https://coveralls.io/repos/github/Andrew-Chen-Wang/django-recaptcha429/badge.svg?branch=main
-    :target: https://coveralls.io/github/Andrew-Chen-Wang/django-recaptcha429?branch=main
-.. image:: https://badge.fury.io/py/django-recaptcha429.svg
-    :target: https://badge.fury.io/py/django-recaptcha429
-.. image:: https://img.shields.io/pypi/pyversions/django-recaptcha429.svg
-    :target: https://pypi.python.org/pypi/django-recaptcha429
-.. image:: https://img.shields.io/pypi/djversions/django-recaptcha429.svg
-    :target: https://pypi.python.org/pypi/django-recaptcha429
+.. image:: https://img.shields.io/pypi/v/django-pattern-library.svg
+    :target: https://pypi.org/project/django-recaptcha/
+.. image:: https://img.shields.io/pypi/dm/django-pattern-library.svg
+    :target: https://pypi.org/project/django-recaptcha/
+.. image:: https://github.com/torchbox/django-recaptcha/workflows/CI/badge.svg
+    :target: https://github.com/torchbox/django-recaptcha/actions
+.. image:: https://coveralls.io/repos/github/torchbox/django-recaptcha/badge.svg?branch=main
+    :target: https://coveralls.io/github/torchbox/django-recaptcha?branch=main
 
 .. contents:: Contents
     :depth: 5
@@ -37,7 +35,7 @@ Installation
 
 #. `Sign up for reCAPTCHA <https://www.google.com/recaptcha/intro/index.html>`_.
 
-#. Install with ``pip install django-recaptcha429``.
+#. Install with ``pip install django-recaptcha``.
 
 #. Add ``'captcha'`` to your ``INSTALLED_APPS`` setting.
 
@@ -219,7 +217,6 @@ To bypass the security check that prevents the test keys from being used unknowi
 
 Credits
 -------
-Current Maintainer is `Andrew Chen Wang <https://github.com/Andrew-Chen-Wang>`_
 
 Originally developed by `Praekelt Consulting <https://github.com/praekelt/django-recaptcha>`_
 
