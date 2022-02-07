@@ -5,7 +5,7 @@ repos:
     hooks:
       - id: check-merge-conflict
   - repo: https://github.com/asottile/pyupgrade
-    rev: "v2.29.1"
+    rev: "v2.31.0"
     hooks:
       - id: pyupgrade
         args: ["--py37-plus", "--keep-mock"]
@@ -19,7 +19,7 @@ repos:
       - id: isort
         args: ["--profile", "black"]
   - repo: https://github.com/psf/black
-    rev: "21.12b0"
+    rev: "22.1.0"
     hooks:
       - id: black
         language_version: python3 # Should be a command that runs python3.7+
