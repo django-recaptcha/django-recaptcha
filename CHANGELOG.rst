@@ -4,6 +4,12 @@ Changelog
 Unreleased
 ----------
 
+Nothing new yet!
+
+3.0.0 (2022-02-07)
+--------------------
+#. Torchbox has taken over maintenance of this package from Praekelt. See the `Github Announcement <https://github.com/torchbox/django-recaptcha/discussions/249>`_
+#. Switch testing from Travis to Github Actions.
 #. Only provide default_app_config for django.VERSIONs lower than 3.2
 #. Changed log level of check failures from error to warning.
 #. Added testing for Django 3.2 and 4.0
