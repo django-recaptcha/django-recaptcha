@@ -37,7 +37,6 @@ repos:
       - id: check-xml
       - id: check-executables-have-shebangs
       - id: check-toml
-      - id: check-xml
       - id: check-yaml
       - id: debug-statements
       - id: check-added-large-files
