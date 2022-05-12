@@ -1,18 +1,15 @@
 import json
+from urllib.parse import urlencode
+from urllib.request import ProxyHandler, Request, build_opener
 
 from django.conf import settings
 
-from captcha._compat import (
-    build_opener, ProxyHandler, PY2, Request, urlencode, urlopen
-)
 from captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
-from captcha.decorators import generic_deprecation
-
 
 RECAPTCHA_SUPPORTED_LANUAGES = ("en", "nl", "fr", "de", "pt", "ru", "es", "tr")
 
 
-class RecaptchaResponse(object):
+class RecaptchaResponse:
     def __init__(self, is_valid, error_codes=None, extra_data=None):
         self.is_valid = is_valid
         self.error_codes = error_codes or []
@@ -21,14 +18,13 @@ class RecaptchaResponse(object):
 
 def recaptcha_request(params):
     request_object = Request(
-        url="https://%s/recaptcha/api/siteverify" % getattr(
-            settings, "RECAPTCHA_DOMAIN", DEFAULT_RECAPTCHA_DOMAIN
-        ),
+        url="https://%s/recaptcha/api/siteverify"
+        % getattr(settings, "RECAPTCHA_DOMAIN", DEFAULT_RECAPTCHA_DOMAIN),
         data=params,
         headers={
             "Content-type": "application/x-www-form-urlencoded",
-            "User-agent": "reCAPTCHA Django"
-        }
+            "User-agent": "reCAPTCHA Django",
+        },
     )
 
     # Add proxy values to opener if needed.
@@ -41,7 +37,7 @@ def recaptcha_request(params):
     # Get response from POST to Google endpoint.
     return opener.open(
         request_object,
-        timeout=getattr(settings, "RECAPTCHA_VERIFY_REQUEST_TIMEOUT", 10)
+        timeout=getattr(settings, "RECAPTCHA_VERIFY_REQUEST_TIMEOUT", 10),
     )
 
 
@@ -54,14 +50,15 @@ def submit(recaptcha_response, private_key, remoteip):
     private_key -- your reCAPTCHA private key
     remoteip -- the user's ip address
     """
-    params = urlencode({
-        "secret": private_key,
-        "response": recaptcha_response,
-        "remoteip": remoteip,
-    })
+    params = urlencode(
+        {
+            "secret": private_key,
+            "response": recaptcha_response,
+            "remoteip": remoteip,
+        }
+    )
 
-    if not PY2:
-        params = params.encode("utf-8")
+    params = params.encode("utf-8")
 
     response = recaptcha_request(params)
     data = json.loads(response.read().decode("utf-8"))
@@ -69,5 +66,5 @@ def submit(recaptcha_response, private_key, remoteip):
     return RecaptchaResponse(
         is_valid=data.pop("success"),
         error_codes=data.pop("error-codes", None),
-        extra_data=data
+        extra_data=data,
     )

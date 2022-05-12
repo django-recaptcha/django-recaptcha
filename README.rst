@@ -2,16 +2,14 @@ Django reCAPTCHA
 ================
 **Django reCAPTCHA form field/widget integration app.**
 
-.. image:: https://travis-ci.org/praekelt/django-recaptcha.svg?branch=develop
-    :target: https://travis-ci.org/praekelt/django-recaptcha
-.. image:: https://coveralls.io/repos/github/praekelt/django-recaptcha/badge.svg?branch=develop
-    :target: https://coveralls.io/github/praekelt/django-recaptcha?branch=develop
-.. image:: https://badge.fury.io/py/django-recaptcha.svg
-    :target: https://badge.fury.io/py/django-recaptcha
-.. image:: https://img.shields.io/pypi/pyversions/django-recaptcha.svg
-    :target: https://pypi.python.org/pypi/django-recaptcha
-.. image:: https://img.shields.io/pypi/djversions/django-recaptcha.svg
-    :target: https://pypi.python.org/pypi/django-recaptcha
+.. image:: https://img.shields.io/pypi/v/django-recaptcha.svg
+    :target: https://pypi.org/project/django-recaptcha/
+.. image:: https://img.shields.io/pypi/dm/django-recaptcha.svg
+    :target: https://pypi.org/project/django-recaptcha/
+.. image:: https://github.com/torchbox/django-recaptcha/workflows/CI/badge.svg
+    :target: https://github.com/torchbox/django-recaptcha/actions
+.. image:: https://coveralls.io/repos/github/torchbox/django-recaptcha/badge.svg?branch=main
+    :target: https://coveralls.io/github/torchbox/django-recaptcha?branch=main
 
 .. contents:: Contents
     :depth: 5
@@ -26,16 +24,11 @@ Requirements
 
 Tested with:
 
-* Python: 2.7, 3.5, 3.6, 3.7, 3.8
-* Django: 1.11, 2.0, 2.1, 2.2, 3.0
+* Python: 3.7, 3.8, 3.9, 3.10
+* Django: 2.2, 3.2, 4.0
+* You can view the `Python-Django support matrix here <https://docs.djangoproject.com/en/dev/faq/install/#what-python-version-can-i-use-with-django>`_
 
-
-.. note::
-* Django 2.2 requires SQLite 3.8.3
-* Django 2.2 supports Python 3.5, 3.6, and 3.7. 
-* Django 3.0 supports Python 3.6, 3.7 and 3.8.
-We highly recommend and only officially support the latest release of each series.
-
+This package only supports modern, “evergreen” desktop and mobile browsers. For IE11 support, make sure to add a `polyfill for Element.closest <https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill>`_.
 
 Installation
 ------------
@@ -97,6 +90,7 @@ The quickest way to add reCAPTCHA to a form is to use the included
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField()
 
+Be sure to include the captcha field in your forms. There are many ways to add fields to forms in Django. We recommend you refer to the `form rendering options <https://docs.djangoproject.com/en/dev/topics/forms/#form-rendering-options>`_ and `rendering fields manually <https://docs.djangoproject.com/en/dev/topics/forms/#rendering-fields-manually>`_ sections of the `official Django documentation for forms <https://docs.djangoproject.com/en/dev/topics/forms>`_.
 
 To allow for runtime specification of keys you can optionally pass the
 ``private_key`` or ``public_key`` parameters to the constructor. For example:
@@ -151,9 +145,9 @@ widget, containing a dictionary of options. For example:
     # The ReCaptchaV2Invisible widget
     # ignores the "data-size" attribute in favor of 'data-size="invisible"'
 
-The reCAPTCHA api supports several `paramaters
+The reCAPTCHA api supports several `parameters
 <https://developers.google.com/recaptcha/docs/display#js_param>`_. To customise
-the paramaters that get sent along pass an ``api_params`` paramater to the
+the parameters that get sent along pass an ``api_params`` parameter to the
 widget, containing a dictionary of options. For example:
 
 .. code-block:: python
@@ -223,6 +217,9 @@ To bypass the security check that prevents the test keys from being used unknowi
 
 Credits
 -------
+
+Originally developed by `Praekelt Consulting <https://github.com/praekelt/django-recaptcha>`_
+
 Inspired Marco Fucci's blogpost titled `Integrating reCAPTCHA with Django
 <http://www.marcofucci.com/tumblelog/26/jul/2009/integrating-recaptcha-with-django>`_
 
