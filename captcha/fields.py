@@ -2,8 +2,6 @@ import logging
 import sys
 from urllib.error import HTTPError
 
-from captcha.exceptions import CaptchaScoreError, CaptchaValidationError, \
-    CaptchaHTTPError
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
@@ -11,6 +9,10 @@ from django.utils.translation import gettext_lazy as _
 
 from captcha import client
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
+from captcha.exceptions import (
+    CaptchaScoreError, CaptchaValidationError,
+    CaptchaHTTPError,
+)
 from captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox
 
 logger = logging.getLogger(__name__)
