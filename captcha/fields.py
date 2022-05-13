@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 from captcha import client
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
+from captcha.exceptions import CaptchaHostnameError
 from captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox
 
 logger = logging.getLogger(__name__)
