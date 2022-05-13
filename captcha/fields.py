@@ -112,7 +112,7 @@ class ReCaptchaField(forms.CharField):
             score = float(check_captcha.extra_data.get("score", 0))
 
             if required_score > score:
-                logger.error(
+                logger.log(
                     self.log_level_score,
                     "ReCAPTCHA validation failed due to its score of %s"
                     " being lower than the required amount." % score
