@@ -32,16 +32,14 @@ repos:
       - id: requirements-txt-fixer
       - id: trailing-whitespace
         types: [python]
+      - id: check-added-large-files
       - id: check-case-conflict
-      - id: check-json
-      - id: check-xml
       - id: check-executables-have-shebangs
+      - id: check-json
+      - id: check-symlinks
       - id: check-toml
       - id: check-xml
       - id: check-yaml
-      - id: debug-statements
-      - id: check-added-large-files
-      - id: check-symlinks
       - id: debug-statements
       - id: detect-aws-credentials
         args: ["--allow-missing-credentials"]
