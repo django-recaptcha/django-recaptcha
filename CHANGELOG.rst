@@ -132,9 +132,9 @@ Nothing new yet!
 
 1.0.1 (2014-09-11)
 ------------------
-#. Added Django 1.7 suport
+#. Added Django 1.7 support
 #. Added Russian translations
-#. Added multi dependancy support
+#. Added multi dependency support
 #. Cleanup
 
 1.0 (2014-04-23)
