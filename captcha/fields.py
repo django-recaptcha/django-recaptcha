@@ -6,6 +6,7 @@ from django import forms
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.forms.widgets import HiddenInput
 
 from captcha import client
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
@@ -31,25 +32,30 @@ class ReCaptchaField(forms.CharField):
         """
         super().__init__(*args, **kwargs)
 
-        if not isinstance(self.widget, ReCaptchaBase):
-            raise ImproperlyConfigured(
-                "captcha.fields.ReCaptchaField.widget"
-                " must be a subclass of captcha.widgets.ReCaptchaBase"
+        if getattr(settings, 'RECAPTCHA_SKIP_VALIDATE', False):
+            # We're just going to use a hidden input so no js is outputted
+            self.widget = HiddenInput
+            self.required = False
+        else:
+            if not isinstance(self.widget, ReCaptchaBase):
+                raise ImproperlyConfigured(
+                    "captcha.fields.ReCaptchaField.widget"
+                    " must be a subclass of captcha.widgets.ReCaptchaBase"
+                )
+
+            # reCAPTCHA fields are always required.
+            self.required = True
+
+            # Setup instance variables.
+            self.private_key = private_key or getattr(
+                settings, "RECAPTCHA_PRIVATE_KEY", TEST_PRIVATE_KEY
+            )
+            self.public_key = public_key or getattr(
+                settings, "RECAPTCHA_PUBLIC_KEY", TEST_PUBLIC_KEY
             )
 
-        # reCAPTCHA fields are always required.
-        self.required = True
-
-        # Setup instance variables.
-        self.private_key = private_key or getattr(
-            settings, "RECAPTCHA_PRIVATE_KEY", TEST_PRIVATE_KEY
-        )
-        self.public_key = public_key or getattr(
-            settings, "RECAPTCHA_PUBLIC_KEY", TEST_PUBLIC_KEY
-        )
-
-        # Update widget attrs with data-sitekey.
-        self.widget.attrs["data-sitekey"] = self.public_key
+            # Update widget attrs with data-sitekey.
+            self.widget.attrs["data-sitekey"] = self.public_key
 
     def get_remote_ip(self):
         f = sys._getframe()
@@ -63,8 +69,10 @@ class ReCaptchaField(forms.CharField):
             f = f.f_back
 
     def validate(self, value):
-        super().validate(value)
+        if getattr(settings, 'RECAPTCHA_SKIP_VALIDATE', False):
+            return
 
+        super().validate(value)
         try:
             check_captcha = client.submit(
                 recaptcha_response=value,

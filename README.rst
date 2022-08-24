@@ -215,6 +215,13 @@ To bypass the security check that prevents the test keys from being used unknowi
 
         SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
+
+If you would like to disable recaptcha checking all together in a certain environment you can use the ``RECAPTCHA_SKIP_VALIDATE`` setting.
+
+    .. code-block:: python
+    
+        RECAPTCHA_SKIP_VALIDATE = True
+
 Credits
 -------
 
