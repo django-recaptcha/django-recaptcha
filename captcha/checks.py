@@ -10,8 +10,7 @@ def recaptcha_key_check(app_configs, **kwargs):
     public_key = getattr(settings, "RECAPTCHA_PUBLIC_KEY", TEST_PUBLIC_KEY)
     skip = getattr(settings, "RECAPTCHA_SKIP_VALIDATE", False)
 
-    if not skip and \
-            (private_key == TEST_PRIVATE_KEY or public_key == TEST_PUBLIC_KEY):
+    if not skip and (private_key == TEST_PRIVATE_KEY or public_key == TEST_PUBLIC_KEY):
         errors.extend(
             [
                 checks.Error(

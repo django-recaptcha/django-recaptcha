@@ -68,8 +68,7 @@ class TestFields(TestCase):
         form = DefaultForm(form_params)
         self.assertFalse(form.is_valid())
         self.assertEqual(
-            form.errors["captcha"], [
-                "Error verifying reCAPTCHA, please try again."]
+            form.errors["captcha"], ["Error verifying reCAPTCHA, please try again."]
         )
 
         mocked_response.side_effect = HTTPError(
@@ -82,15 +81,12 @@ class TestFields(TestCase):
         form = DefaultForm(form_params)
         self.assertFalse(form.is_valid())
         self.assertEqual(
-            form.errors["captcha"], [
-                "Error verifying reCAPTCHA, please try again."]
+            form.errors["captcha"], ["Error verifying reCAPTCHA, please try again."]
         )
 
     @override_settings(RECAPTCHA_SKIP_VALIDATE=True)
     def test_field_skip_validate(self):
-        form = DefaultForm({
-            'captcha': 'junk'
-        })
+        form = DefaultForm({"captcha": "junk"})
         self.assertTrue(form.is_valid())
 
         # Test with completely missing captcha
@@ -156,8 +152,7 @@ class TestWidgets(TestCase):
     @override_settings(RECAPTCHA_DOMAIN="www.recaptcha.net")
     def test_default_v2_checkbox_domain_html(self):
         class DomainForm(forms.Form):
-            captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV2Checkbox())
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV2Checkbox())
 
         form = DomainForm()
         html = form.as_p()
@@ -172,8 +167,7 @@ class TestWidgets(TestCase):
         mocked_uuid.return_value = test_hex
 
         class InvisForm(forms.Form):
-            captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV2Invisible())
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV2Invisible())
 
         form = InvisForm()
         html = form.as_p()
@@ -228,8 +222,7 @@ class TestWidgets(TestCase):
     @override_settings(RECAPTCHA_DOMAIN="www.recaptcha.net")
     def test_default_v2_invisible_domain_html(self):
         class InvisDomainForm(forms.Form):
-            captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV2Invisible())
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV2Invisible())
 
         form = InvisDomainForm()
         html = form.as_p()

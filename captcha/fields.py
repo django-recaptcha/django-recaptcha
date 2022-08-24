@@ -5,8 +5,8 @@ from urllib.error import HTTPError
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
-from django.utils.translation import gettext_lazy as _
 from django.forms.widgets import HiddenInput
+from django.utils.translation import gettext_lazy as _
 
 from captcha import client
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
@@ -32,7 +32,7 @@ class ReCaptchaField(forms.CharField):
         """
         super().__init__(*args, **kwargs)
 
-        if getattr(settings, 'RECAPTCHA_SKIP_VALIDATE', False):
+        if getattr(settings, "RECAPTCHA_SKIP_VALIDATE", False):
             # We're just going to use a hidden input so no js is outputted
             self.widget = HiddenInput
             self.required = False
@@ -69,7 +69,7 @@ class ReCaptchaField(forms.CharField):
             f = f.f_back
 
     def validate(self, value):
-        if getattr(settings, 'RECAPTCHA_SKIP_VALIDATE', False):
+        if getattr(settings, "RECAPTCHA_SKIP_VALIDATE", False):
             return
 
         super().validate(value)
