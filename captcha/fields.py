@@ -108,3 +108,7 @@ class ReCaptchaField(forms.CharField):
                 raise ValidationError(
                     self.error_messages["captcha_invalid"], code="captcha_invalid"
                 )
+
+    def clean(self, value):
+        super().clean(value)
+        return ""  # Do not return the captcha value, it won't be useful later.
