@@ -295,7 +295,7 @@ class TestWidgets(TestCase):
     def test_client_success_response_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
             captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV3(attrs={"required_score": 0.8})
+                widget=widgets.ReCaptchaV3(attrs={"data-required-score": 0.8})
             )
 
         mocked_submit.return_value = RecaptchaResponse(
@@ -309,7 +309,7 @@ class TestWidgets(TestCase):
     def test_client_failure_response_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
             captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV3(attrs={"required_score": 0.8})
+                widget=widgets.ReCaptchaV3(attrs={"data-required-score": 0.8})
             )
 
         mocked_submit.return_value = RecaptchaResponse(

@@ -72,8 +72,8 @@ class ReCaptchaV3(ReCaptchaBase):
 
     def __init__(self, api_params=None, *args, **kwargs):
         super().__init__(api_params=api_params, *args, **kwargs)
-        if not self.attrs.get("required_score", None):
-            self.attrs["required_score"] = getattr(
+        if not self.attrs.get("data-required-score", None):
+            self.attrs["data-required-score"] = getattr(
                 settings, "RECAPTCHA_REQUIRED_SCORE", None
             )
 

@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 from captcha import client
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
-from captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox
+from captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox, ReCaptchaV2Invisible, ReCaptchaV3
 
 logger = logging.getLogger(__name__)
 
@@ -37,8 +37,9 @@ class ReCaptchaField(forms.CharField):
                 " must be a subclass of captcha.widgets.ReCaptchaBase"
             )
 
-        # reCAPTCHA fields are always required.
-        self.required = True
+        # hidden reCAPTCHA fields are always required.
+        if not isinstance(self.widget, (ReCaptchaV2Invisible, ReCaptchaV3)):
+            self.required = True
 
         # Setup instance variables.
         self.private_key = private_key or getattr(
@@ -85,7 +86,7 @@ class ReCaptchaField(forms.CharField):
                 self.error_messages["captcha_invalid"], code="captcha_invalid"
             )
 
-        required_score = self.widget.attrs.get("required_score")
+        required_score = self.widget.attrs.get("data-required-score")
         if required_score:
             # Our score values need to be floats, as that is the expected
             # response from the Google endpoint. Rather than ensure that on

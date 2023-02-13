@@ -196,7 +196,7 @@ For per field, runtime, specification the attribute can also be passed to the wi
         captcha = fields.ReCaptchaField(
             widget=ReCaptchaV3(
                 attrs={
-                    'required_score':0.85,
+                    'data-required-score':0.85,
                     ...
                 }
             )
