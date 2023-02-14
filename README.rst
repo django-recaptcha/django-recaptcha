@@ -215,6 +215,20 @@ To bypass the security check that prevents the test keys from being used unknowi
 
         SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
+You can use the env var `RECAPTCHA_TESTING` in unittests:
+
+    .. code-block:: python
+
+        with mock.patch.dict(os.environ, {"RECAPTCHA_TESTING": "True"}):
+            response = self.client.post(my_url,
+                {
+                    "foo": "bar",
+                    ...
+                    "g-recaptcha-response": "PASSED",
+                },
+            )
+            
+            
 Credits
 -------
 
