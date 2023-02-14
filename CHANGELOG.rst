@@ -6,6 +6,8 @@ Unreleased
 
 Nothing new yet!
 
+#. Added testing for Django 4.1
+
 3.0.0 (2022-02-07)
 --------------------
 #. Torchbox has taken over maintenance of this package from Praekelt. See the `Github Announcement <https://github.com/torchbox/django-recaptcha/discussions/249>`_
