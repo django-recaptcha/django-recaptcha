@@ -207,7 +207,7 @@ In the event the score does not meet the requirements, the field validation will
 Local Development and Functional Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Google provides test keys which are set as the default for ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY``. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA.
+If ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY`` are not set, django-recaptcha will use `Google's test keys <https://developers.google.com/recaptcha/docs/faq>`_ instead. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA. Google's test keys only work for reCAPTCHA version 2.
 
 To bypass the security check that prevents the test keys from being used unknowingly add ``SILENCED_SYSTEM_CHECKS = [..., 'captcha.recaptcha_test_key_error', ...]`` to your settings, here is an example:
 
@@ -215,18 +215,20 @@ To bypass the security check that prevents the test keys from being used unknowi
 
         SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
-You can use the env var `RECAPTCHA_TESTING` in unittests:
+If you want to mock the call to Google's servers altogether, have a look at `test_fields.py <https://github.com/torchbox/django-recaptcha/blob/main/captcha/tests/test_fields.py>`_:
 
-    .. code-block:: python
+.. code-block:: python
 
-        with mock.patch.dict(os.environ, {"RECAPTCHA_TESTING": "True"}):
-            response = self.client.post(my_url,
-                {
-                    "foo": "bar",
-                    ...
-                    "g-recaptcha-response": "PASSED",
-                },
-            )
+   from unittest.mock import patch
+   from django.test import TestCase
+   from captcha.client import RecaptchaResponse   
+   
+   class TestFields(TestCase):
+       @patch("captcha.fields.client.submit")
+       def test_client_success_response(self, mocked_submit):
+           mocked_submit.return_value = RecaptchaResponse(is_valid=True)
+           ...
+
             
             
 Credits
