@@ -7,6 +7,7 @@ Unreleased
 Nothing new yet!
 
 #. Added testing for Django 4.1
+#. Dropped support for Python 3.7
 
 3.0.0 (2022-02-07)
 --------------------
