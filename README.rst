@@ -24,8 +24,8 @@ Requirements
 
 Tested with:
 
-* Python: 3.7, 3.8, 3.9, 3.10
-* Django: 2.2, 3.2, 4.0
+* Python: 3.8, 3.9, 3.10, 3.11
+* Django: 3.2, 4.1, 4.2
 * You can view the `Python-Django support matrix here <https://docs.djangoproject.com/en/dev/faq/install/#what-python-version-can-i-use-with-django>`_
 
 This package only supports modern, “evergreen” desktop and mobile browsers. For IE11 support, make sure to add a `polyfill for Element.closest <https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill>`_.
