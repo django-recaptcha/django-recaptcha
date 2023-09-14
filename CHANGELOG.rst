@@ -3,11 +3,10 @@ Changelog
 
 Unreleased
 ----------
-
-Nothing new yet!
-
-#. Added testing for Django 4.1
-#. Dropped support for Python 3.7
+#. Added support for Django 4.1 and 4.2
+#. Removed support for Django 4.0 and 2.2
+#. Removed support for Python 3.7
+#. Added support for Python 3.11
 
 3.0.0 (2022-02-07)
 --------------------
