@@ -77,15 +77,15 @@ class ReCaptchaV3(ReCaptchaBase):
                 settings, "RECAPTCHA_REQUIRED_SCORE", None
             )
         self.action = action
-        
+
     def build_attrs(self, base_attrs, extra_attrs=None):
         attrs = super().build_attrs(base_attrs, extra_attrs)
         return attrs
 
     def value_from_datadict(self, data, files, name):
         return data.get(name)
-    
+
     def get_context(self, name, value, attrs):
-        context = super(ReCaptchaV3, self).get_context(name, value, attrs)
-        context.update({'action': self.action})
+        context = super().get_context(name, value, attrs)
+        context.update({"action": self.action})
         return context
