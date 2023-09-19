@@ -21,7 +21,7 @@ class ReCaptchaField(forms.CharField):
         "captcha_error": _("Error verifying reCAPTCHA, please try again."),
     }
 
-    def __init__(self, public_key=None, private_key=None, *args, **kwargs):
+    def __init__(self, public_key=None, private_key=None, action='form', *args, **kwargs):
         """
         ReCaptchaField can accepts attributes which is a dictionary of
         attributes to be passed to the ReCaptcha widget class. The widget will
@@ -51,6 +51,8 @@ class ReCaptchaField(forms.CharField):
         # Update widget attrs with data-sitekey.
         self.widget.attrs["data-sitekey"] = self.public_key
 
+        self.action = action
+
     def get_remote_ip(self):
         f = sys._getframe()
         while f:
@@ -75,6 +77,14 @@ class ReCaptchaField(forms.CharField):
         except HTTPError:  # Catch timeouts, etc
             raise ValidationError(
                 self.error_messages["captcha_error"], code="captcha_error"
+            )
+
+        if check_captcha.action != self.action:
+            logger.warning(
+                "ReCAPTCHA validation failed due to: mismatched action"
+            )
+            raise ValidationError(
+                self.error_messages["captcha_invalid"], code="captcha_invalid"
             )
 
         if not check_captcha.is_valid:
