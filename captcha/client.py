@@ -68,5 +68,5 @@ def submit(recaptcha_response, private_key, remoteip):
         is_valid=data.pop("success"),
         error_codes=data.pop("error-codes", None),
         extra_data=data,
-        action=data.pop('action', None),
+        action=data.pop("action", None),
     )
