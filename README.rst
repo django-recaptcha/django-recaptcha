@@ -204,6 +204,22 @@ For per field, runtime, specification the attribute can also be passed to the wi
 
 In the event the score does not meet the requirements, the field validation will fail as expected and an error message will be logged.
 
+reCAPTCHA V3 Action
+~~~~~~~~~~~~~~~~~~~
+
+The V3 reCAPTCHA supports an [`action`](https://developers.google.com/recaptcha/docs/v3#actions) value that provides break-downs of actions and adaptive risk analysis.
+
+To set the action value, pass it when instantiating the ReCaptcha widget. By default it is set to `form`.
+
+.. code-block:: python
+
+    captcha = fields.ReCaptchaField(
+        widget=widgets.ReCaptchaV3(
+            action='signup'
+        )
+    )
+
+
 Local Development and Functional Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
