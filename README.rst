@@ -217,7 +217,6 @@ To set the action value, pass it when instantiating the ReCaptchaField and ReCap
         widget=widgets.ReCaptchaV3(
             action='signup'
         ),
-        action='signup'
     )
 
 
