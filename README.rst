@@ -209,14 +209,15 @@ reCAPTCHA V3 Action
 
 The V3 reCAPTCHA supports an [`action`](https://developers.google.com/recaptcha/docs/v3#actions) value that provides break-downs of actions and adaptive risk analysis.
 
-To set the action value, pass it when instantiating the ReCaptcha widget. By default it is set to `form`.
+To set the action value, pass it when instantiating the ReCaptchaField and ReCaptcha widget. By default it is set to `form`.
 
 .. code-block:: python
 
     captcha = fields.ReCaptchaField(
         widget=widgets.ReCaptchaV3(
             action='signup'
-        )
+        ),
+        action='signup'
     )
 
 

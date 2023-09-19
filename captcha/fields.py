@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 from captcha import client
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
-from captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox
+from captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox, ReCaptchaV3
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +51,7 @@ class ReCaptchaField(forms.CharField):
         # Update widget attrs with data-sitekey.
         self.widget.attrs["data-sitekey"] = self.public_key
 
-        self.action = action
+        self.widget.action = action
 
     def get_remote_ip(self):
         f = sys._getframe()
@@ -79,7 +79,7 @@ class ReCaptchaField(forms.CharField):
                 self.error_messages["captcha_error"], code="captcha_error"
             )
 
-        if check_captcha.action != self.action:
+        if isinstance(self.widget, ReCaptchaV3) and check_captcha.action != self.widget.action:
             logger.warning(
                 "ReCAPTCHA validation failed due to: mismatched action"
             )
