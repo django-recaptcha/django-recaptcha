@@ -299,7 +299,7 @@ class TestWidgets(TestCase):
             )
 
         mocked_submit.return_value = RecaptchaResponse(
-            is_valid=True, extra_data={"score": 0.9}
+            is_valid=True, extra_data={"score": 0.9}, action="form"
         )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
@@ -325,7 +325,7 @@ class TestWidgets(TestCase):
             captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
 
         mocked_submit.return_value = RecaptchaResponse(
-            is_valid=True, extra_data={"score": 0.1}
+            is_valid=True, extra_data={"score": 0.1}, action="form"
         )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
@@ -338,7 +338,7 @@ class TestWidgets(TestCase):
             captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
 
         mocked_submit.return_value = RecaptchaResponse(
-            is_valid=True, extra_data={"score": 0.85}
+            is_valid=True, extra_data={"score": 0.85}, action="form"
         )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
