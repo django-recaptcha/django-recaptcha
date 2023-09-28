@@ -332,6 +332,18 @@ class TestWidgets(TestCase):
         self.assertTrue(form.is_valid())
 
     @patch("captcha.fields.client.submit")
+    def test_client_invalid_action_v3(self, mocked_submit):
+        class VThreeDomainForm(forms.Form):
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
+
+        mocked_submit.return_value = RecaptchaResponse(
+            is_valid=True, extra_data={"score": 0.1}, action="not_form"
+        )
+        form_params = {"captcha": "PASSED"}
+        form = VThreeDomainForm(form_params)
+        self.assertFalse(form.is_valid())
+
+    @patch("captcha.fields.client.submit")
     @override_settings(RECAPTCHA_REQUIRED_SCORE=0.0)
     def test_required_score_human_setting(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
