@@ -71,6 +71,7 @@ class ReCaptchaV2Invisible(ReCaptchaBase):
 
 
 class ReCaptchaV3(ReCaptchaBase):
+    input_type = "hidden"
     template_name = "captcha/widget_v3.html"
 
     def __init__(self, api_params=None, action="form", *args, **kwargs):
