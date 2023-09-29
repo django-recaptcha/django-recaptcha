@@ -86,8 +86,8 @@ class ReCaptchaField(forms.CharField):
             )
 
         if (
-                isinstance(self.widget, ReCaptchaV3)
-                and check_captcha.action != self.widget.action
+            isinstance(self.widget, ReCaptchaV3)
+            and check_captcha.action != self.widget.action
         ):
             logger.warning(
                 "ReCAPTCHA validation failed due to: mismatched action. Expected '%s' but received '%s' from captcha server."
