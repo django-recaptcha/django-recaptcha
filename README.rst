@@ -207,7 +207,7 @@ In the event the score does not meet the requirements, the field validation will
 reCAPTCHA V3 Action
 ~~~~~~~~~~~~~~~~~~~
 
-The V3 reCAPTCHA supports an [`action`](https://developers.google.com/recaptcha/docs/v3#actions) value that provides break-downs of actions and adaptive risk analysis.
+The V3 reCAPTCHA supports an `action <https://developers.google.com/recaptcha/docs/v3#actions>`_ value that provides break-downs of actions and adaptive risk analysis.
 
 To set the action value, pass it when instantiating the ReCaptcha widget. By default it is set to `form`.
 
