@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 from captcha import client
 from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
-from captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox
+from captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox, ReCaptchaV3
 
 logger = logging.getLogger(__name__)
 
@@ -80,6 +80,18 @@ class ReCaptchaField(forms.CharField):
         if not check_captcha.is_valid:
             logger.warning(
                 "ReCAPTCHA validation failed due to: %s" % check_captcha.error_codes
+            )
+            raise ValidationError(
+                self.error_messages["captcha_invalid"], code="captcha_invalid"
+            )
+
+        if (
+            isinstance(self.widget, ReCaptchaV3)
+            and check_captcha.action != self.widget.action
+        ):
+            logger.warning(
+                "ReCAPTCHA validation failed due to: mismatched action. Expected '%s' but received '%s' from captcha server."
+                % (self.widget.action, check_captcha.action)
             )
             raise ValidationError(
                 self.error_messages["captcha_invalid"], code="captcha_invalid"
