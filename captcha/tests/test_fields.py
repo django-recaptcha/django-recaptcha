@@ -237,6 +237,9 @@ class TestWidgets(TestCase):
             '?render=pubkey"></script>',
             html,
         )
+        # ReCaptcha V3 widget has input_type=hidden, there should be no label element in the html
+        self.assertNotIn("label", html)
+
         self.assertIn('data-size="normal"', html)
         self.assertIn('data-callback="onSubmit_%s"' % test_hex, html)
         self.assertIn('class="g-recaptcha"', html)
