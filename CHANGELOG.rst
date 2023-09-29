@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Unreleased
+4.0.0 (XXXX-XX-XX)
 ----------
 #. Added support for Django 4.1 and 4.2
 #. Removed support for Django 4.0 and 2.2
