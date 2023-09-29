@@ -10,7 +10,7 @@ long_desc = (
 
 setup(
     name="django-recaptcha",
-    version="3.0.0",
+    version="4.0.0",
     description="Django recaptcha form field/widget app.",
     long_description=long_desc,
     long_description_content_type="text/x-rst",
