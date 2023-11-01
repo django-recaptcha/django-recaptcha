@@ -7,6 +7,7 @@ Unreleased
 #. Removed support for Django 4.0 and 2.2
 #. Removed support for Python 3.7
 #. Added support for Python 3.11
+#. Added Ukrainian translation (uk)
 
 3.0.0 (2022-02-07)
 --------------------
