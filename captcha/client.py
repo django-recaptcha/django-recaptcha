@@ -6,7 +6,7 @@ from django.conf import settings
 
 from captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
 
-RECAPTCHA_SUPPORTED_LANUAGES = ("en", "nl", "fr", "de", "pt", "ru", "es", "tr")
+RECAPTCHA_SUPPORTED_LANUAGES = ("en", "nl", "fr", "de", "pt", "ru", "uk", "es", "tr")
 
 
 class RecaptchaResponse:
