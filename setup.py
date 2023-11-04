@@ -19,7 +19,7 @@ setup(
     license="BSD",
     url="https://github.com/torchbox/django-recaptcha",
     project_urls={
-        "Changelog": "https://github.com/torchbox/django-recaptcha/blob/main/CHANGELOG.rst",
+        "Changelog": "https://github.com/torchbox/django-recaptcha/blob/main/CHANGELOG.md",
         "Issue Tracker": "https://github.com/torchbox/django-recaptcha/issues",
         "Discussions": "https://github.com/torchbox/django-recaptcha/discussions",
     },

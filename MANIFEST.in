@@ -1,5 +1,5 @@
 include AUTHORS.md
-include CHANGELOG.rst
+include CHANGELOG.md
 include LICENSE
 include README.md
 recursive-include django_recaptcha/templates *
