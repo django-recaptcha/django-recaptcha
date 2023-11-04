@@ -1,4 +1,4 @@
-files: ^captcha|scripts|setup.py|manage.py$
+files: ^django_recaptcha|scripts|setup.py|manage.py$
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: "v4.5.0"

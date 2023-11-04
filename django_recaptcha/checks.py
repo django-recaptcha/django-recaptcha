@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core import checks
 
-from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
+from django_recaptcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
 
 
 def recaptcha_key_check(app_configs, **kwargs):
@@ -19,9 +19,9 @@ def recaptcha_key_check(app_configs, **kwargs):
                     hint="Update settings.RECAPTCHA_PRIVATE_KEY"
                     " and/or settings.RECAPTCHA_PUBLIC_KEY. Alternatively this check"
                     " can be ignored by adding"
-                    " `SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']`"
+                    " `SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']`"
                     " to your settings file.",
-                    id="captcha.recaptcha_test_key_error",
+                    id="django_recaptcha.recaptcha_test_key_error",
                 )
             ]
         )
