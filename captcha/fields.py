@@ -1,6 +1,6 @@
 import logging
 import sys
-from urllib.error import HTTPError
+from urllib.error import HTTPError, URLError
 
 from django import forms
 from django.conf import settings
@@ -72,7 +72,7 @@ class ReCaptchaField(forms.CharField):
                 remoteip=self.get_remote_ip(),
             )
 
-        except HTTPError:  # Catch timeouts, etc
+        except (HTTPError, URLError):  # Catch timeouts, etc
             raise ValidationError(
                 self.error_messages["captcha_error"], code="captcha_error"
             )
