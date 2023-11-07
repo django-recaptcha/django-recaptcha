@@ -1,19 +1,13 @@
 from setuptools import find_packages, setup
 
-long_desc = (
-    open("README.rst", "rb").read().decode("utf-8")
-    + "\n\n"
-    + open("AUTHORS.rst", "rb").read().decode("utf-8")
-    + "\n\n"
-    + open("CHANGELOG.rst", "rb").read().decode("utf-8")
-)
+long_desc = open("README.md").read() + "\n\n" + open("AUTHORS.md").read()
 
 setup(
     name="django-recaptcha",
     version="4.0.0",
     description="Django recaptcha form field/widget app.",
     long_description=long_desc,
-    long_description_content_type="text/x-rst",
+    long_description_content_type="text/markdown",
     author="Praekelt Consulting",
     author_email="dev@praekelt.com",
     license="BSD",
