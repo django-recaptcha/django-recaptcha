@@ -5,8 +5,8 @@ from django import forms
 from django.core.exceptions import ImproperlyConfigured
 from django.test import TestCase, override_settings
 
-from captcha import fields, widgets
-from captcha.client import RecaptchaResponse
+from django_recaptcha import fields, widgets
+from django_recaptcha.client import RecaptchaResponse
 
 
 class DefaultForm(forms.Form):
@@ -14,14 +14,14 @@ class DefaultForm(forms.Form):
 
 
 class TestFields(TestCase):
-    @patch("captcha.fields.client.submit")
+    @patch("django_recaptcha.fields.client.submit")
     def test_client_success_response(self, mocked_submit):
         mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         form_params = {"g-recaptcha-response": "PASSED"}
         form = DefaultForm(form_params)
         self.assertTrue(form.is_valid())
 
-    @patch("captcha.fields.client.submit")
+    @patch("django_recaptcha.fields.client.submit")
     def test_client_failure_response(self, mocked_submit):
         mocked_submit.return_value = RecaptchaResponse(
             is_valid=False, error_codes=["410"]
@@ -36,7 +36,7 @@ class TestFields(TestCase):
             class ImporperForm(forms.Form):
                 captcha = fields.ReCaptchaField(widget=forms.Textarea)
 
-    @patch("captcha.fields.client.submit")
+    @patch("django_recaptcha.fields.client.submit")
     def test_field_instantiate_values(self, mocked_submit):
         mocked_submit.return_value = RecaptchaResponse(is_valid=True)
 
@@ -56,7 +56,7 @@ class TestFields(TestCase):
         html = form.as_p()
         self.assertIn('data-sitekey="NewPubKey"', html)
 
-    @patch("captcha.client.recaptcha_request")
+    @patch("django_recaptcha.client.recaptcha_request")
     def test_field_captcha_errors(self, mocked_response):
         read_mock = MagicMock()
         read_mock.read.return_value = (
@@ -86,7 +86,7 @@ class TestFields(TestCase):
 
 
 class TestWidgets(TestCase):
-    @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
+    @patch("django_recaptcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_default_v2_checkbox_html(self, mocked_uuid):
         test_hex = "928e8e017b114e1b9d3a3e877cfc5844"
         mocked_uuid.return_value = test_hex
@@ -107,7 +107,7 @@ class TestWidgets(TestCase):
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn("var onSubmit_%s = function(token) {" % test_hex, html)
 
-    @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
+    @patch("django_recaptcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_v2_checkbox_attribute_changes_html(self, mocked_uuid):
         test_hex = "e83ccae286ad4784bd47f7ddc40cfd6f"
         mocked_uuid.return_value = test_hex
@@ -152,7 +152,7 @@ class TestWidgets(TestCase):
             html,
         )
 
-    @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
+    @patch("django_recaptcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_default_v2_invisible_html(self, mocked_uuid):
         test_hex = "72f853eb8b7e4022b808be0f5c3bc297"
         mocked_uuid.return_value = test_hex
@@ -175,7 +175,7 @@ class TestWidgets(TestCase):
         self.assertIn("var verifyCaptcha_%s = function(e) {" % test_hex, html)
         self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
 
-    @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
+    @patch("django_recaptcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_v2_invisible_attribute_changes_html(self, mocked_uuid):
         test_hex = "8b220c54ddb849b8bb59bda5da57baea"
         mocked_uuid.return_value = test_hex
@@ -222,7 +222,7 @@ class TestWidgets(TestCase):
             html,
         )
 
-    @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
+    @patch("django_recaptcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_default_v3_html(self, mocked_uuid):
         test_hex = "c7a86421ca394661acccea374931d260"
         mocked_uuid.return_value = test_hex
@@ -248,7 +248,7 @@ class TestWidgets(TestCase):
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
 
-    @patch("captcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
+    @patch("django_recaptcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_v3_attribute_changes_html(self, mocked_uuid):
         test_hex = "f367f89a797a4985acd986275b3df22f"
         mocked_uuid.return_value = test_hex
@@ -294,7 +294,7 @@ class TestWidgets(TestCase):
             html,
         )
 
-    @patch("captcha.fields.client.submit")
+    @patch("django_recaptcha.fields.client.submit")
     def test_client_success_response_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
             captcha = fields.ReCaptchaField(
@@ -308,7 +308,7 @@ class TestWidgets(TestCase):
         form = VThreeDomainForm(form_params)
         self.assertTrue(form.is_valid())
 
-    @patch("captcha.fields.client.submit")
+    @patch("django_recaptcha.fields.client.submit")
     def test_client_failure_response_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
             captcha = fields.ReCaptchaField(
@@ -322,7 +322,7 @@ class TestWidgets(TestCase):
         form = VThreeDomainForm(form_params)
         self.assertFalse(form.is_valid())
 
-    @patch("captcha.fields.client.submit")
+    @patch("django_recaptcha.fields.client.submit")
     def test_client_empty_score_threshold_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
             captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
@@ -334,7 +334,7 @@ class TestWidgets(TestCase):
         form = VThreeDomainForm(form_params)
         self.assertTrue(form.is_valid())
 
-    @patch("captcha.fields.client.submit")
+    @patch("django_recaptcha.fields.client.submit")
     def test_client_invalid_action_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
             captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
@@ -346,7 +346,7 @@ class TestWidgets(TestCase):
         form = VThreeDomainForm(form_params)
         self.assertFalse(form.is_valid())
 
-    @patch("captcha.fields.client.submit")
+    @patch("django_recaptcha.fields.client.submit")
     @override_settings(RECAPTCHA_REQUIRED_SCORE=0.0)
     def test_required_score_human_setting(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
@@ -359,7 +359,7 @@ class TestWidgets(TestCase):
         form = VThreeDomainForm(form_params)
         self.assertTrue(form.is_valid())
 
-    @patch("captcha.fields.client.submit")
+    @patch("django_recaptcha.fields.client.submit")
     @override_settings(RECAPTCHA_REQUIRED_SCORE=0.85)
     def test_required_score_bot_setting(self, mocked_submit):
         class VThreeDomainForm(forms.Form):

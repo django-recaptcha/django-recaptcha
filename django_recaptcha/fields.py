@@ -7,9 +7,9 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from captcha import client
-from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
-from captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox, ReCaptchaV3
+from django_recaptcha import client
+from django_recaptcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
+from django_recaptcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox, ReCaptchaV3
 
 logger = logging.getLogger(__name__)
 
@@ -33,8 +33,8 @@ class ReCaptchaField(forms.CharField):
 
         if not isinstance(self.widget, ReCaptchaBase):
             raise ImproperlyConfigured(
-                "captcha.fields.ReCaptchaField.widget"
-                " must be a subclass of captcha.widgets.ReCaptchaBase"
+                "django_recaptcha.fields.ReCaptchaField.widget"
+                " must be a subclass of django_recaptcha.widgets.ReCaptchaBase"
             )
 
         # reCAPTCHA fields are always required.

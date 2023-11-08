@@ -37,13 +37,13 @@ Installation
 
 #. Install with ``pip install django-recaptcha``.
 
-#. Add ``'captcha'`` to your ``INSTALLED_APPS`` setting.
+#. Add ``'django_recaptcha'`` to your ``INSTALLED_APPS`` setting.
 
     .. code-block:: python
 
         INSTALLED_APPS = [
             ...,
-            'captcha',
+            'django_recaptcha',
             ...
         ]
 
@@ -85,7 +85,7 @@ The quickest way to add reCAPTCHA to a form is to use the included
 .. code-block:: python
 
     from django import forms
-    from captcha.fields import ReCaptchaField
+    from django_recaptcha.fields import ReCaptchaField
 
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField()
@@ -120,8 +120,8 @@ To make use of widgets other than the default Google reCAPTCHA V2 - Checkbox wid
 .. code-block:: python
 
     from django import forms
-    from captcha.fields import ReCaptchaField
-    from captcha.widgets import ReCaptchaV2Invisible
+    from django_recaptcha.fields import ReCaptchaField
+    from django_recaptcha.widgets import ReCaptchaV2Invisible
 
     class FormWithCaptcha(forms.Form):
         captcha = ReCaptchaField(widget=ReCaptchaV2Invisible)
@@ -168,11 +168,11 @@ However, the JavaScript used by the widgets can easily be overridden in the temp
 
 The templates are located in:
 
-    ``captcha/includes/js_v2_checkbox.html`` for overriding the reCAPTCHA V2 - Checkbox template
+    ``django_recaptcha/includes/js_v2_checkbox.html`` for overriding the reCAPTCHA V2 - Checkbox template
 
-    ``captcha/includes/js_v2_invisible.html`` for overriding the reCAPTCHA V2 - Invisible template
+    ``django_recaptcha/includes/js_v2_invisible.html`` for overriding the reCAPTCHA V2 - Invisible template
 
-    ``captcha/includes/js_v3.html`` for overriding the reCAPTCHA V3 template
+    ``django_recaptcha/includes/js_v3.html`` for overriding the reCAPTCHA V3 template
 
  For more information about overriding templates look at `Django's template override <https://docs.djangoproject.com/en/2.1/howto/overriding-templates/>`_
 
@@ -225,22 +225,22 @@ Local Development and Functional Testing
 
 If ``RECAPTCHA_PUBLIC_KEY`` and ``RECAPTCHA_PRIVATE_KEY`` are not set, django-recaptcha will use `Google's test keys <https://developers.google.com/recaptcha/docs/faq>`_ instead. These cannot be used in production since they always validate to true and a warning will be shown on the reCAPTCHA. Google's test keys only work for reCAPTCHA version 2.
 
-To bypass the security check that prevents the test keys from being used unknowingly add ``SILENCED_SYSTEM_CHECKS = [..., 'captcha.recaptcha_test_key_error', ...]`` to your settings, here is an example:
+To bypass the security check that prevents the test keys from being used unknowingly add ``SILENCED_SYSTEM_CHECKS = [..., 'django_recaptcha.recaptcha_test_key_error', ...]`` to your settings, here is an example:
 
     .. code-block:: python
 
-        SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+        SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
 
-If you want to mock the call to Google's servers altogether, have a look at `test_fields.py <https://github.com/torchbox/django-recaptcha/blob/main/captcha/tests/test_fields.py>`_:
+If you want to mock the call to Google's servers altogether, have a look at `test_fields.py <https://github.com/torchbox/django-recaptcha/blob/main/django_recaptcha/tests/test_fields.py>`_:
 
 .. code-block:: python
 
    from unittest.mock import patch
    from django.test import TestCase
-   from captcha.client import RecaptchaResponse   
+   from django_recaptcha.client import RecaptchaResponse   
    
    class TestFields(TestCase):
-       @patch("captcha.fields.client.submit")
+       @patch("django_recaptcha.fields.client.submit")
        def test_client_success_response(self, mocked_submit):
            mocked_submit.return_value = RecaptchaResponse(is_valid=True)
            ...

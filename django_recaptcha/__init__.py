@@ -20,4 +20,4 @@ for variable, instance_type in SETTINGS_TYPES.items():
         )
 
 if django.VERSION < (3, 2):
-    default_app_config = "captcha.apps.CaptchaConfig"
+    default_app_config = "django_recaptcha.apps.DjangoRecaptchaConfig"

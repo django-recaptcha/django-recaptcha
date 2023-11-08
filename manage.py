@@ -4,7 +4,7 @@ import sys
 
 if __name__ == "__main__":
     os.environ.setdefault(
-        "DJANGO_SETTINGS_MODULE", "captcha.tests.settings.coveralls_settings"
+        "DJANGO_SETTINGS_MODULE", "django_recaptcha.tests.settings.coveralls_settings"
     )
 
     from django.core.management import execute_from_command_line
