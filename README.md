@@ -237,12 +237,11 @@ validation will fail as expected and an error message will be logged.
 
 ### reCAPTCHA V3 Action
 
-The V3 reCAPTCHA supports an
-[action](https://developers.google.com/recaptcha/docs/v3#actions) value
-that provides break-downs of actions and adaptive risk analysis.
+[Google's reCAPTCHA V3 API supports passing an action value](https://developers.google.com/recaptcha/docs/v3#actions).
+Actions allow you to tie reCAPTCHA validations to a specific form on your site for analytical purposes, enabling you to perform risk analysis per form. This will allow you to make informed decisions about adjusting the score threshold for certain forms because abusive behavior can vary depending on the nature of the form.
 
-To set the action value, pass it when instantiating the ReCaptcha
-widget. By default it is set to <span class="title-ref">form</span>.
+To set the action value, pass an `action` argument when instantiating the ReCaptcha
+widget. Be careful to only use alphanumeric characters, slashes and underscores as stated in the reCAPTCHA documentation.
 
 ```python
 captcha = fields.ReCaptchaField(
@@ -251,6 +250,8 @@ captcha = fields.ReCaptchaField(
     )
 )
 ```
+
+Setting an action is entirely optional. If you don't specify an action, no action will be passed to the reCAPTCHA V3 API.
 
 ### Local Development and Functional Testing
 
