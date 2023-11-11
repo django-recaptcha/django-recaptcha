@@ -8,8 +8,8 @@ setup(
     description="Django recaptcha form field/widget app.",
     long_description=long_desc,
     long_description_content_type="text/markdown",
-    author="Praekelt Consulting",
-    author_email="dev@praekelt.com",
+    author="Torchbox and individual contributors",
+    author_email="hello@torchbox.com",
     license="BSD",
     url="https://github.com/torchbox/django-recaptcha",
     project_urls={
