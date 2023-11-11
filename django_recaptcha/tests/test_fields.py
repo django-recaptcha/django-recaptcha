@@ -247,6 +247,38 @@ class TestWidgets(TestCase):
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
+        # By default, the action should NOT be in the JS code
+        self.assertNotIn("action", html)
+
+    @patch("django_recaptcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
+    def test_default_v3_html_with_action(self, mocked_uuid):
+        test_hex = "c7a86421ca394661acccea374931d260"
+        mocked_uuid.return_value = test_hex
+
+        class InvisForm(forms.Form):
+            # We want to check that the action is passed to the JS code
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3(action="needle"))
+
+        form = InvisForm()
+        html = form.as_p()
+        self.assertIn(
+            '<script src="https://www.google.com/recaptcha/api.js'
+            '?render=pubkey"></script>',
+            html,
+        )
+        # ReCaptcha V3 widget has input_type=hidden, there should be no label element in the html
+        self.assertNotIn("label", html)
+
+        self.assertIn('data-size="normal"', html)
+        self.assertIn('data-callback="onSubmit_%s"' % test_hex, html)
+        self.assertIn('class="g-recaptcha"', html)
+        self.assertIn("required", html)
+        self.assertIn('data-widget-uuid="%s"' % test_hex, html)
+        self.assertIn('data-sitekey="pubkey"', html)
+        self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
+
+        # Expect the action to be in the JS code
+        self.assertIn("action: 'needle'", html)
 
     @patch("django_recaptcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_v3_attribute_changes_html(self, mocked_uuid):
@@ -302,7 +334,7 @@ class TestWidgets(TestCase):
             )
 
         mocked_submit.return_value = RecaptchaResponse(
-            is_valid=True, extra_data={"score": 0.9}, action="form"
+            is_valid=True, extra_data={"score": 0.9}
         )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
@@ -328,7 +360,7 @@ class TestWidgets(TestCase):
             captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
 
         mocked_submit.return_value = RecaptchaResponse(
-            is_valid=True, extra_data={"score": 0.1}, action="form"
+            is_valid=True, extra_data={"score": 0.1}
         )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
@@ -337,14 +369,26 @@ class TestWidgets(TestCase):
     @patch("django_recaptcha.fields.client.submit")
     def test_client_invalid_action_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
-            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3(action="form"))
 
         mocked_submit.return_value = RecaptchaResponse(
-            is_valid=True, extra_data={"score": 0.1}, action="not_form"
+            is_valid=True, extra_data={"score": 0.1}, action="something_unexpected"
         )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
         self.assertFalse(form.is_valid())
+
+    @patch("django_recaptcha.fields.client.submit")
+    def test_client_valid_action_v3(self, mocked_submit):
+        class VThreeDomainForm(forms.Form):
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3(action="form"))
+
+        mocked_submit.return_value = RecaptchaResponse(
+            is_valid=True, extra_data={"score": 0.1}, action="form"
+        )
+        form_params = {"captcha": "PASSED"}
+        form = VThreeDomainForm(form_params)
+        self.assertTrue(form.is_valid())
 
     @patch("django_recaptcha.fields.client.submit")
     @override_settings(RECAPTCHA_REQUIRED_SCORE=0.0)
@@ -353,7 +397,7 @@ class TestWidgets(TestCase):
             captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
 
         mocked_submit.return_value = RecaptchaResponse(
-            is_valid=True, extra_data={"score": 0.85}, action="form"
+            is_valid=True, extra_data={"score": 0.85}
         )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)

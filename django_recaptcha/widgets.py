@@ -74,7 +74,7 @@ class ReCaptchaV3(ReCaptchaBase):
     input_type = "hidden"
     template_name = "django_recaptcha/widget_v3.html"
 
-    def __init__(self, api_params=None, action="form", *args, **kwargs):
+    def __init__(self, api_params=None, action=None, *args, **kwargs):
         super().__init__(api_params=api_params, *args, **kwargs)
         if not self.attrs.get("required_score", None):
             self.attrs["required_score"] = getattr(
