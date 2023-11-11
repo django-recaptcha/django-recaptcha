@@ -3,7 +3,7 @@
 ## 4.0.0 (XXXX-XX-XX)
 
 > [!IMPORTANT]
-> **BREAKING**: package namespace renamed from `captcha` to `django_recaptcha` ([#317](https://github.com/torchbox/django-recaptcha/pull/317))
+> **BREAKING**: package namespace renamed from `captcha` to `django_recaptcha`. See upgrade considerations section below for instructions ([#317](https://github.com/torchbox/django-recaptcha/pull/317))
 
 - Removed: support for Django 4.0 and 2.2
 - Removed: support for Python 3.7
@@ -18,6 +18,60 @@
 - Fixed: avoid outputting duplicate `class` attribute in widget html when a custom `class` attribute is passed to the widget ([#275](https://github.com/torchbox/django-recaptcha/pull/275))
 - Docs: update testing instructions ([#300](https://github.com/torchbox/django-recaptcha/pull/300))
 - Docs: add example unittest for `RECAPTCHA_TESTING` ([#289](https://github.com/torchbox/django-recaptcha/pull/289))
+
+### Upgrade considerations from v3 to v4
+
+#### Package namespace renamed
+
+The package namespace has been renamed from `captcha` to `django_recaptcha` to avoid namespace conflicts with other captcha packages. This means that you will need to update your imports and `INSTALLED_APPS` setting.
+
+**Action required:** update your imports like this:
+
+```diff
+# Old
+-from captcha.fields import ReCaptchaField
+-from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV2Invisible, ReCaptchaV3
+# New
++from django_captcha.fields import ReCaptchaField
++from django_captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV2Invisible, ReCaptchaV3
+```
+
+**Action required:** update your Django settings like this:
+
+```diff
+INSTALLED_APPS = [
+    # ...
+    # Old
+-    "captcha",
+    # New
++    "django_captcha",
+    # ...
+]
+```
+
+#### ReCaptchaV3 widget no longer supplies a default action to the ReCaptcha API
+
+[Google's reCAPTCHA V3 API supports passing an action value](https://developers.google.com/recaptcha/docs/v3#actions).
+Actions allow you to tie reCAPTCHA validations to a specific form on your site for analytical purposes, enabling you to perform risk analysis per form. This will allow you to make informed decisions about adjusting the score threshold for certain forms because abusive behavior can vary depending on the nature of the form.
+
+Previously, the `ReCaptchaV3` widget used a hardcoded value for the `action` parameter which was not configurable. This meant that all ReCaptcha V3 validations for your site were tied to the same action: `form`, defeating the purpose of actions.
+
+Starting with v4.0.0, the `ReCaptchaV3` widget now takes an `action` argument. If you don't supply this argument no action will be passed to the reCAPTCHA V3 API. Passing an action is optional, but recommended.
+
+**Optional:** consider passing an `action` argument to the `ReCaptchaV3` widget.
+
+Example:
+
+```python
+class ContactForm(forms.Form):
+    # All captcha validations for this form will be tied to the "contact_form" action.
+    # You can view the validation statistics in the reCAPTCHA admin console.
+    captcha = ReCaptchaField(widget=ReCaptchaV3(action="contact_form"))
+```
+
+#### ReCaptchaV3 widget no longer displays a label
+
+Previously, the `RecaptchaV3` widget displayed a label which was confusing as ReCaptcha validation is done in the background and the widget is invisible. This redundant label has been removed in v4.0.0. If you previously removed the label yourself by passing `label=""` to `RecaptchaField` you can now remove this argument.
 
 ## 3.0.0 (2022-02-07)
 
