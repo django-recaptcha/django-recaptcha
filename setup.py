@@ -4,7 +4,7 @@ long_desc = open("README.md").read() + "\n\n" + open("AUTHORS.md").read()
 
 setup(
     name="django-recaptcha",
-    version="4.0.0",
+    version="4.1.0",
     description="Django recaptcha form field/widget app.",
     long_description=long_desc,
     long_description_content_type="text/markdown",

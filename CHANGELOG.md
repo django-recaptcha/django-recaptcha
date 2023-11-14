@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.1.0 [Unreleased]
+
+- Nothing new yet
+
 ## 4.0.0 (2023-11-14)
 
 > [!IMPORTANT]
