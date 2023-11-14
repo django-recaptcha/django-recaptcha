@@ -32,8 +32,8 @@ The package namespace has been renamed from `captcha` to `django_recaptcha` to a
 -from captcha.fields import ReCaptchaField
 -from captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV2Invisible, ReCaptchaV3
 # New
-+from django_captcha.fields import ReCaptchaField
-+from django_captcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV2Invisible, ReCaptchaV3
++from django_recaptcha.fields import ReCaptchaField
++from django_recaptcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV2Invisible, ReCaptchaV3
 ```
 
 **Action required:** update your Django settings like this:
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     # Old
 -    "captcha",
     # New
-+    "django_captcha",
++    "django_recaptcha",
     # ...
 ]
 ```

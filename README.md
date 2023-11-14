@@ -46,7 +46,7 @@ Element.closest](https://developer.mozilla.org/en-US/docs/Web/API/Element/closes
 ```python
 INSTALLED_APPS = [
     ...,
-    'django_captcha',
+    'django_recaptcha',
     ...
 ]
 ```
