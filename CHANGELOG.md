@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.0.0 (XXXX-XX-XX)
+## 4.0.0 (2023-11-14)
 
 > [!IMPORTANT]
 > **BREAKING**: package namespace renamed from `captcha` to `django_recaptcha`. See upgrade considerations section below for instructions ([#317](https://github.com/torchbox/django-recaptcha/pull/317))
