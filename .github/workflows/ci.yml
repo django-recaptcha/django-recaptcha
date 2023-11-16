@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-
+  workflow_call:  # Allow for the publish workflows to run the tests by calling this workflow
 jobs:
   test_compatibility:
     runs-on: ubuntu-latest
