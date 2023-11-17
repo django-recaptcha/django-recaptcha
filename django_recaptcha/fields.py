@@ -22,8 +22,14 @@ class ReCaptchaField(forms.CharField):
         "captcha_error": _("Error verifying reCAPTCHA, please try again."),
     }
 
-    def __init__(self, public_key=None, private_key=None, log_level_hostname=None,
-                 *args, **kwargs):
+    def __init__(
+        self,
+        public_key=None,
+        private_key=None,
+        log_level_hostname=None,
+        *args,
+        **kwargs
+    ):
         """
         ReCaptchaField can accepts attributes which is a dictionary of
         attributes to be passed to the ReCaptcha widget class. The widget will
@@ -51,7 +57,8 @@ class ReCaptchaField(forms.CharField):
         )
 
         self.log_level_hostname = log_level_hostname or getattr(
-            settings, "RECAPTCHA_LOG_LEVEL_HOSTNAME", logging.ERROR)
+            settings, "RECAPTCHA_LOG_LEVEL_HOSTNAME", logging.ERROR
+        )
 
         # Update widget attrs with data-sitekey.
         self.widget.attrs["data-sitekey"] = self.public_key
@@ -96,12 +103,11 @@ class ReCaptchaField(forms.CharField):
             if not validate_hostname(hostname):
                 logger.log(
                     self.log_level_hostname,
-                    "ReCAPTCHA validation failed because hostname %s rejected" %
-                    hostname
+                    "ReCAPTCHA validation failed because hostname %s rejected"
+                    % hostname,
                 )
                 raise CaptchaHostnameError(
-                    self.error_messages["captcha_invalid"],
-                    code="captcha_invalid"
+                    self.error_messages["captcha_invalid"], code="captcha_invalid"
                 )
 
         if (
