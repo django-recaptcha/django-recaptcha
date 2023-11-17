@@ -6,7 +6,7 @@ DATABASES = {
 }
 
 INSTALLED_APPS = [
-    "captcha",
+    "django_recaptcha",
 ]
 
 RECAPTCHA_PRIVATE_KEY = "privkey"
