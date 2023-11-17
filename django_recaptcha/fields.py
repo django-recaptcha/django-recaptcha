@@ -4,7 +4,7 @@ from urllib.error import HTTPError
 
 from django import forms
 from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured, ValidationError
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext_lazy as _
 
 from django_recaptcha import client
@@ -104,7 +104,7 @@ class ReCaptchaField(forms.CharField):
                 "ReCAPTCHA validation failed due to: mismatched action. Expected '%s' but received '%s' from captcha server."
                 % (self.widget.action, check_captcha.action)
             )
-            raise ValidationError(
+            raise CaptchaValidationError(
                 self.error_messages["captcha_invalid"], code="captcha_invalid"
             )
 
