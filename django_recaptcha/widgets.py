@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 from django.conf import settings
 from django.forms import widgets
 
-from captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
+from django_recaptcha.constants import DEFAULT_RECAPTCHA_DOMAIN
 
 
 class ReCaptchaBase(widgets.Widget):
@@ -21,6 +21,9 @@ class ReCaptchaBase(widgets.Widget):
         super().__init__(*args, **kwargs)
         self.uuid = uuid.uuid4().hex
         self.api_params = api_params or {}
+
+        if not self.attrs.get("class", None):
+            self.attrs["class"] = "g-recaptcha"
 
         if not self.attrs.get("validate_hostname", None):
             self.attrs["validate_hostname"] = getattr(
@@ -58,11 +61,11 @@ class ReCaptchaBase(widgets.Widget):
 
 
 class ReCaptchaV2Checkbox(ReCaptchaBase):
-    template_name = "captcha/widget_v2_checkbox.html"
+    template_name = "django_recaptcha/widget_v2_checkbox.html"
 
 
 class ReCaptchaV2Invisible(ReCaptchaBase):
-    template_name = "captcha/widget_v2_invisible.html"
+    template_name = "django_recaptcha/widget_v2_invisible.html"
 
     def build_attrs(self, base_attrs, extra_attrs=None):
         attrs = super().build_attrs(base_attrs, extra_attrs)
@@ -73,14 +76,16 @@ class ReCaptchaV2Invisible(ReCaptchaBase):
 
 
 class ReCaptchaV3(ReCaptchaBase):
-    template_name = "captcha/widget_v3.html"
+    input_type = "hidden"
+    template_name = "django_recaptcha/widget_v3.html"
 
-    def __init__(self, api_params=None, *args, **kwargs):
+    def __init__(self, api_params=None, action=None, *args, **kwargs):
         super().__init__(api_params=api_params, *args, **kwargs)
         if not self.attrs.get("required_score", None):
             self.attrs["required_score"] = getattr(
                 settings, "RECAPTCHA_REQUIRED_SCORE", None
             )
+        self.action = action
 
     def build_attrs(self, base_attrs, extra_attrs=None):
         attrs = super().build_attrs(base_attrs, extra_attrs)
@@ -88,3 +93,8 @@ class ReCaptchaV3(ReCaptchaBase):
 
     def value_from_datadict(self, data, files, name):
         return data.get(name)
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context.update({"action": self.action})
+        return context

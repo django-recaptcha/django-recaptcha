@@ -4,16 +4,17 @@ from urllib.request import ProxyHandler, Request, build_opener
 
 from django.conf import settings
 
-from captcha.constants import DEFAULT_RECAPTCHA_DOMAIN
+from django_recaptcha.constants import DEFAULT_RECAPTCHA_DOMAIN
 
 RECAPTCHA_SUPPORTED_LANUAGES = ("en", "nl", "fr", "de", "pt", "ru", "es", "tr")
 
 
 class RecaptchaResponse:
-    def __init__(self, is_valid, error_codes=None, extra_data=None):
+    def __init__(self, is_valid, error_codes=None, extra_data=None, action=None):
         self.is_valid = is_valid
         self.error_codes = error_codes or []
         self.extra_data = extra_data or {}
+        self.action = action
 
 
 def recaptcha_request(params):
@@ -67,4 +68,5 @@ def submit(recaptcha_response, private_key, remoteip):
         is_valid=data.pop("success"),
         error_codes=data.pop("error-codes", None),
         extra_data=data,
+        action=data.pop("action", None),
     )

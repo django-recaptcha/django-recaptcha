@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 from django import forms
 from django.test import TestCase, override_settings
 
-from captcha import client, fields
+from django_recaptcha import client, fields
 
 
 class DefaultForm(forms.Form):
@@ -12,7 +12,7 @@ class DefaultForm(forms.Form):
 
 
 class TestClient(TestCase):
-    @patch("captcha.client.recaptcha_request")
+    @patch("django_recaptcha.client.recaptcha_request")
     def test_client_success(self, mocked_response):
         read_mock = MagicMock()
         read_mock.read.return_value = (
@@ -34,7 +34,7 @@ class TestClient(TestCase):
         self.assertIn("remoteip=0.0.0.0", mocked_response.call_args.__str__())
         self.assertTrue(response.is_valid)
 
-    @patch("captcha.client.recaptcha_request")
+    @patch("django_recaptcha.client.recaptcha_request")
     def test_client_failure(self, mocked_response):
         read_mock = MagicMock()
         read_mock.read.return_value = (
@@ -60,8 +60,8 @@ class TestClient(TestCase):
             ["invalid-input-response", "invalid-input-secret"].sort(),
         )
 
-    @patch("captcha.client.Request")
-    @patch("captcha.client.build_opener")
+    @patch("django_recaptcha.client.Request")
+    @patch("django_recaptcha.client.build_opener")
     def test_client_request(self, mocked_builder, mocked_request):
         mock_read = MagicMock()
         mock_read.read.return_value = (
@@ -96,9 +96,9 @@ class TestClient(TestCase):
         mock_opener.open.assert_called_with(mocked_request(), timeout=10)
         mocked_builder.assert_called_with()
 
-    @patch("captcha.client.ProxyHandler")
-    @patch("captcha.client.Request")
-    @patch("captcha.client.build_opener")
+    @patch("django_recaptcha.client.ProxyHandler")
+    @patch("django_recaptcha.client.Request")
+    @patch("django_recaptcha.client.build_opener")
     @override_settings(RECAPTCHA_PROXY={"http": "aaaa.com"})
     def test_client_request_with_proxy_builder(
         self, mocked_builder, mocked_request, mocked_handler

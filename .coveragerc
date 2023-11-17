@@ -1,7 +1,7 @@
 [run]
 branch = True
 source =
-    captcha
+    django_recaptcha
 
 [report]
 show_missing = True

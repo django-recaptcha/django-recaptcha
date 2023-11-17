@@ -7,10 +7,10 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from captcha import client
-from captcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
-from captcha.exceptions import CaptchaHostnameError
-from captcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox
+from django_recaptcha import client
+from django_recaptcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
+from django_recaptcha.exceptions import CaptchaHostnameError
+from django_recaptcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox, ReCaptchaV3
 
 logger = logging.getLogger(__name__)
 
@@ -35,8 +35,8 @@ class ReCaptchaField(forms.CharField):
 
         if not isinstance(self.widget, ReCaptchaBase):
             raise ImproperlyConfigured(
-                "captcha.fields.ReCaptchaField.widget"
-                " must be a subclass of captcha.widgets.ReCaptchaBase"
+                "django_recaptcha.fields.ReCaptchaField.widget"
+                " must be a subclass of django_recaptcha.widgets.ReCaptchaBase"
             )
 
         # reCAPTCHA fields are always required.
@@ -103,6 +103,18 @@ class ReCaptchaField(forms.CharField):
                     self.error_messages["captcha_invalid"],
                     code="captcha_invalid"
                 )
+
+        if (
+            isinstance(self.widget, ReCaptchaV3)
+            and check_captcha.action != self.widget.action
+        ):
+            logger.warning(
+                "ReCAPTCHA validation failed due to: mismatched action. Expected '%s' but received '%s' from captcha server."
+                % (self.widget.action, check_captcha.action)
+            )
+            raise ValidationError(
+                self.error_messages["captcha_invalid"], code="captcha_invalid"
+            )
 
         required_score = self.widget.attrs.get("required_score")
         if required_score:
