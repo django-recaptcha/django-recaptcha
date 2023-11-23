@@ -57,10 +57,12 @@ class ReCaptchaBase(widgets.Widget):
 
 
 class ReCaptchaV2Checkbox(ReCaptchaBase):
+    input_type = "hidden"
     template_name = "django_recaptcha/widget_v2_checkbox.html"
 
 
 class ReCaptchaV2Invisible(ReCaptchaBase):
+    input_type = "hidden"
     template_name = "django_recaptcha/widget_v2_invisible.html"
 
     def build_attrs(self, base_attrs, extra_attrs=None):
