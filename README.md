@@ -4,8 +4,8 @@
 
 [![PyPI latest version](https://img.shields.io/pypi/v/django-recaptcha.svg)](https://pypi.org/project/django-recaptcha/)
 [![PyPI monthly downloads](https://img.shields.io/pypi/dm/django-recaptcha.svg)](https://pypi.org/project/django-recaptcha/)
-[![CI status](https://github.com/torchbox/django-recaptcha/workflows/CI/badge.svg)](https://github.com/torchbox/django-recaptcha/actions)
-[![Coverage](https://coveralls.io/repos/github/torchbox/django-recaptcha/badge.svg?branch=main)](https://coveralls.io/github/torchbox/django-recaptcha?branch=main)
+[![CI status](https://github.com/django-recaptcha/django-recaptcha/workflows/CI/badge.svg)](https://github.com/django-recaptcha/django-recaptcha/actions)
+[![Coverage Status](https://coveralls.io/repos/github/django-recaptcha/django-recaptcha/badge.svg?branch=main)](https://coveralls.io/github/django-recaptcha/django-recaptcha?branch=main)
 
 > [!NOTE]
 > django-recaptcha supports Google reCAPTCHA V2 - Checkbox (Default), Google reCAPTCHA V2 - Invisible and Google reCAPTCHA V3. Please look at the widgets section for more information.
@@ -273,7 +273,7 @@ SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
 
 If you want to mock the call to Google's servers altogether, have a look
 at
-[test_fields.py](https://github.com/torchbox/django-recaptcha/blob/main/captcha/tests/test_fields.py):
+[test_fields.py](https://github.com/django-recaptcha/django-recaptcha/blob/main/captcha/tests/test_fields.py):
 
 ```python
 from unittest.mock import patch
@@ -289,9 +289,9 @@ class TestFields(TestCase):
 
 ## Credits
 
-Originally developed by [Praekelt Consulting](https://github.com/praekelt/django-recaptcha)
+Originally developed by [Praekelt Consulting](https://github.com/praekelt).
 
-Inspired Marco Fucci's blogpost titled [Integrating reCAPTCHA with Django](http://www.marcofucci.com/tumblelog/26/jul/2009/integrating-recaptcha-with-django)
+Inspired Marco Fucci's blogpost titled [Integrating reCAPTCHA with Django](http://www.marcofucci.com/tumblelog/26/jul/2009/integrating-recaptcha-with-django).
 
 `client.py` taken from [recaptcha-client](http://pypi.python.org/pypi/recaptcha-client) licensed MIT/X11 by Mike Crawford.
 

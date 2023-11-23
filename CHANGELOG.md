@@ -2,26 +2,26 @@
 
 ## 4.1.0 [Unreleased]
 
-- Nothing new yet
+- The GitHub project has been transferred to [django-recaptcha/django-recaptcha](https://github.com/django-recaptcha/django-recaptcha), to facilitate maintenance by the community.
+  See the [maintainers discussion in GitHub](https://github.com/orgs/django-recaptcha/discussions/249).
 
 ## 4.0.0 (2023-11-14)
 
-> [!IMPORTANT]
-> **BREAKING**: package namespace renamed from `captcha` to `django_recaptcha`. See upgrade considerations section below for instructions ([#317](https://github.com/torchbox/django-recaptcha/pull/317))
+> [!IMPORTANT] > **BREAKING**: package namespace renamed from `captcha` to `django_recaptcha`. See upgrade considerations section below for instructions ([#317](https://github.com/django-recaptcha/django-recaptcha/pull/317))
 
 - Removed: support for Django 4.0 and 2.2
 - Removed: support for Python 3.7
 - Added: support for Django 4.1 and 4.2
 - Added: support for Python 3.11
-- Added: support for the `action` parameter in the ReCaptchaV3 widget ([#304](https://github.com/torchbox/django-recaptcha/pull/304), [#309](https://github.com/torchbox/django-recaptcha/pull/309) and [#310](https://github.com/torchbox/django-recaptcha/pull/310))
-- Added: Arabic translations ([#313](https://github.com/torchbox/django-recaptcha/pull/313))
-- Added: Indonesian translations ([#301](https://github.com/torchbox/django-recaptcha/pull/301))
-- Added: Ukrainian translations ([#315](https://github.com/torchbox/django-recaptcha/pull/315))
-- Fixed: don't display a form field label when using the ReCaptchaV3 widget as it is invisible ([#294](https://github.com/torchbox/django-recaptcha/pull/294))
-- Fixed: execute ReCaptcha V3 validation on form submit instead of on page load to avoid captcha errors if the form takes more than 2 minutes to complete ([#296](https://github.com/torchbox/django-recaptcha/pull/296))
-- Fixed: avoid outputting duplicate `class` attribute in widget html when a custom `class` attribute is passed to the widget ([#275](https://github.com/torchbox/django-recaptcha/pull/275))
-- Docs: update testing instructions ([#300](https://github.com/torchbox/django-recaptcha/pull/300))
-- Docs: add example unittest for `RECAPTCHA_TESTING` ([#289](https://github.com/torchbox/django-recaptcha/pull/289))
+- Added: support for the `action` parameter in the ReCaptchaV3 widget ([#304](https://github.com/django-recaptcha/django-recaptcha/pull/304), [#309](https://github.com/django-recaptcha/django-recaptcha/pull/309) and [#310](https://github.com/django-recaptcha/django-recaptcha/pull/310))
+- Added: Arabic translations ([#313](https://github.com/django-recaptcha/django-recaptcha/pull/313))
+- Added: Indonesian translations ([#301](https://github.com/django-recaptcha/django-recaptcha/pull/301))
+- Added: Ukrainian translations ([#315](https://github.com/django-recaptcha/django-recaptcha/pull/315))
+- Fixed: don't display a form field label when using the ReCaptchaV3 widget as it is invisible ([#294](https://github.com/django-recaptcha/django-recaptcha/pull/294))
+- Fixed: execute ReCaptcha V3 validation on form submit instead of on page load to avoid captcha errors if the form takes more than 2 minutes to complete ([#296](https://github.com/django-recaptcha/django-recaptcha/pull/296))
+- Fixed: avoid outputting duplicate `class` attribute in widget html when a custom `class` attribute is passed to the widget ([#275](https://github.com/django-recaptcha/django-recaptcha/pull/275))
+- Docs: update testing instructions ([#300](https://github.com/django-recaptcha/django-recaptcha/pull/300))
+- Docs: add example unittest for `RECAPTCHA_TESTING` ([#289](https://github.com/django-recaptcha/django-recaptcha/pull/289))
 
 ### Upgrade considerations from v3 to v4
 
@@ -79,9 +79,8 @@ Previously, the `RecaptchaV3` widget displayed a label which was confusing as Re
 
 ## 3.0.0 (2022-02-07)
 
-- Torchbox has taken over maintenance of this package from Praekelt.
-  See the [Github
-  Announcement](https://github.com/torchbox/django-recaptcha/discussions/249)
+- Individual contributors supported by Torchbox have taken over maintenance of this package from Praekelt.
+  See the [Github Announcement](https://github.com/orgs/django-recaptcha/discussions/249)
 - Switch testing from Travis to Github Actions.
 - Only provide default_app_config for django.VERSIONs lower than 3.2
 - Changed log level of check failures from error to warning.
