@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: "Question"
-    url: https://github.com/torchbox/django-recaptcha/discussions
+    url: https://github.com/orgs/django-recaptcha/discussions
     about: Use GitHub Discussions to get help with this project.
