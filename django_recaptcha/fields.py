@@ -97,7 +97,7 @@ class ReCaptchaField(forms.CharField):
                 self.error_messages["captcha_invalid"], code="captcha_invalid"
             )
 
-        required_score = self.widget.attrs.get("required_score")
+        required_score = getattr(self.widget, "required_score", None)
         if required_score:
             # Our score values need to be floats, as that is the expected
             # response from the Google endpoint. Rather than ensure that on

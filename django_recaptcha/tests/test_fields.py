@@ -239,11 +239,11 @@ class TestWidgets(TestCase):
         )
         # ReCaptcha V3 widget has input_type=hidden, there should be no label element in the html
         self.assertNotIn("label", html)
+        self.assertNotIn("required", html)
 
         self.assertIn('data-size="normal"', html)
         self.assertIn('data-callback="onSubmit_%s"' % test_hex, html)
         self.assertIn('class="g-recaptcha"', html)
-        self.assertIn("required", html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
@@ -268,11 +268,11 @@ class TestWidgets(TestCase):
         )
         # ReCaptcha V3 widget has input_type=hidden, there should be no label element in the html
         self.assertNotIn("label", html)
+        self.assertNotIn("required", html)
 
         self.assertIn('data-size="normal"', html)
         self.assertIn('data-callback="onSubmit_%s"' % test_hex, html)
         self.assertIn('class="g-recaptcha"', html)
-        self.assertIn("required", html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
@@ -308,7 +308,6 @@ class TestWidgets(TestCase):
         self.assertNotIn('data-callback="onSubmit_%s"' % test_hex, html)
         self.assertIn('data-callback="customCallbackInvis"', html)
         self.assertIn('class="g-recaptcha"', html)
-        self.assertIn("required", html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
@@ -326,11 +325,21 @@ class TestWidgets(TestCase):
             html,
         )
 
+    # TODO: DeprecationWarning: remove backwards compatibility test
+    def test_field_required_score_attribute_html(self):
+        with self.assertWarnsMessage(DeprecationWarning, "required_score"):
+
+            class VThreeDomainForm(forms.Form):
+                captcha = fields.ReCaptchaField(
+                    # required_score is deprecated as an attribute
+                    widget=widgets.ReCaptchaV3(attrs={"required_score": 0.8})
+                )
+
     @patch("django_recaptcha.fields.client.submit")
     def test_client_success_response_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
             captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV3(attrs={"required_score": 0.8})
+                widget=widgets.ReCaptchaV3(required_score=0.8)
             )
 
         mocked_submit.return_value = RecaptchaResponse(
@@ -344,7 +353,7 @@ class TestWidgets(TestCase):
     def test_client_failure_response_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
             captcha = fields.ReCaptchaField(
-                widget=widgets.ReCaptchaV3(attrs={"required_score": 0.8})
+                widget=widgets.ReCaptchaV3(required_score=0.8)
             )
 
         mocked_submit.return_value = RecaptchaResponse(
