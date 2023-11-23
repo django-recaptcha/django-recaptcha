@@ -4,6 +4,8 @@
 
 - The GitHub project has been transferred to [django-recaptcha/django-recaptcha](https://github.com/django-recaptcha/django-recaptcha), to facilitate maintenance by the community.
   See the [maintainers discussion in GitHub](https://github.com/orgs/django-recaptcha/discussions/249).
+- Added: Persian translations ([#326](https://github.com/django-recaptcha/django-recaptcha/pull/326))
+- Fixed: removed unnecessary `type="text/javascript"` from all script tags ([#324](https://github.com/django-recaptcha/django-recaptcha/pull/324))
 
 ## 4.0.0 (2023-11-14)
 
