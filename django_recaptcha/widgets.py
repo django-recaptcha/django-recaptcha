@@ -112,3 +112,8 @@ class ReCaptchaV3(ReCaptchaBase):
 
     def value_from_datadict(self, data, files, name):
         return data.get(name)
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context.update({"action": self.action})
+        return context
