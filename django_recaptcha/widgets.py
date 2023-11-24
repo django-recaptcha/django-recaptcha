@@ -4,6 +4,7 @@ from urllib.parse import urlencode
 
 from django.conf import settings
 from django.forms import widgets
+from django.templatetags.static import static
 
 from django_recaptcha.constants import DEFAULT_RECAPTCHA_DOMAIN
 
@@ -41,6 +42,7 @@ class ReCaptchaBase(widgets.Widget):
                 "recaptcha_domain": getattr(
                     settings, "RECAPTCHA_DOMAIN", DEFAULT_RECAPTCHA_DOMAIN
                 ),
+                "script_url": self.script_name,
             }
         )
         return context
@@ -60,11 +62,13 @@ class ReCaptchaBase(widgets.Widget):
 class ReCaptchaV2Checkbox(ReCaptchaBase):
     input_type = "hidden"
     template_name = "django_recaptcha/widget_v2_checkbox.html"
+    script_name = static("django_recaptcha/js/widget_v2_checkbox.js")
 
 
 class ReCaptchaV2Invisible(ReCaptchaBase):
     input_type = "hidden"
     template_name = "django_recaptcha/widget_v2_invisible.html"
+    script_name = static("django_recaptcha/js/widget_v2_invisible.js")
 
     def build_attrs(self, base_attrs, extra_attrs=None):
         attrs = super().build_attrs(base_attrs, extra_attrs)
@@ -77,6 +81,7 @@ class ReCaptchaV2Invisible(ReCaptchaBase):
 class ReCaptchaV3(ReCaptchaBase):
     input_type = "hidden"
     template_name = "django_recaptcha/widget_v3.html"
+    script_name = static("django_recaptcha/js/widget_v3.js")
 
     def __init__(
         self, api_params=None, action=None, required_score=None, *args, **kwargs
@@ -101,12 +106,9 @@ class ReCaptchaV3(ReCaptchaBase):
 
     def build_attrs(self, base_attrs, extra_attrs=None):
         attrs = super().build_attrs(base_attrs, extra_attrs)
+        if self.action:
+            attrs["data-action"] = self.action
         return attrs
 
     def value_from_datadict(self, data, files, name):
         return data.get(name)
-
-    def get_context(self, name, value, attrs):
-        context = super().get_context(name, value, attrs)
-        context.update({"action": self.action})
-        return context
