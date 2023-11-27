@@ -113,7 +113,7 @@ class ReCaptchaField(forms.CharField):
             logger.log(
                 self.log_level_validate,
                 "ReCAPTCHA validation failed due to: mismatched action. Expected '%s' but received '%s' from captcha server."
-                % (self.widget.action, check_captcha.action)
+                % (self.widget.action, check_captcha.action),
             )
             raise CaptchaValidationError(
                 self.error_messages["captcha_invalid"], code="captcha_invalid"
