@@ -415,3 +415,16 @@ class TestWidgets(TestCase):
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
         self.assertFalse(form.is_valid())
+
+    @patch("captcha.fields.client.submit")
+    def test_recaptcha_field_property(self, mocked_submit):
+        class VThreeDomainForm(forms.Form):
+            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
+
+        recaptcha_response = RecaptchaResponse(is_valid=True, extra_data={"score": 95})
+        mocked_submit.return_value = recaptcha_response
+        form_params = {"captcha": "PASSED"}
+        form = VThreeDomainForm(form_params)
+        self.assertEqual(form.fields["captcha"].recaptcha_response, None)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.fields["captcha"].recaptcha_response, recaptcha_response)
