@@ -1,4 +1,5 @@
 import uuid
+import warnings
 from urllib.parse import urlencode
 
 from django.conf import settings
@@ -74,12 +75,25 @@ class ReCaptchaV3(ReCaptchaBase):
     input_type = "hidden"
     template_name = "django_recaptcha/widget_v3.html"
 
-    def __init__(self, api_params=None, action=None, *args, **kwargs):
+    def __init__(
+        self, api_params=None, action=None, required_score=None, *args, **kwargs
+    ):
         super().__init__(api_params=api_params, *args, **kwargs)
-        if not self.attrs.get("required_score", None):
-            self.attrs["required_score"] = getattr(
-                settings, "RECAPTCHA_REQUIRED_SCORE", None
+        self.required_score = required_score or getattr(
+            settings, "RECAPTCHA_REQUIRED_SCORE", None
+        )
+
+        # DeprecationWarning: remove this backwards compatibility code in the next major release.
+        if self.attrs.get("required_score", None):
+            warnings.warn(
+                "The required_score attribute is deprecated. Please pass `required_score` as an argument directly to the widget, not as part of `attrs`.",
+                DeprecationWarning,
+                stacklevel=2,
             )
+
+            # Populate required_score from widget attributes for backwards compatibility.
+            self.required_score = self.attrs["required_score"]
+
         self.action = action
 
     def build_attrs(self, base_attrs, extra_attrs=None):
