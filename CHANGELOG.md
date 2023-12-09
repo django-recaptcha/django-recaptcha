@@ -4,6 +4,7 @@
 
 - The GitHub project has been transferred to [django-recaptcha/django-recaptcha](https://github.com/django-recaptcha/django-recaptcha), to facilitate maintenance by the community.
   See the [maintainers discussion in GitHub](https://github.com/orgs/django-recaptcha/discussions/249).
+- Removed: the undocumented `django_recaptcha.client.RECAPTCHA_SUPPORTED_LANGUAGES` constant was removed as it serves no purpose ([#342](https://github.com/django-recaptcha/django-recaptcha/pull/342))
 - Added: Persian translations ([#326](https://github.com/django-recaptcha/django-recaptcha/pull/326))
 - Fixed: removed unnecessary `type="text/javascript"` from all script tags ([#324](https://github.com/django-recaptcha/django-recaptcha/pull/324))
 - Deprecated: passing `required_score` as part of RecaptchaV3 widget `attrs` is deprecated to avoid rendering `required_score` as a HTML attribute ([#330](https://github.com/django-recaptcha/django-recaptcha/pull/330))
