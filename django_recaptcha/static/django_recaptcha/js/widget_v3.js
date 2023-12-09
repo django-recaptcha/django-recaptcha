@@ -23,12 +23,14 @@
           break;
         }
 
-        const action = {};
-        Object.assign(action, {action: captchaElement.getAttribute("data-action")});
+        // Google reCAPTCHA expects an object with an optional single key-value
+        // pair to communicate the name of the action.
+        const actionName = captchaElement.getAttribute("data-action");
+        const config = actionName !== null ? { action: actionName } : {};
 
         formElement.addEventListener("submit", function (event) {
           event.preventDefault();
-          grecaptcha.execute(publicKey, action)
+          grecaptcha.execute(publicKey, config)
             .then(function (token) {
               console.log(`reCAPTCHA validated for reCAPTCHA widget with UUID '${widgetUuid}'`);
               captchaElement.value = token;
