@@ -6,6 +6,24 @@
   See the [maintainers discussion in GitHub](https://github.com/orgs/django-recaptcha/discussions/249).
 - Added: Persian translations ([#326](https://github.com/django-recaptcha/django-recaptcha/pull/326))
 - Fixed: removed unnecessary `type="text/javascript"` from all script tags ([#324](https://github.com/django-recaptcha/django-recaptcha/pull/324))
+- Deprecated: passing `required_score` as part of RecaptchaV3 widget `attrs` is deprecated to avoid rendering `required_score` as a HTML attribute ([#330](https://github.com/django-recaptcha/django-recaptcha/pull/330))
+
+### Upgrade considerations
+
+#### Passing `required_score` as part of RecaptchaV3 widget `attrs` is deprecated
+
+Passing `required_score` as part of RecaptchaV3 widget `attrs` is deprecated and will raise a deprecation warning. You should pass `required_score` as a keyword argument to the RecaptchaV3 widget instead. Support for passing `required_score` as part of RecaptchaV3 widget `attrs` will be removed in the next major release.
+
+Example of how you should update your code:
+
+```diff
+# Old
+- ReCaptchaV3(attrs={"required_score": 0.5})
+# New
++ ReCaptchaV3(required_score=0.5)
+```
+
+This change was made to avoid rendering `required_score` as a HTML attribute. This is important because `required_score` is not a valid HTML attribute and is often flagged as such by HTML validators.
 
 ## 4.0.0 (2023-11-14)
 
