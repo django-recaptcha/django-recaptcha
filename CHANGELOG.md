@@ -7,6 +7,8 @@
 - Removed: the undocumented `django_recaptcha.client.RECAPTCHA_SUPPORTED_LANGUAGES` constant was removed as it serves no purpose ([#342](https://github.com/django-recaptcha/django-recaptcha/pull/342))
 - Added: Persian translations ([#326](https://github.com/django-recaptcha/django-recaptcha/pull/326))
 - Fixed: removed unnecessary `type="text/javascript"` from all script tags ([#324](https://github.com/django-recaptcha/django-recaptcha/pull/324))
+- Fixed: `ReCaptchaV2Invisible` and `ReCaptchaV2Checkbox` widgets no longer render unnecessary labels, improving accessibility ([#328](https://github.com/django-recaptcha/django-recaptcha/pull/328))
+- Fixed: `ReCaptchaV2Invisible` and `ReCaptchaV2Checkbox` widgets no longer render a `required` attribute on the container div because this is not a valid attribute on this element ([#328](https://github.com/django-recaptcha/django-recaptcha/pull/328))
 - Deprecated: passing `required_score` as part of RecaptchaV3 widget `attrs` is deprecated to avoid rendering `required_score` as a HTML attribute ([#330](https://github.com/django-recaptcha/django-recaptcha/pull/330))
 - Maintenance: made tox Django version specifiers more specific ([#339](https://github.com/django-recaptcha/django-recaptcha/pull/324))
 
