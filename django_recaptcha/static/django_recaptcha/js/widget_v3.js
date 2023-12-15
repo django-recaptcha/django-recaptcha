@@ -23,10 +23,11 @@
           break;
         }
 
-        // Google reCAPTCHA expects an object with an optional single key-value
-        // pair to communicate the name of the action.
         const actionName = captchaElement.getAttribute("data-action");
-        const config = actionName !== null ? { action: actionName } : {};
+        const config = {};
+        if (actionName !== null) {
+          config.action = actionName;
+        }
 
         formElement.addEventListener("submit", function (event) {
           event.preventDefault();
