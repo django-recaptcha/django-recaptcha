@@ -21,6 +21,7 @@ class ReCaptchaBase(widgets.Widget):
         super().__init__(*args, **kwargs)
         self.uuid = uuid.uuid4().hex
         self.api_params = api_params or {}
+        self.csp_nonce = None
 
         if not self.attrs.get("class", None):
             self.attrs["class"] = "g-recaptcha"
@@ -39,6 +40,7 @@ class ReCaptchaBase(widgets.Widget):
                 "recaptcha_domain": getattr(
                     settings, "RECAPTCHA_DOMAIN", DEFAULT_RECAPTCHA_DOMAIN
                 ),
+                "csp_nonce": self.csp_nonce,
             }
         )
         return context
