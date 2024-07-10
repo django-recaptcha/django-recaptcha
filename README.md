@@ -223,7 +223,7 @@ For per field, runtime, specification the score can also be passed to the widget
 
 ```python
 captcha = fields.ReCaptchaField(
-    widget=ReCaptchaV3(required_score=0.85)
+    widget=ReCaptchaV3(attrs={"required_score": 0.85})
 )
 ```
 
