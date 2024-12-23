@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-recaptcha"
+version = "4.1.0"
+description = "Django recaptcha form field/widget app."
+readme = "README.md"
+license = {text = "BSD"}
+authors = [
+    {name = "Individual contributors and Torchbox", email = "hello@torchbox.com"}
+]
+keywords = ["django", "reCAPTCHA", "reCAPTCHA v2", "reCAPTCHA v3"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Django",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.1",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "django"
+]
+
+[project.optional-dependencies]
+testing = [
+    "tox",
+    "tox-gh-actions",
+    "coveralls",
+]
+
+[project.urls]
+"Source" = "https://github.com/django-recaptcha/django-recaptcha"
+"Changelog" = "https://github.com/django-recaptcha/django-recaptcha/blob/main/CHANGELOG.md"
+"Issue Tracker" = "https://github.com/django-recaptcha/django-recaptcha/issues"
+"Discussions" = "https://github.com/orgs/django-recaptcha/discussions"
