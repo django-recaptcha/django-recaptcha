@@ -100,6 +100,8 @@ class ReCaptchaV3(ReCaptchaBase):
 
     def build_attrs(self, base_attrs, extra_attrs=None):
         attrs = super().build_attrs(base_attrs, extra_attrs)
+        if self.action:
+            attrs["data-action"] = self.action
         return attrs
 
     def value_from_datadict(self, data, files, name):
