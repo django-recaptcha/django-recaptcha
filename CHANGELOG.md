@@ -4,6 +4,10 @@
 
 - The GitHub project has been transferred to [django-recaptcha/django-recaptcha](https://github.com/django-recaptcha/django-recaptcha), to facilitate maintenance by the community.
   See the [maintainers discussion in GitHub](https://github.com/orgs/django-recaptcha/discussions/249).
+- Added: official support for Django 5.0, 5.1, and 5.2 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
+- Added: official support for Python 3.12 and 3.13 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
+- Removed: no longer officially supports Django 3.2 and 4.1 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
+- Removed: no longer officially supports Python 3.8 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
 - Removed: the undocumented `django_recaptcha.client.RECAPTCHA_SUPPORTED_LANGUAGES` constant was removed as it serves no purpose ([#342](https://github.com/django-recaptcha/django-recaptcha/pull/342))
 - Added: Persian translations ([#326](https://github.com/django-recaptcha/django-recaptcha/pull/326))
 - Fixed: removed unnecessary `type="text/javascript"` from all script tags ([#324](https://github.com/django-recaptcha/django-recaptcha/pull/324))
