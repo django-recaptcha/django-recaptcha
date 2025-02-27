@@ -1,11 +1,11 @@
 files: ^django_recaptcha|scripts|setup.py|manage.py$
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: "v4.5.0"
+    rev: "v5.0.0"
     hooks:
       - id: check-merge-conflict
   - repo: https://github.com/asottile/pyupgrade
-    rev: "v3.15.0"
+    rev: "v3.19.1"
     hooks:
       - id: pyupgrade
         args: ["--py38-plus", "--keep-mock"]
@@ -14,17 +14,17 @@ repos:
     hooks:
       - id: yesqa
   - repo: https://github.com/pycqa/isort
-    rev: "5.13.2"
+    rev: "6.0.0"
     hooks:
       - id: isort
         args: ["--profile", "black"]
   - repo: https://github.com/psf/black
-    rev: "23.12.0"
+    rev: "25.1.0"
     hooks:
       - id: black
         language_version: python3 # Should be a command that runs python3.7+
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: "v4.5.0"
+    rev: "v5.0.0"
     hooks:
       - id: end-of-file-fixer
         exclude: >-
