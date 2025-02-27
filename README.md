@@ -187,7 +187,7 @@ captcha = fields.ReCaptchaField(
 By default, the widgets provided only supports a single form with a
 single widget on each page.
 
-The language can be set with the 'h1' parameter, look at [language
+The language can be set with the 'hl' parameter, look at [language
 codes](https://developers.google.com/recaptcha/docs/language) for the
 language code options. Note that translations need to be added to this
 package for the errors to be shown correctly. Currently the package has
