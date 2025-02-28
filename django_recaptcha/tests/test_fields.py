@@ -120,6 +120,7 @@ class TestWidgets(TestCase):
             captcha = fields.ReCaptchaField(
                 widget=widgets.ReCaptchaV2Checkbox(
                     attrs={
+                        "class": "custom-class",
                         "data-theme": "dark",
                         "data-callback": "customCallback",
                         "data-size": "compact",
@@ -143,7 +144,7 @@ class TestWidgets(TestCase):
         self.assertNotIn('data-callback="onSubmit_%s"' % test_hex, html)
         self.assertIn('data-callback="customCallback"', html)
         self.assertIn('data-size="compact"', html)
-        self.assertIn('class="g-recaptcha"', html)
+        self.assertIn('class="g-recaptcha custom-class"', html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn("var onSubmit_%s = function(token) {" % test_hex, html)
@@ -196,6 +197,7 @@ class TestWidgets(TestCase):
             captcha = fields.ReCaptchaField(
                 widget=widgets.ReCaptchaV2Invisible(
                     attrs={
+                        "class": "custom-class",
                         "data-theme": "dark",
                         "data-callback": "customCallbackInvis",
                         "data-size": "compact",
@@ -214,7 +216,7 @@ class TestWidgets(TestCase):
         self.assertIn('data-size="invisible"', html)
         self.assertNotIn('data-callback="onSubmit_%s"' % test_hex, html)
         self.assertIn('data-callback="customCallbackInvis"', html)
-        self.assertIn('class="g-recaptcha"', html)
+        self.assertIn('class="g-recaptcha custom-class"', html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
         self.assertIn("var onSubmit_%s = function(token) {" % test_hex, html)
