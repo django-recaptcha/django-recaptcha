@@ -23,8 +23,9 @@ class ReCaptchaBase(widgets.Widget):
         self.uuid = uuid.uuid4().hex
         self.api_params = api_params or {}
 
-        if not self.attrs.get("class", None):
-            self.attrs["class"] = "g-recaptcha"
+        self.attrs.setdefault("class", "g-recaptcha")
+        if not "g-recaptcha" in self.attrs["class"]:
+            self.attrs["class"] = "g-recaptcha " + self.attrs["class"]
 
     def value_from_datadict(self, data, files, name):
         return data.get(self.recaptcha_response_name, None)
