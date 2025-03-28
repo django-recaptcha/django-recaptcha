@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added: official support for Django 5.0, 5.1, and 5.2 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
 - Added: official support for Python 3.12 and 3.13 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
 - Removed: no longer officially supports Django 3.2 and 4.1 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
-- Removed: no longer officially supports Python 3.8 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
+- Removed: no longer officially supports Python 3.7 and 3.8 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
 - Removed: the undocumented `django_recaptcha.client.RECAPTCHA_SUPPORTED_LANGUAGES` constant was removed as it serves no purpose ([#342](https://github.com/django-recaptcha/django-recaptcha/pull/342))
 - Added: Persian translations ([#326](https://github.com/django-recaptcha/django-recaptcha/pull/326))
 - Fixed: removed unnecessary `type="text/javascript"` from all script tags ([#324](https://github.com/django-recaptcha/django-recaptcha/pull/324))
