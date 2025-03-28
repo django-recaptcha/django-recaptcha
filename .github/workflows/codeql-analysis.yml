@@ -22,8 +22,8 @@ jobs:
       matrix:
         language: ["python"]
     steps:
-      - uses: actions/checkout@v2
-      - uses: github/codeql-action/init@v2
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-      - uses: github/codeql-action/analyze@v2
+      - uses: github/codeql-action/analyze@v3
