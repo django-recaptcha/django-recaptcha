@@ -11,14 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   See the [maintainers discussion in GitHub](https://github.com/orgs/django-recaptcha/discussions/249).
 - Added: official support for Django 5.0, 5.1, and 5.2 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
 - Added: official support for Python 3.12 and 3.13 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
+- Added: Persian translations ([#326](https://github.com/django-recaptcha/django-recaptcha/pull/326))
 - Removed: no longer officially supports Django 3.2 and 4.1 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
 - Removed: no longer officially supports Python 3.7 and 3.8 ([#363](https://github.com/django-recaptcha/django-recaptcha/pull/363))
 - Removed: the undocumented `django_recaptcha.client.RECAPTCHA_SUPPORTED_LANGUAGES` constant was removed as it serves no purpose ([#342](https://github.com/django-recaptcha/django-recaptcha/pull/342))
-- Added: Persian translations ([#326](https://github.com/django-recaptcha/django-recaptcha/pull/326))
+- Fixed: translations were not bundled with releases ([`f67b7d1`](https://github.com/django-recaptcha/django-recaptcha/commit/f67b7d1e7e2d13f13efcd85c2e920a087887f4d1))
+- Fixed: Dutch translations out of date ([`5c98a27`](https://github.com/django-recaptcha/django-recaptcha/commit/5c98a27a3cd3cfc5501444d8a73d117370ea09a6))
 - Fixed: removed unnecessary `type="text/javascript"` from all script tags ([#324](https://github.com/django-recaptcha/django-recaptcha/pull/324))
 - Fixed: an issue where `ReCaptchaV2Invisible` and `ReCaptchaV2Checkbox` widgets would fail to load when a custom `class` attribute was passed to the widget ([#365](https://github.com/django-recaptcha/django-recaptcha/pull/365))
 - Fixed: `ReCaptchaV2Invisible` and `ReCaptchaV2Checkbox` widgets no longer render unnecessary labels, improving accessibility ([#328](https://github.com/django-recaptcha/django-recaptcha/pull/328))
 - Fixed: `ReCaptchaV2Invisible` and `ReCaptchaV2Checkbox` widgets no longer render a `required` attribute on the container div because this is not a valid attribute on this element ([#328](https://github.com/django-recaptcha/django-recaptcha/pull/328))
+- Docs: Correct parameter name in README ([#361](https://github.com/django-recaptcha/django-recaptcha/pull/361))
 - Deprecated: passing `required_score` as part of RecaptchaV3 widget `attrs` is deprecated to avoid rendering `required_score` as a HTML attribute ([#330](https://github.com/django-recaptcha/django-recaptcha/pull/330))
 - Maintenance: made tox Django version specifiers more specific ([#339](https://github.com/django-recaptcha/django-recaptcha/pull/339))
 
