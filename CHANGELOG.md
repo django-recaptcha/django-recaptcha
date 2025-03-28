@@ -39,6 +39,19 @@ Example of how you should update your code:
 
 This change was made to avoid rendering `required_score` as a HTML attribute. This is important because `required_score` is not a valid HTML attribute and is often flagged as such by HTML validators.
 
+#### Recaptcha V2 widgets no longer renders a label
+
+Previously, the `RecaptchaV2Invisible` and `RecaptchaV2Checkbox` widgets displayed a label when rendered. For the `RecaptchaV2Checkbox` widget, this label is redundant and an accessibility issue because the reCAPTCHA widget already provides its own label. For the `RecaptchaV2Invisible` widget, the label serves no purpose as the widget is invisible.
+
+If you previously removed the label yourself by passing an empty string to the `label` argument of the `RecaptchaField`, you can now remove this argument.
+
+```diff
+# Old
+- ReCaptchaField(label="", widget=ReCaptchaV2Checkbox())
+# New
++ ReCaptchaField(widget=ReCaptchaV2Checkbox())
+```
+
 ## 4.0.0 (2023-11-14)
 
 > [!IMPORTANT] > **BREAKING**: package namespace renamed from `captcha` to `django_recaptcha`. See upgrade considerations section below for instructions ([#317](https://github.com/django-recaptcha/django-recaptcha/pull/317))
