@@ -5,20 +5,20 @@ function main() {
       const widgetUUID = captchaElement.getAttribute("data-widget-uuid");
       if (!widgetUUID) {
         console.warn("reCAPTCHA widget with missing UUID");
-        break;
+        continue;
       }
       console.log(`found reCAPTCHA widget with UUID '${widgetUUID}'`);
 
       const formElement = captchaElement.closest("form");
       if (!formElement) {
         console.warn(`reCAPTCHA widget with UUID '${widgetUUID}' is not part of a form`);
-        break;
+        continue;
       }
 
       const publicKey = captchaElement.getAttribute("data-sitekey");
       if (publicKey === null) {
         console.warn(`public key missing missing from reCAPTCHA widget with UUID '${widgetUUID}'`);
-        break;
+        continue;
       }
 
       const actionName = captchaElement.getAttribute("data-action");

@@ -4,18 +4,18 @@ function main() {
     const widgetUUID = captchaElement.getAttribute("data-widget-uuid");
     if (!widgetUUID) {
       console.warn("reCAPTCHA widget with missing UUID");
-      break;
+      continue;
     }
     console.log(`found reCAPTCHA widget with UUID '${widgetUUID}'`);
 
     const callbackFunctionName = captchaElement.getAttribute("data-callback");
     if (!callbackFunctionName) {
       console.warn(`callback function missing from reCAPTCHA widget with UUID '${widgetUUID}'`);
-      break;
+      continue;
     }
     if (window[callbackFunctionName]) {
       console.warn(`callback function '${callbackFunctionName}' has already been added`);
-      break;
+      continue;
     }
 
     window[callbackFunctionName] = (token) => {
