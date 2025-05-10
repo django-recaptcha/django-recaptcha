@@ -13,7 +13,7 @@ function main() {
       console.warn(`callback function missing from reCAPTCHA widget with UUID '${widgetUUID}'`);
       break;
     }
-    if (window.hasOwnProperty(callbackFunctionName)) {
+    if (window[callbackFunctionName]) {
       console.warn(`callback function '${callbackFunctionName}' has already been added`);
       break;
     }
