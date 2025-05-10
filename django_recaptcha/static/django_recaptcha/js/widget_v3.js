@@ -2,22 +2,22 @@ function main() {
   grecaptcha.ready(function () {
     for (const captchaElement of document.querySelectorAll(".g-recaptcha")) {
 
-      const widgetUuid = captchaElement.getAttribute("data-widget-uuid");
-      if (!widgetUuid) {
+      const widgetUUID = captchaElement.getAttribute("data-widget-uuid");
+      if (!widgetUUID) {
         console.warn("reCAPTCHA widget with missing UUID");
         break;
       }
-      console.log(`found reCAPTCHA widget with UUID '${widgetUuid}'`);
+      console.log(`found reCAPTCHA widget with UUID '${widgetUUID}'`);
 
       const formElement = captchaElement.closest("form");
       if (!formElement) {
-        console.warn(`reCAPTCHA widget with UUID '${widgetUuid}' is not part of a form`);
+        console.warn(`reCAPTCHA widget with UUID '${widgetUUID}' is not part of a form`);
         break;
       }
 
       const publicKey = captchaElement.getAttribute("data-sitekey");
       if (publicKey === null) {
-        console.warn(`public key missing missing from reCAPTCHA widget with UUID '${widgetUuid}'`);
+        console.warn(`public key missing missing from reCAPTCHA widget with UUID '${widgetUUID}'`);
         break;
       }
 
@@ -31,7 +31,7 @@ function main() {
         event.preventDefault();
         grecaptcha.execute(publicKey, config)
           .then(function (token) {
-            console.log(`reCAPTCHA validated for reCAPTCHA widget with UUID '${widgetUuid}'`);
+            console.log(`reCAPTCHA validated for reCAPTCHA widget with UUID '${widgetUUID}'`);
             captchaElement.value = token;
             console.log("submitting form...");
             formElement.submit();
