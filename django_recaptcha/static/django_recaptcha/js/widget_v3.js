@@ -4,10 +4,8 @@ function main() {
 
       const widgetUUID = captchaElement.getAttribute("data-widget-uuid");
       if (!widgetUUID) {
-        console.warn("reCAPTCHA widget with missing UUID");
-        continue;
+        continue; // probably not a reCAPTCHA widget added by django-recaptcha
       }
-      console.log(`found reCAPTCHA widget with UUID '${widgetUUID}'`);
 
       const formElement = captchaElement.closest("form");
       if (!formElement) {
@@ -31,9 +29,7 @@ function main() {
         event.preventDefault();
         grecaptcha.execute(publicKey, config)
           .then(function (token) {
-            console.log(`reCAPTCHA validated for reCAPTCHA widget with UUID '${widgetUUID}'`);
             captchaElement.value = token;
-            console.log("submitting form...");
             formElement.submit();
           });
       });

@@ -3,19 +3,16 @@ function main() {
 
     const widgetUUID = captchaElement.getAttribute("data-widget-uuid");
     if (!widgetUUID) {
-      console.warn("reCAPTCHA widget with missing UUID");
-      continue;
+      continue;  // probably not a reCAPTCHA widget added by django-recaptcha
     }
-    console.log(`found reCAPTCHA widget with UUID '${widgetUUID}'`);
 
     const callbackFunctionName = captchaElement.getAttribute("data-callback");
     if (!callbackFunctionName) {
-      console.warn(`callback function missing from reCAPTCHA widget with UUID '${widgetUUID}'`);
       continue;
     }
+
     if (window[callbackFunctionName]) {
-      console.warn(`callback function '${callbackFunctionName}' has already been added`);
-      continue;
+      continue; // callback function may already have been added by another script
     }
 
     const formElement = captchaElement.closest("form");
@@ -30,8 +27,6 @@ function main() {
     });
 
     window[callbackFunctionName] = (token) => {
-      console.log(`reCAPTCHA validated for reCAPTCHA widget with UUID '${widgetUUID}'`);
-      console.log("submitting form...");
       formElement.submit();
     };
 
