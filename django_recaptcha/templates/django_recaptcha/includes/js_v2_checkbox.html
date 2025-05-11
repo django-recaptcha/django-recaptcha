@@ -1,4 +1,4 @@
-{# The provided implementation caters for only one reCAPTCHA on a page. Override this template and its logic as needed. #}
+{# Override this template and its logic as needed. #}
 {% load static %}
 <script src="https://{{ recaptcha_domain }}/recaptcha/api.js{% if api_params %}?{{ api_params }}{% endif %}"></script>
 <script src="{% static 'django_recaptcha/js/widget_v2_checkbox.js' %}" type="module"></script>
