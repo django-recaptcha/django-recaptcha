@@ -6,6 +6,11 @@ function main() {
       continue;  // probably not a reCAPTCHA widget added by django-recaptcha
     }
 
+    const recaptchaType = captchaElement.getAttribute("data-recaptcha-type");
+    if (recaptchaType !== "classic-v2-invisible") {
+      continue;
+    }
+
     const callbackFunctionName = captchaElement.getAttribute("data-callback");
     if (!callbackFunctionName) {
       continue;

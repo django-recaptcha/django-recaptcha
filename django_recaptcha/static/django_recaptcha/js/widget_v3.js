@@ -7,6 +7,11 @@ function main() {
         continue; // probably not a reCAPTCHA widget added by django-recaptcha
       }
 
+      const recaptchaType = captchaElement.getAttribute("data-recaptcha-type");
+      if (recaptchaType !== "classic-v3") {
+        continue;
+      }
+
       const formElement = captchaElement.closest("form");
       if (!formElement) {
         console.warn(`reCAPTCHA widget with UUID '${widgetUUID}' is not part of a form`);
