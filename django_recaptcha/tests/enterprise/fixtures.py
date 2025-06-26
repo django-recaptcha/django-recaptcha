@@ -3,7 +3,7 @@ SITEKEY = "<SITEKEY>"                  # e.g. "6Ldc...7GNA
 ASSESSMENT_ID = "<ASSESSMENT_ID>"      # e.g. "projects/85...68/assessments/f8..00"
 
 
-def create_request():
+def create_request_data():
     return {
         "event": {
            "token": RECAPTCHA_TOKEN,
@@ -12,7 +12,7 @@ def create_request():
     }
 
 
-def create_response(valid: bool = True):
+def create_response_data(valid: bool = True):
     return {
         "name": ASSESSMENT_ID,
         "event": {
