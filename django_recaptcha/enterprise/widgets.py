@@ -2,6 +2,17 @@ from typing import Any, Optional
 from django.forms.widgets import Widget
 
 
+def extend_class_attr(attrs: dict[str,Any], extra_classes: list[str]) -> None:
+    """Adds classes to widget's class attribute that aren't present yet."""
+    class_attr_value: Optional[str] = attrs.get("class", "")
+    class_list = class_attr_value.split()
+    for class_name in extra_classes:
+        if class_name not in class_list:
+            class_list.append(class_name)
+    if class_list:
+        attrs["class"] = " ".join(class_list)
+
+
 class ReCAPTCHAEnterpriseNoWidget(Widget):
     """Used with reCAPTCHA fields for which no HTML is rendered.
 
@@ -40,6 +51,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
 
     def __init__(self, attrs: Optional[dict[str,Any]] = None):
         super().__init__(attrs)
+        extend_class_attr(self.attrs, ["g-recaptcha"])
 
     def value_from_datadict(self, data: Any, files: Any, name: str) -> Any:
         return data.get("g-recaptcha-response", None)

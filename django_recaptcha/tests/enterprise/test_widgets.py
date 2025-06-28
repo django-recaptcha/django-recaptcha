@@ -2,10 +2,93 @@ from django.test import TestCase
 from django.utils.datastructures import MultiValueDict
 
 from django_recaptcha.enterprise.widgets import (
+    extend_class_attr,
     ReCAPTCHAEnterpriseNoWidget,
     ReCAPTCHAEnterpriseV1CheckboxWidget,
 )
 
+
+class ExtendClassAttributeTests(TestCase):
+    """Tests the ``extend_class_attribute()`` function.
+
+    Test design is based on the following parameters:
+
+    - how many extra classes?
+        * no extra classes
+        * 1 extra class
+        * 2 extra classes
+    - existing attrs variable
+        * empty
+        * class attribute with 0 classes
+        * class attribute with 1 classes
+        * class attribute with 2 classes
+    - how many extra classes are already present?
+        * 0
+        * 1
+        * 2
+
+    Ignore the combinations that aren't possible.
+    e.g. no extra classes + 2 extra classes already present
+
+    The same class may be present multiple times, so consider this too.
+    Then, also take note of the order in which classes appear:
+
+    - there's no significant difference between classA, classB, ...
+    - there's a significant difference between class1, class2, ...
+    """
+
+    def test__no_extra_classes(self):
+        extra_classes = []
+        matrix = [
+            ({}, {}),                       # no need to add an empty class attribute
+            ({"class":""}, {"class":""}),   # keep empty class attribute if already present
+            ({"class":"classA"}, {"class":"classA"}),
+            ({"class":"classA classB"}, {"class":"classA classB"}),
+        ]
+
+        for attrs, expected in matrix:
+            extend_class_attr(attrs, extra_classes)
+            self.assertEqual(attrs, expected)
+
+    def test__one_extra_class(self):
+        extra_classes = ["class1"]
+        matrix = [
+            ({}, {"class": "class1"}),
+            ({"class":""}, {"class": "class1"}),
+            ({"class":"classA"}, {"class":"classA class1"}),
+            ({"class":"class1"}, {"class":"class1"}),
+            ({"class":"classA classB"}, {"class":"classA classB class1"}),
+            ({"class":"classA class1"}, {"class":"classA class1"}),
+            ({"class":"class1 classA"}, {"class":"class1 classA"}),
+            ({"class":"class1 class1"}, {"class":"class1 class1"}),
+        ]
+
+        for attrs, expected in matrix:
+            extend_class_attr(attrs, extra_classes)
+            self.assertEqual(attrs, expected)
+
+    def test__two_extra_classes(self):
+        extra_classes = ["class1", "class2"]
+        matrix = [
+            ({}, {"class": "class1 class2"}),
+            ({"class":""}, {"class": "class1 class2"}),
+            ({"class":"classA"}, {"class":"classA class1 class2"}),
+            ({"class":"class1"}, {"class":"class1 class2"}),
+            ({"class":"class2"}, {"class":"class2 class1"}),
+            ({"class":"classA classB"}, {"class":"classA classB class1 class2"}),
+            ({"class":"classA class1"}, {"class":"classA class1 class2"}),
+            ({"class":"classA class2"}, {"class":"classA class2 class1"}),
+            ({"class":"class1 classA"}, {"class":"class1 classA class2"}),
+            ({"class":"class1 class1"}, {"class":"class1 class1 class2"}),
+            ({"class":"class1 class2"}, {"class":"class1 class2"}),
+            ({"class":"class2 classA"}, {"class":"class2 classA class1"}),
+            ({"class":"class2 class1"}, {"class":"class2 class1"}),
+            ({"class":"class2 class2"}, {"class":"class2 class2 class1"}),
+        ]
+
+        for attrs, expected in matrix:
+            extend_class_attr(attrs, extra_classes)
+            self.assertEqual(attrs, expected)
 
 class ReCAPTCHAEnterpriseNoWidgetTest(TestCase):
     """Tests of the ReCAPTCHAEnterpriseNoWidget class."""
@@ -68,7 +151,8 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
 
     def test_render(self):
         """Widget's rendering should be as expected."""
-        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(attrs={"class": "g-recaptcha"})
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        widget.attrs["data-sitekey"] = "SITEKEY"  # done by field
 
         result = widget.render("field_name", "field_value")
 
@@ -81,7 +165,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
 
     def test_value_from_datadict__value_provided(self):
         """Should return reCAPTCHA token if token is present in form data."""
-        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(attrs={"class": "g-recaptcha"})
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
         form_data = {"g-recaptcha-response": "<RECAPTCHA-TOKEN>"}
         files = MultiValueDict()
         name = "captcha"
@@ -103,7 +187,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
 
     def test_value_omitted_from_data__value_provided(self):
         """Should return False if token is present in form data."""
-        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(attrs={"class": "g-recaptcha"})
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
         form_data = {"g-recaptcha-response": "<RECAPTCHA-TOKEN>"}
         files = MultiValueDict()
         field_name = "captcha"
@@ -114,7 +198,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
 
     def test_value_omitted_from_data__value_not_provided(self):
         """Should return True if token is not present in form data."""
-        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(attrs={"class": "g-recaptcha"})
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
         form_data = {}
         files = MultiValueDict()
         field_name = "captcha"
