@@ -28,6 +28,7 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
         self._project_id = project_id
         self._sitekey = sitekey
         self._access_token = access_token
+        self.widget.attrs["data-sitekey"] = sitekey
 
     def validate(self, value: Optional[Any]) -> None:
         super().validate(value)  # fails if token was missing from form data

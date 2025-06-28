@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 from django.forms.widgets import Widget
 
 
@@ -26,6 +26,20 @@ class ReCAPTCHAEnterpriseNoWidget(Widget):
     submitted by the user from the form data.
     """
     template_name = "django_recaptcha/enterprise/no_widget.html"
+
+    def value_from_datadict(self, data: Any, files: Any, name: str) -> Any:
+        return data.get("g-recaptcha-response", None)
+
+    def value_omitted_from_data(self, data: Any, files: Any, name: str) -> bool:
+        return "g-recaptcha-response" not in data
+
+
+class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
+    """Widget for reCAPTCHA Enterprise V1 Checkbox."""
+    template_name = "django_recaptcha/enterprise/widget_enterprise_v1_checkbox.html"
+
+    def __init__(self, attrs: Optional[dict[str,Any]] = None):
+        super().__init__(attrs)
 
     def value_from_datadict(self, data: Any, files: Any, name: str) -> Any:
         return data.get("g-recaptcha-response", None)
