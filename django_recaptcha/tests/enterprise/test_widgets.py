@@ -16,7 +16,7 @@ class ReCAPTCHAEnterpriseNoWidgetTest(TestCase):
 
         result = widget.render("field_name", "field_value")
 
-        self.assertEqual(result, "")
+        self.assertHTMLEqual(result, "")
 
     def test_value_from_datadict__value_provided(self):
         """Should return reCAPTCHA token if token is present in form data."""
