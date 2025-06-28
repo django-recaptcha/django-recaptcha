@@ -1,3 +1,4 @@
+from typing import Any
 from django.forms.widgets import Widget
 
 
@@ -26,8 +27,8 @@ class ReCAPTCHAEnterpriseNoWidget(Widget):
     """
     template_name = "django_recaptcha/enterprise/no_widget.html"
 
-    def value_from_datadict(self, data, files, name):
+    def value_from_datadict(self, data: Any, files: Any, name: str) -> Any:
         return data.get("g-recaptcha-response", None)
 
-    def value_omitted_from_data(self, data, files, name):
+    def value_omitted_from_data(self, data: Any, files: Any, name: str) -> bool:
         return "g-recaptcha-response" not in data

@@ -17,7 +17,7 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
         project_id: str,
         sitekey: str,
         access_token: str,
-        **kwargs,
+        **kwargs: Any,
     ) -> None:
         """
         :param project_id: identifier of GCP project

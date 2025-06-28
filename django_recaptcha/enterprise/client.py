@@ -1,5 +1,5 @@
 import json
-from typing import Any
+from typing import Any, cast, Optional
 from urllib.request import ProxyHandler, Request, build_opener
 
 from django.conf import settings
@@ -20,14 +20,14 @@ class VerificationResult:
     def is_okay(self) -> bool:
         """Check if token passes verification or not.
         """
-        return self.data["tokenProperties"]["valid"]
+        return bool(self.data["tokenProperties"]["valid"])
 
 
 def verify_enterprise_v1_token(
         project_id: str,
         sitekey: str,
         access_token: str,
-        recaptcha_token: str,
+        recaptcha_token: Optional[str],
     ) -> VerificationResult:
     """Verifies a reCAPTCHA Enterprise v1 token submitted by user.
 
@@ -76,4 +76,5 @@ def send_request(
     response_body = response.read()
     response_data = json.loads(response_body.decode("utf-8"))
 
+    response_data = cast(dict[str,Any], response_data)
     return response_data
