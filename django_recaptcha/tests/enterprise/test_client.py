@@ -175,7 +175,7 @@ class SendRequestTests(TestCase):
     @patch("django_recaptcha.enterprise.client.Request")
     @patch("django_recaptcha.enterprise.client.ProxyHandler")
     @patch("django_recaptcha.enterprise.client.build_opener")
-    @override_settings(RECAPTCHA_ENTERPRISE_TIMEOUT=5.0)
+    @override_settings(RECAPTCHA_ENTERPRISE_VERIFY_TIMEOUT=5.0)
     def test_different_timeout(self, build_opener_mock, proxy_handler_mock, request_mock):
         """Can use setting to change timeout."""
         request_data = f.create_request_data()

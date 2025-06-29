@@ -2,7 +2,8 @@ import json
 from typing import Any, cast, Optional
 from urllib.request import ProxyHandler, Request, build_opener
 
-from django.conf import settings
+from .conf import use_setting
+
 
 
 class VerificationResult:
@@ -65,8 +66,8 @@ def send_request(
     :param access_token: access token of used to authenticate with API
     :param request_data: raw data sent with request
     """
-    proxies = getattr(settings, "RECAPTCHA_ENTERPRISE_PROXY", {})
-    timeout = getattr(settings, "RECAPTCHA_ENTERPRISE_TIMEOUT", 10.0)
+    proxies = use_setting("RECAPTCHA_ENTERPRISE_PROXY")
+    timeout = use_setting("RECAPTCHA_ENTERPRISE_VERIFY_TIMEOUT")
 
     request_body = json.dumps(request_data).encode("utf-8")
     additional_headers = {
