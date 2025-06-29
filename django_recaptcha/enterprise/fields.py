@@ -5,7 +5,7 @@ from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.forms.fields import Field
 
 from .client import verify_enterprise_v1_token
-from .widgets import ReCAPTCHAEnterpriseNoWidget
+from .widgets import ReCAPTCHAEnterpriseV1CheckboxWidget
 
 # can only contain alphanumeric characters, slashes, and underscores
 ACTION_ALLOWED_CHARS = set(ascii_letters + digits + "/" + "_")
@@ -24,7 +24,7 @@ def _action_name_is_valid(action) -> bool:
 class ReCAPTCHAEnterpriseV1CheckboxField(Field):
     """Field that handles reCAPTCHA Enterprise V1 Checkbox tokens."""
 
-    widget = ReCAPTCHAEnterpriseNoWidget  # TODO: change?
+    widget = ReCAPTCHAEnterpriseV1CheckboxWidget
 
     def __init__(
         self,
