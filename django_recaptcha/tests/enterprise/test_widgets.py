@@ -2,9 +2,9 @@ from django.test import TestCase
 from django.utils.datastructures import MultiValueDict
 
 from django_recaptcha.enterprise.widgets import (
-    extend_class_attr,
     ReCAPTCHAEnterpriseNoWidget,
     ReCAPTCHAEnterpriseV1CheckboxWidget,
+    extend_class_attr,
 )
 
 
@@ -40,10 +40,13 @@ class ExtendClassAttributeTests(TestCase):
     def test__no_extra_classes(self):
         extra_classes = []
         matrix = [
-            ({}, {}),                       # no need to add an empty class attribute
-            ({"class":""}, {"class":""}),   # keep empty class attribute if already present
-            ({"class":"classA"}, {"class":"classA"}),
-            ({"class":"classA classB"}, {"class":"classA classB"}),
+            ({}, {}),  # no need to add an empty class attribute
+            (
+                {"class": ""},
+                {"class": ""},
+            ),  # keep empty class attribute if already present
+            ({"class": "classA"}, {"class": "classA"}),
+            ({"class": "classA classB"}, {"class": "classA classB"}),
         ]
 
         for attrs, expected in matrix:
@@ -54,13 +57,13 @@ class ExtendClassAttributeTests(TestCase):
         extra_classes = ["class1"]
         matrix = [
             ({}, {"class": "class1"}),
-            ({"class":""}, {"class": "class1"}),
-            ({"class":"classA"}, {"class":"classA class1"}),
-            ({"class":"class1"}, {"class":"class1"}),
-            ({"class":"classA classB"}, {"class":"classA classB class1"}),
-            ({"class":"classA class1"}, {"class":"classA class1"}),
-            ({"class":"class1 classA"}, {"class":"class1 classA"}),
-            ({"class":"class1 class1"}, {"class":"class1 class1"}),
+            ({"class": ""}, {"class": "class1"}),
+            ({"class": "classA"}, {"class": "classA class1"}),
+            ({"class": "class1"}, {"class": "class1"}),
+            ({"class": "classA classB"}, {"class": "classA classB class1"}),
+            ({"class": "classA class1"}, {"class": "classA class1"}),
+            ({"class": "class1 classA"}, {"class": "class1 classA"}),
+            ({"class": "class1 class1"}, {"class": "class1 class1"}),
         ]
 
         for attrs, expected in matrix:
@@ -71,24 +74,25 @@ class ExtendClassAttributeTests(TestCase):
         extra_classes = ["class1", "class2"]
         matrix = [
             ({}, {"class": "class1 class2"}),
-            ({"class":""}, {"class": "class1 class2"}),
-            ({"class":"classA"}, {"class":"classA class1 class2"}),
-            ({"class":"class1"}, {"class":"class1 class2"}),
-            ({"class":"class2"}, {"class":"class2 class1"}),
-            ({"class":"classA classB"}, {"class":"classA classB class1 class2"}),
-            ({"class":"classA class1"}, {"class":"classA class1 class2"}),
-            ({"class":"classA class2"}, {"class":"classA class2 class1"}),
-            ({"class":"class1 classA"}, {"class":"class1 classA class2"}),
-            ({"class":"class1 class1"}, {"class":"class1 class1 class2"}),
-            ({"class":"class1 class2"}, {"class":"class1 class2"}),
-            ({"class":"class2 classA"}, {"class":"class2 classA class1"}),
-            ({"class":"class2 class1"}, {"class":"class2 class1"}),
-            ({"class":"class2 class2"}, {"class":"class2 class2 class1"}),
+            ({"class": ""}, {"class": "class1 class2"}),
+            ({"class": "classA"}, {"class": "classA class1 class2"}),
+            ({"class": "class1"}, {"class": "class1 class2"}),
+            ({"class": "class2"}, {"class": "class2 class1"}),
+            ({"class": "classA classB"}, {"class": "classA classB class1 class2"}),
+            ({"class": "classA class1"}, {"class": "classA class1 class2"}),
+            ({"class": "classA class2"}, {"class": "classA class2 class1"}),
+            ({"class": "class1 classA"}, {"class": "class1 classA class2"}),
+            ({"class": "class1 class1"}, {"class": "class1 class1 class2"}),
+            ({"class": "class1 class2"}, {"class": "class1 class2"}),
+            ({"class": "class2 classA"}, {"class": "class2 classA class1"}),
+            ({"class": "class2 class1"}, {"class": "class2 class1"}),
+            ({"class": "class2 class2"}, {"class": "class2 class2 class1"}),
         ]
 
         for attrs, expected in matrix:
             extend_class_attr(attrs, extra_classes)
             self.assertEqual(attrs, expected)
+
 
 class ReCAPTCHAEnterpriseNoWidgetTest(TestCase):
     """Tests of the ReCAPTCHAEnterpriseNoWidget class."""
@@ -161,7 +165,8 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
             """
             <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
             <div class="g-recaptcha" data-sitekey="SITEKEY"></div>
-            """)
+            """,
+        )
 
     def test_value_from_datadict__value_provided(self):
         """Should return reCAPTCHA token if token is present in form data."""

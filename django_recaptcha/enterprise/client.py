@@ -1,20 +1,19 @@
 import json
-from typing import Any, cast, Optional
+from typing import Any, Optional, cast
 from urllib.request import ProxyHandler, Request, build_opener
 
 from .conf import use_setting
 
 
-
 class VerificationResult:
     """The results sent back by Google after token verification.
 
-    :ivar Any data: direct reference to data returned by Google
+    :ivar dict[str, Any] data: direct reference to data returned by Google
     """
 
-    def __init__(self, response_data: dict[str,Any]) -> None:
+    def __init__(self, response_data: dict[str, Any]) -> None:
         """
-        :param response_data: data returned by Google
+        :param response_data: data returned in the response
         """
         self.data = response_data
 
@@ -22,25 +21,28 @@ class VerificationResult:
         """Check if token passes verification or not."""
         if not self.data["tokenProperties"]["valid"]:
             return False
-        if self.data["event"]["expectedAction"] != self.data["tokenProperties"]["action"]:
+        if (
+            self.data["event"]["expectedAction"]
+            != self.data["tokenProperties"]["action"]
+        ):
             return False
         return True
 
 
 def verify_enterprise_v1_token(
-        project_id: str,
-        sitekey: str,
-        access_token: str,
-        recaptcha_token: str,
-        expected_action: Optional[str] = None,
-    ) -> VerificationResult:
+    project_id: str,
+    sitekey: str,
+    access_token: str,
+    recaptcha_token: str,
+    expected_action: Optional[str] = None,
+) -> VerificationResult:
     """Verifies a reCAPTCHA Enterprise v1 token submitted by user.
 
     :param project_id: ID of Google cloud project associated with sitekey
-    :param sitekey: your unique reCAPTCHA key
-    :param access_token: access token of used to authenticate with API
+    :param sitekey: public key used to integrate reCAPTCHA
+    :param access_token: token used for authentication
     :param recaptcha_token: reCAPTCHA token submitted by user
-    :param expected_action: action corresponding to the token
+    :param expected_action: action associated with reCAPTCHA token
     """
     url = f"https://recaptchaenterprise.googleapis.com/v1/projects/{project_id}/assessments"
     request_data = {
@@ -56,15 +58,15 @@ def verify_enterprise_v1_token(
 
 
 def send_request(
-        url: str,
-        access_token: str,
-        request_data: dict[str,Any],
-    ) -> dict[str,Any]:
+    url: str,
+    access_token: str,
+    request_data: dict[str, Any],
+) -> dict[str, Any]:
     """Send request data to Google's API endpoint and return response data.
 
     :param url: URL of API endpoint
-    :param access_token: access token of used to authenticate with API
-    :param request_data: raw data sent with request
+    :param access_token: token used for authentication
+    :param request_data: data sent with request
     """
     proxies = use_setting("RECAPTCHA_ENTERPRISE_PROXY")
     timeout = use_setting("RECAPTCHA_ENTERPRISE_VERIFY_TIMEOUT")
@@ -75,7 +77,9 @@ def send_request(
         "Content-Type": "application/json; charset=utf-8",
     }
 
-    request = Request(url=url, data=request_body, headers=additional_headers, method="POST")
+    request = Request(
+        url=url, data=request_body, headers=additional_headers, method="POST"
+    )
 
     opener_args = [ProxyHandler(proxies)] if proxies else []
     opener = build_opener(*opener_args)
@@ -84,5 +88,5 @@ def send_request(
     response_body = response.read()
     response_data = json.loads(response_body.decode("utf-8"))
 
-    response_data = cast(dict[str,Any], response_data)
+    response_data = cast(dict[str, Any], response_data)
     return response_data

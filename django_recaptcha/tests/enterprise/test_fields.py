@@ -19,17 +19,19 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
                 project_id="<PROJECT-ID>",
                 sitekey=f.SITEKEY,
                 access_token="<ACCESS-TOKEN>",
-                action="not-valid")  # cannot contain -
+                action="not-valid",  # cannot contain -
+            )
 
-        self.assertEqual(str(e.exception), "Action 'not-valid' contains disallowed character(s).")
+        self.assertEqual(
+            str(e.exception), "Action 'not-valid' contains disallowed character(s)."
+        )
 
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_validate__value_not_provided(self, verify_mock):
         """Validation should fail if Field class' validation fails."""
         captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
-            project_id="<PROJECT-ID>",
-            sitekey=f.SITEKEY,
-            access_token="<ACCESS-TOKEN>")
+            project_id="<PROJECT-ID>", sitekey=f.SITEKEY, access_token="<ACCESS-TOKEN>"
+        )
 
         # fails because fields are required by default
         with self.assertRaises(ValidationError) as e:
@@ -42,28 +44,23 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     def test_validate__good_token(self, verify_mock):
         """Validation should pass if nothing is wrong with token."""
         captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
-            project_id="<PROJECT-ID>",
-            sitekey=f.SITEKEY,
-            access_token="<ACCESS-TOKEN>")
+            project_id="<PROJECT-ID>", sitekey=f.SITEKEY, access_token="<ACCESS-TOKEN>"
+        )
         response_data = f.create_response_data(valid=True)
         verify_mock.return_value = VerificationResult(response_data)
 
         captcha_field.validate(f.RECAPTCHA_TOKEN)
 
         verify_mock.assert_called_once_with(
-            "<PROJECT-ID>",
-            f.SITEKEY,
-            "<ACCESS-TOKEN>",
-            f.RECAPTCHA_TOKEN,
-            None)
+            "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, None
+        )
 
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_validate__bad_token(self, verify_mock):
         """Validation should fail if token is invalid."""
         captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
-            project_id="<PROJECT-ID>",
-            sitekey=f.SITEKEY,
-            access_token="<ACCESS-TOKEN>")
+            project_id="<PROJECT-ID>", sitekey=f.SITEKEY, access_token="<ACCESS-TOKEN>"
+        )
         response_data = f.create_response_data(valid=False)
         verify_mock.return_value = VerificationResult(response_data)
 
@@ -72,30 +69,25 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
 
         self.assertEqual(e.exception.code, "captcha_invalid")
         verify_mock.assert_called_once_with(
-            "<PROJECT-ID>",
-            f.SITEKEY,
-            "<ACCESS-TOKEN>",
-            f.RECAPTCHA_TOKEN,
-            None)
+            "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, None
+        )
 
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_validate__action_is_passed_along(self, verify_mock):
-        """Validation """
+        """Validation"""
         captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
-            action="ACTION")
+            action="ACTION",
+        )
         response_data = f.create_response_data(
-            client_action="ACTION",
-            expected_action="ACTION")
+            client_action="ACTION", expected_action="ACTION"
+        )
         verify_mock.return_value = VerificationResult(response_data)
 
         captcha_field.validate(f.RECAPTCHA_TOKEN)
 
         verify_mock.assert_called_once_with(
-            "<PROJECT-ID>",
-            f.SITEKEY,
-            "<ACCESS-TOKEN>",
-            f.RECAPTCHA_TOKEN,
-            "ACTION")
+            "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, "ACTION"
+        )

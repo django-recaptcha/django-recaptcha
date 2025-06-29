@@ -7,7 +7,6 @@ from django.forms.fields import Field
 from .client import verify_enterprise_v1_token
 from .widgets import ReCAPTCHAEnterpriseNoWidget
 
-
 # can only contain alphanumeric characters, slashes, and underscores
 ACTION_ALLOWED_CHARS = set(ascii_letters + digits + "/" + "_")
 
@@ -24,6 +23,7 @@ def _action_name_is_valid(action) -> bool:
 
 class ReCAPTCHAEnterpriseV1CheckboxField(Field):
     """Field that handles reCAPTCHA Enterprise V1 Checkbox tokens."""
+
     widget = ReCAPTCHAEnterpriseNoWidget  # TODO: change?
 
     def __init__(
@@ -36,13 +36,15 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
         **kwargs: Any,
     ) -> None:
         """
-        :param project_id: identifier of GCP project
+        :param project_id: ID of Google cloud project associated with sitekey
         :param sitekey: public key used to integrate reCAPTCHA
-        :param access_token: private API key
+        :param access_token: token used for authentication
         :param action: action associated with this reCAPTCHA field
         """
         if action and not _action_name_is_valid(action):
-            raise ImproperlyConfigured(f"Action '{action}' contains disallowed character(s).")
+            raise ImproperlyConfigured(
+                f"Action '{action}' contains disallowed character(s)."
+            )
 
         super().__init__(**kwargs)
         self._project_id = project_id
@@ -54,21 +56,23 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
         if action:
             self.widget.attrs["data-action"] = action
 
+    def validate(self, value: Optional[Any]) -> None:
+        # fails if field is required and token is missing
+        super().validate(value)
 
-    def validate(self, value: Optional[str]) -> None:
-        super().validate(value)  # fail if field is required, token is missing
+        # no validation is need if field is not required and token is missing
         if value is None:
-            return  # no validation if field is not required, token is missing
+            return
 
         try:
             verification_result = verify_enterprise_v1_token(
-                self._project_id,
-                self._sitekey,
-                self._access_token,
-                value,
-                self._action)
+                self._project_id, self._sitekey, self._access_token, value, self._action
+            )
         except:
-            raise ValidationError("sth went wrong", code="captcha_error")
+            raise ValidationError(
+                "something went wrong while trying to validate token",
+                code="captcha_error",
+            )
 
         if not verification_result.is_okay():
-            raise ValidationError("token was invalid", code="captcha_invalid")
+            raise ValidationError("token failed verification", code="captcha_invalid")

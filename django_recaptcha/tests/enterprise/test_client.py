@@ -38,7 +38,9 @@ class VerificationResultTests(TestCase):
 
     def test_is_okay__actions_set_and_matching(self):
         """Token is okay if token's action matches expectation."""
-        response_data = f.create_response_data(client_action="login", expected_action="login")
+        response_data = f.create_response_data(
+            client_action="login", expected_action="login"
+        )
 
         result = m.VerificationResult(response_data)
 
@@ -46,7 +48,9 @@ class VerificationResultTests(TestCase):
 
     def test_is_okay__actions_set_and_not_matching(self):
         """Token is not okay if token's action doesn't match expectation."""
-        response_data = f.create_response_data(client_action="login", expected_action="pay")
+        response_data = f.create_response_data(
+            client_action="login", expected_action="pay"
+        )
 
         result = m.VerificationResult(response_data)
 
@@ -82,7 +86,8 @@ class VerifyEnterpriseV1TokenTests(TestCase):
             project_id="alpha-beta-123",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
-            recaptcha_token=f.RECAPTCHA_TOKEN)
+            recaptcha_token=f.RECAPTCHA_TOKEN,
+        )
 
         send_mock.assert_called_once_with(
             "https://recaptchaenterprise.googleapis.com/v1/projects/alpha-beta-123/assessments",
@@ -102,7 +107,8 @@ class VerifyEnterpriseV1TokenTests(TestCase):
             project_id="alpha-beta-123",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
-            recaptcha_token=f.RECAPTCHA_TOKEN)
+            recaptcha_token=f.RECAPTCHA_TOKEN,
+        )
 
         send_mock.assert_called_once_with(
             "https://recaptchaenterprise.googleapis.com/v1/projects/alpha-beta-123/assessments",
@@ -142,13 +148,13 @@ class SendRequestTests(TestCase):
                 "X-goog-api-key": "<ACCESS_TOKEN>",
                 "Content-Type": "application/json; charset=utf-8",
             },
-            method="POST")
+            method="POST",
+        )
         proxy_handler_mock.assert_not_called()
         build_opener_mock.assert_called_once_with()
         opener_obj_mock.open.assert_called_once_with(request_obj_mock, timeout=10.0)
         response_obj_mock.read.assert_called_once()
         self.assertEqual(returned_data, response_data)
-
 
     @patch("django_recaptcha.enterprise.client.Request")
     @patch("django_recaptcha.enterprise.client.ProxyHandler")
@@ -176,7 +182,9 @@ class SendRequestTests(TestCase):
     @patch("django_recaptcha.enterprise.client.ProxyHandler")
     @patch("django_recaptcha.enterprise.client.build_opener")
     @override_settings(RECAPTCHA_ENTERPRISE_VERIFY_TIMEOUT=5.0)
-    def test_different_timeout(self, build_opener_mock, proxy_handler_mock, request_mock):
+    def test_different_timeout(
+        self, build_opener_mock, proxy_handler_mock, request_mock
+    ):
         """Can use setting to change timeout."""
         request_data = f.create_request_data()
         response_data = f.create_response_data()

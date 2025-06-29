@@ -1,8 +1,9 @@
 from typing import Any, Optional
+
 from django.forms.widgets import Widget
 
 
-def extend_class_attr(attrs: dict[str,Any], extra_classes: list[str]) -> None:
+def extend_class_attr(attrs: dict[str, Any], extra_classes: list[str]) -> None:
     """Adds classes to widget's class attribute that aren't present yet."""
     class_attr_value: str = attrs.get("class", "")
     class_list = class_attr_value.split()
@@ -36,6 +37,7 @@ class ReCAPTCHAEnterpriseNoWidget(Widget):
     server side. This widget can handle extracting the reCAPTCHA token
     submitted by the user from the form data.
     """
+
     template_name = "django_recaptcha/enterprise/no_widget.html"
 
     def value_from_datadict(self, data: Any, files: Any, name: str) -> Any:
@@ -47,9 +49,10 @@ class ReCAPTCHAEnterpriseNoWidget(Widget):
 
 class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
     """Widget for reCAPTCHA Enterprise V1 Checkbox."""
+
     template_name = "django_recaptcha/enterprise/widget_enterprise_v1_checkbox.html"
 
-    def __init__(self, attrs: Optional[dict[str,Any]] = None):
+    def __init__(self, attrs: Optional[dict[str, Any]] = None):
         super().__init__(attrs)
         extend_class_attr(self.attrs, ["g-recaptcha"])
 
