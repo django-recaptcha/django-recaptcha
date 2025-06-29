@@ -1,18 +1,27 @@
+from typing import Any, Optional
+
 RECAPTCHA_TOKEN = "<RECAPTCHA-TOKEN>"  # e.g. "03AF...EV2o"
 SITEKEY = "<SITEKEY>"                  # e.g. "6Ldc...7GNA
 ASSESSMENT_ID = "<ASSESSMENT_ID>"      # e.g. "projects/85...68/assessments/f8..00"
 
 
-def create_request_data():
-    return {
+def create_request_data(action: Optional[str] = None) -> dict[str,Any]:
+    data = {
         "event": {
            "token": RECAPTCHA_TOKEN,
            "siteKey": SITEKEY,
         },
     }
+    if action:
+        data["event"]["expectedAction"] = action
+    return data
 
 
-def create_response_data(valid: bool = True):
+def create_response_data(
+        valid: bool = True,
+        client_action: Optional[str] = None,
+        expected_action: Optional[str] = None,
+    ) -> dict[str,Any]:
     return {
         "name": ASSESSMENT_ID,
         "event": {
@@ -20,7 +29,7 @@ def create_response_data(valid: bool = True):
             "siteKey": SITEKEY,
             "userAgent": "",
             "userIpAddress": "",
-            "expectedAction": "",
+            "expectedAction": expected_action if expected_action else "",
             "hashedAccountId": "",
             "express": False,
             "requestedUri": "",
@@ -32,7 +41,7 @@ def create_response_data(valid: bool = True):
             "fraudPrevention": "FRAUD_PREVENTION_UNSPECIFIED"
         },
         "riskAnalysis": {
-            "score": 0.4,
+            "score": 0.4 if valid else 0,
             "reasons": [],
             "extendedVerdictReasons": [],
             "challenge": "CHALLENGE_UNSPECIFIED",
@@ -44,7 +53,7 @@ def create_response_data(valid: bool = True):
             "hostname": "localhost",
             "androidPackageName": "",
             "iosBundleId": "",
-            "action": "LOGIN",
+            "action": client_action if client_action else "",
             "createTime": "2025-06-26T15:15:13.551Z"
         },
         "accountDefenderAssessment": {

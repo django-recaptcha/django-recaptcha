@@ -8,26 +8,30 @@ from django.conf import settings
 class VerificationResult:
     """The results sent back by Google after token verification.
 
-    :ivar Any data: direct reference to data returned by Google; use with care
+    :ivar Any data: direct reference to data returned by Google
     """
 
     def __init__(self, response_data: dict[str,Any]) -> None:
         """
-        :param response_data: data from response with results
+        :param response_data: data returned by Google
         """
         self.data = response_data
 
     def is_okay(self) -> bool:
-        """Check if token passes verification or not.
-        """
-        return bool(self.data["tokenProperties"]["valid"])
+        """Check if token passes verification or not."""
+        if not self.data["tokenProperties"]["valid"]:
+            return False
+        if self.data["event"]["expectedAction"] != self.data["tokenProperties"]["action"]:
+            return False
+        return True
 
 
 def verify_enterprise_v1_token(
         project_id: str,
         sitekey: str,
         access_token: str,
-        recaptcha_token: Optional[str],
+        recaptcha_token: str,
+        expected_action: Optional[str] = None,
     ) -> VerificationResult:
     """Verifies a reCAPTCHA Enterprise v1 token submitted by user.
 
@@ -35,6 +39,7 @@ def verify_enterprise_v1_token(
     :param sitekey: your unique reCAPTCHA key
     :param access_token: access token of used to authenticate with API
     :param recaptcha_token: reCAPTCHA token submitted by user
+    :param expected_action: action corresponding to the token
     """
     url = f"https://recaptchaenterprise.googleapis.com/v1/projects/{project_id}/assessments"
     request_data = {
@@ -43,6 +48,8 @@ def verify_enterprise_v1_token(
             "siteKey": sitekey,
         },
     }
+    if expected_action is not None:
+        request_data["expectedAction"] = expected_action
     response_data = send_request(url, access_token, request_data)
     return VerificationResult(response_data)
 

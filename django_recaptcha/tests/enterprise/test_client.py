@@ -1,5 +1,5 @@
 import json
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from django.test import TestCase, override_settings
 
@@ -9,6 +9,7 @@ from . import fixtures as f
 
 
 class VerificationResultTests(TestCase):
+    """Tests VerificationResult class."""
 
     def test_access_data_directly(self):
         """User should be able to access data directly for convenience."""
@@ -30,6 +31,38 @@ class VerificationResultTests(TestCase):
     def test_is_okay__invalid_token(self):
         """Invalid token are not okay."""
         response_data = f.create_response_data(valid=False)
+
+        result = m.VerificationResult(response_data)
+
+        self.assertFalse(result.is_okay())
+
+    def test_is_okay__actions_set_and_matching(self):
+        """Token is okay if token's action matches expectation."""
+        response_data = f.create_response_data(client_action="login", expected_action="login")
+
+        result = m.VerificationResult(response_data)
+
+        self.assertTrue(result.is_okay())
+
+    def test_is_okay__actions_set_and_not_matching(self):
+        """Token is not okay if token's action doesn't match expectation."""
+        response_data = f.create_response_data(client_action="login", expected_action="pay")
+
+        result = m.VerificationResult(response_data)
+
+        self.assertFalse(result.is_okay())
+
+    def test_is_okay__only_client_action_set(self):
+        """Token is not okay if token has unexpected associated action."""
+        response_data = f.create_response_data(client_action="login")
+
+        result = m.VerificationResult(response_data)
+
+        self.assertFalse(result.is_okay())
+
+    def test_is_okay__only_server_action_set(self):
+        """Token is not okay if token lacks the expected associated action."""
+        response_data = f.create_response_data(expected_action="login")
 
         result = m.VerificationResult(response_data)
 

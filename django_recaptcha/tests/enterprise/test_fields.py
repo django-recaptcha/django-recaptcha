@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.test import TestCase
 
 from django_recaptcha.enterprise.client import VerificationResult
@@ -11,6 +11,17 @@ from . import fixtures as f
 
 class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     """Tests the ReCAPTCHAEnterpriseV1CheckboxField class."""
+
+    def test_init__bad_action_name(self):
+        """An exception should be raised if the ... ."""
+        with self.assertRaises(ImproperlyConfigured) as e:
+            _ = ReCAPTCHAEnterpriseV1CheckboxField(
+                project_id="<PROJECT-ID>",
+                sitekey=f.SITEKEY,
+                access_token="<ACCESS-TOKEN>",
+                action="not-valid")  # cannot contain -
+
+        self.assertEqual(str(e.exception), "Action 'not-valid' contains disallowed character(s).")
 
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_validate__value_not_provided(self, verify_mock):
@@ -43,7 +54,8 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
             "<PROJECT-ID>",
             f.SITEKEY,
             "<ACCESS-TOKEN>",
-            f.RECAPTCHA_TOKEN)
+            f.RECAPTCHA_TOKEN,
+            None)
 
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_validate__bad_token(self, verify_mock):
@@ -63,4 +75,27 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
             "<PROJECT-ID>",
             f.SITEKEY,
             "<ACCESS-TOKEN>",
-            f.RECAPTCHA_TOKEN)
+            f.RECAPTCHA_TOKEN,
+            None)
+
+    @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
+    def test_validate__action_is_passed_along(self, verify_mock):
+        """Validation """
+        captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
+            project_id="<PROJECT-ID>",
+            sitekey=f.SITEKEY,
+            access_token="<ACCESS-TOKEN>",
+            action="ACTION")
+        response_data = f.create_response_data(
+            client_action="ACTION",
+            expected_action="ACTION")
+        verify_mock.return_value = VerificationResult(response_data)
+
+        captcha_field.validate(f.RECAPTCHA_TOKEN)
+
+        verify_mock.assert_called_once_with(
+            "<PROJECT-ID>",
+            f.SITEKEY,
+            "<ACCESS-TOKEN>",
+            f.RECAPTCHA_TOKEN,
+            "ACTION")
