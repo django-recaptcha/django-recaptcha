@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from django.core.exceptions import ImproperlyConfigured, ValidationError
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from django_recaptcha.enterprise.client import VerificationResult
 from django_recaptcha.enterprise.fields import ReCAPTCHAEnterpriseV1CheckboxField
@@ -12,8 +12,73 @@ from . import fixtures as f
 class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     """Tests the ReCAPTCHAEnterpriseV1CheckboxField class."""
 
+    def test_init__project_id_not_provided(self):
+        """Raise exception if no value is set for project_id."""
+        with self.assertRaises(ImproperlyConfigured) as e:
+            _ = ReCAPTCHAEnterpriseV1CheckboxField(
+                sitekey=f.SITEKEY,
+                access_token="ACCESS-TOKEN",
+            )
+
+        self.assertEqual(
+            str(e.exception),
+            "Must provide value of project_id as an argument or Django setting.",
+        )
+
+    @override_settings(RECAPTCHA_ENTERPRISE_PROJECT_ID="<PROJECT-ID>")
+    def test_init__project_id_provided_as_django_setting(self):
+        """Use Django setting to set value for project_id."""
+        captcha = ReCAPTCHAEnterpriseV1CheckboxField(
+            sitekey=f.SITEKEY,
+            access_token="ACCESS-TOKEN",
+        )
+
+        self.assertEqual(captcha._sitekey, "<PROJECT-ID>")
+
+    def test_init__sitekey_not_provided(self):
+        """Raise exception if no value is set for sitekey."""
+        with self.assertRaises(ImproperlyConfigured) as e:
+            _ = ReCAPTCHAEnterpriseV1CheckboxField(
+                project_id="<PROJECT-ID>",
+                access_token="<ACCESS-TOKEN>",
+            )
+
+        self.assertEqual(
+            str(e.exception),
+            "Must provide value of sitekey as an argument or Django setting.",
+        )
+
+    @override_settings(RECAPTCHA_ENTERPRISE_SITEKEY=f.SITEKEY)
+    def test_init__sitekey_provided_as_django_setting(self):
+        """Use Django setting to set value for sitekey."""
+        _ = ReCAPTCHAEnterpriseV1CheckboxField(
+            project_id="<PROJECT-ID>",
+            access_token="<ACCESS-TOKEN>",
+        )
+
+    def test_init__access_token_not_provided(self):
+        """Raise exception if no value is set for access_token."""
+        with self.assertRaises(ImproperlyConfigured) as e:
+            _ = ReCAPTCHAEnterpriseV1CheckboxField(
+                project_id="<PROJECT-ID>",
+                sitekey=f.SITEKEY,
+            )
+
+        self.assertEqual(
+            str(e.exception),
+            "Must provide value of access_token as an argument or Django setting.",
+        )
+
+    @override_settings(RECAPTCHA_ENTERPRISE_ACCESS_TOKEN="<ACCESS-TOKEN>")
+    def test_init__access_token_provided_as_django_setting(self):
+        """Use Django setting to set value for access_token."""
+        _ = ReCAPTCHAEnterpriseV1CheckboxField(
+            project_id="<PROJECT-ID>",
+            sitekey=f.SITEKEY,
+        )
+
     def test_init__bad_action_name(self):
-        """An exception should be raised if the ... ."""
+        """Raise exception if action name contains a disallowed character."""
         with self.assertRaises(ImproperlyConfigured) as e:
             _ = ReCAPTCHAEnterpriseV1CheckboxField(
                 project_id="<PROJECT-ID>",

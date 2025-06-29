@@ -5,6 +5,7 @@ from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.forms.fields import Field
 
 from .client import verify_enterprise_v1_token
+from .conf import use_setting
 from .widgets import ReCAPTCHAEnterpriseV1CheckboxWidget
 
 # can only contain alphanumeric characters, slashes, and underscores
@@ -29,9 +30,9 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
     def __init__(
         self,
         *,
-        project_id: str,
-        sitekey: str,
-        access_token: str,
+        project_id: Optional[str] = None,
+        sitekey: Optional[str] = None,
+        access_token: Optional[str] = None,
         action: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
@@ -41,15 +42,33 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
         :param access_token: token used for authentication
         :param action: action associated with this reCAPTCHA field
         """
+        _project_id = use_setting("RECAPTCHA_ENTERPRISE_PROJECT_ID", project_id)
+        if _project_id is None:
+            raise ImproperlyConfigured(
+                "Must provide value of project_id as an argument or Django setting."
+            )
+
+        _sitekey = use_setting("RECAPTCHA_ENTERPRISE_SITEKEY", sitekey)
+        if _sitekey is None:
+            raise ImproperlyConfigured(
+                "Must provide value of sitekey as an argument or Django setting."
+            )
+
+        _access_token = use_setting("RECAPTCHA_ENTERPRISE_ACCESS_TOKEN", access_token)
+        if _access_token is None:
+            raise ImproperlyConfigured(
+                "Must provide value of access_token as an argument or Django setting."
+            )
+
         if action and not _action_name_is_valid(action):
             raise ImproperlyConfigured(
                 f"Action '{action}' contains disallowed character(s)."
             )
 
         super().__init__(**kwargs)
-        self._project_id = project_id
-        self._sitekey = sitekey
-        self._access_token = access_token
+        self._project_id = _project_id
+        self._sitekey = _sitekey
+        self._access_token = _access_token
         self._action = action
 
         self.widget.attrs["data-sitekey"] = sitekey

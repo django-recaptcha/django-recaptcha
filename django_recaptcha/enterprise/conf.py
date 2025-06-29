@@ -3,6 +3,15 @@ from typing import Any, Optional
 from django.conf import settings
 
 _DEFAULT_SETTINGS: dict[str, Any] = {
+    # ID of Google cloud project associated with sitekey
+    # e.g. "my-project-123456"
+    "RECAPTCHA_ENTERPRISE_PROJECT_ID": None,
+    # public key used to integrate reCAPTCHA
+    # e.g. "6Lcm3XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX5mfX"
+    "RECAPTCHA_ENTERPRISE_SITEKEY": None,
+    # API key used for authentication
+    # e.g. "ABcdEfG12jKlMNo3pqRsTUvWXYzA4BCDEf5hiJk"
+    "RECAPTCHA_ENTERPRISE_ACCESS_TOKEN": None,
     # Configuration for usage of proxies.
     # e.g. {"https": "https://127.0.0.1:56789"}
     "RECAPTCHA_ENTERPRISE_PROXY": {},
