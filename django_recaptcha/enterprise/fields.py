@@ -55,8 +55,10 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
             self.widget.attrs["data-action"] = action
 
 
-    def validate(self, value: Optional[Any]) -> None:
-        super().validate(value)  # fails if token was missing from form data
+    def validate(self, value: Optional[str]) -> None:
+        super().validate(value)  # fail if field is required, token is missing
+        if value is None:
+            return  # no validation if field is not required, token is missing
 
         try:
             verification_result = verify_enterprise_v1_token(

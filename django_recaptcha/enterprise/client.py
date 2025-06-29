@@ -50,7 +50,7 @@ def verify_enterprise_v1_token(
         },
     }
     if expected_action is not None:
-        request_data["expectedAction"] = expected_action
+        request_data["event"]["expectedAction"] = expected_action
     response_data = send_request(url, access_token, request_data)
     return VerificationResult(response_data)
 

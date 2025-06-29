@@ -4,7 +4,7 @@ from django.forms.widgets import Widget
 
 def extend_class_attr(attrs: dict[str,Any], extra_classes: list[str]) -> None:
     """Adds classes to widget's class attribute that aren't present yet."""
-    class_attr_value: Optional[str] = attrs.get("class", "")
+    class_attr_value: str = attrs.get("class", "")
     class_list = class_attr_value.split()
     for class_name in extra_classes:
         if class_name not in class_list:
