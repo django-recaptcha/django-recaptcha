@@ -108,7 +108,8 @@ class VerificationResultTests(TestCase):
 class VerifyEnterpriseV1TokenTests(TestCase):
 
     @patch("django_recaptcha.enterprise.client.send_request")
-    def test_success__valid_token(self, send_mock):
+    def test_success(self, send_mock):
+        """Request data is submitted and response data returned as expected."""
         request_data = f.create_request_data()
         response_data = f.create_response_data(valid=True)
 
@@ -129,17 +130,16 @@ class VerifyEnterpriseV1TokenTests(TestCase):
         self.assertEqual(verification_result.data, response_data)
 
     @patch("django_recaptcha.enterprise.client.send_request")
-    def test_success__invalid_token(self, send_mock):
-        request_data = f.create_request_data()
-        response_data = f.create_response_data(valid=False)
+    def test_submit_token_with_action(self, send_mock):
+        """Expected action is submitted if action is specified."""
+        request_data = f.create_request_data(action="myaction")
 
-        send_mock.return_value = response_data
-
-        verification_result = m.verify_enterprise_v1_token(
+        _ = m.verify_enterprise_v1_token(
             project_id="alpha-beta-123",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
             recaptcha_token=f.RECAPTCHA_TOKEN,
+            expected_action="myaction",
         )
 
         send_mock.assert_called_once_with(
@@ -147,7 +147,6 @@ class VerifyEnterpriseV1TokenTests(TestCase):
             "<ACCESS-TOKEN>",
             request_data,
         )
-        self.assertEqual(verification_result.data, response_data)
 
 
 class SendRequestTests(TestCase):
