@@ -21,6 +21,7 @@ def create_response_data(
     valid: bool = True,
     client_action: Optional[str] = None,
     expected_action: Optional[str] = None,
+    score=0.4,
 ) -> dict[str, Any]:
     return {
         "name": ASSESSMENT_ID,
@@ -41,7 +42,7 @@ def create_response_data(
             "fraudPrevention": "FRAUD_PREVENTION_UNSPECIFIED",
         },
         "riskAnalysis": {
-            "score": 0.4 if valid else 0,
+            "score": score if valid else 0,
             "reasons": [],
             "extendedVerdictReasons": [],
             "challenge": "CHALLENGE_UNSPECIFIED",

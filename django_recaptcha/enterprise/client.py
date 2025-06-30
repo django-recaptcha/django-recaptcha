@@ -17,7 +17,7 @@ class VerificationResult:
         """
         self.data = response_data
 
-    def is_okay(self) -> bool:
+    def is_okay(self, required_score: float) -> bool:
         """Check if token passes verification or not."""
         if not self.data["tokenProperties"]["valid"]:
             return False
@@ -25,6 +25,8 @@ class VerificationResult:
             self.data["event"]["expectedAction"]
             != self.data["tokenProperties"]["action"]
         ):
+            return False
+        if float(self.data["riskAnalysis"]["score"]) < required_score:
             return False
         return True
 

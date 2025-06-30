@@ -26,7 +26,7 @@ class VerificationResultTests(TestCase):
 
         result = m.VerificationResult(response_data)
 
-        self.assertTrue(result.is_okay())
+        self.assertTrue(result.is_okay(0.0))
 
     def test_is_okay__invalid_token(self):
         """Invalid token are not okay."""
@@ -34,7 +34,7 @@ class VerificationResultTests(TestCase):
 
         result = m.VerificationResult(response_data)
 
-        self.assertFalse(result.is_okay())
+        self.assertFalse(result.is_okay(0.0))
 
     def test_is_okay__actions_set_and_matching(self):
         """Token is okay if token's action matches expectation."""
@@ -44,7 +44,7 @@ class VerificationResultTests(TestCase):
 
         result = m.VerificationResult(response_data)
 
-        self.assertTrue(result.is_okay())
+        self.assertTrue(result.is_okay(0.0))
 
     def test_is_okay__actions_set_and_not_matching(self):
         """Token is not okay if token's action doesn't match expectation."""
@@ -54,7 +54,7 @@ class VerificationResultTests(TestCase):
 
         result = m.VerificationResult(response_data)
 
-        self.assertFalse(result.is_okay())
+        self.assertFalse(result.is_okay(0.0))
 
     def test_is_okay__only_client_action_set(self):
         """Token is not okay if token has unexpected associated action."""
@@ -62,7 +62,7 @@ class VerificationResultTests(TestCase):
 
         result = m.VerificationResult(response_data)
 
-        self.assertFalse(result.is_okay())
+        self.assertFalse(result.is_okay(0.0))
 
     def test_is_okay__only_server_action_set(self):
         """Token is not okay if token lacks the expected associated action."""
@@ -70,7 +70,31 @@ class VerificationResultTests(TestCase):
 
         result = m.VerificationResult(response_data)
 
-        self.assertFalse(result.is_okay())
+        self.assertFalse(result.is_okay(0.0))
+
+    def test_is_okay__score_higher_than_required(self):
+        """Token is okay if its score is higher than required."""
+        response_data = f.create_response_data(score=0.9)
+
+        result = m.VerificationResult(response_data)
+
+        self.assertTrue(result.is_okay(0.5))
+
+    def test_is_okay__score_equal_to_required_score(self):
+        """Token is okay if its score is equal to the required score."""
+        response_data = f.create_response_data(score=0.5)
+
+        result = m.VerificationResult(response_data)
+
+        self.assertTrue(result.is_okay(0.5))
+
+    def test_is_okay__score_lower_than_required(self):
+        """Token is not okay if its score is lower than required."""
+        response_data = f.create_response_data(score=0.1)
+
+        result = m.VerificationResult(response_data)
+
+        self.assertFalse(result.is_okay(0.5))
 
 
 class VerifyEnterpriseV1TokenTests(TestCase):

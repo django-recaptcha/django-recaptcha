@@ -18,6 +18,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
             _ = ReCAPTCHAEnterpriseV1CheckboxField(
                 sitekey=f.SITEKEY,
                 access_token="ACCESS-TOKEN",
+                required_score=0.0,
             )
 
         self.assertEqual(
@@ -31,9 +32,10 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
         captcha = ReCAPTCHAEnterpriseV1CheckboxField(
             sitekey=f.SITEKEY,
             access_token="ACCESS-TOKEN",
+            required_score=0.0,
         )
 
-        self.assertEqual(captcha._sitekey, "<PROJECT-ID>")
+        self.assertEqual(captcha._project_id, "<PROJECT-ID>")
 
     def test_init__sitekey_not_provided(self):
         """Raise exception if no value is set for sitekey."""
@@ -41,6 +43,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
             _ = ReCAPTCHAEnterpriseV1CheckboxField(
                 project_id="<PROJECT-ID>",
                 access_token="<ACCESS-TOKEN>",
+                required_score=0.0,
             )
 
         self.assertEqual(
@@ -54,6 +57,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
         _ = ReCAPTCHAEnterpriseV1CheckboxField(
             project_id="<PROJECT-ID>",
             access_token="<ACCESS-TOKEN>",
+            required_score=0.0,
         )
 
     def test_init__access_token_not_provided(self):
@@ -62,6 +66,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
             _ = ReCAPTCHAEnterpriseV1CheckboxField(
                 project_id="<PROJECT-ID>",
                 sitekey=f.SITEKEY,
+                required_score=0.0,
             )
 
         self.assertEqual(
@@ -75,7 +80,41 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
         _ = ReCAPTCHAEnterpriseV1CheckboxField(
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
+            required_score=0.0,
         )
+
+    def test_init__required_score_not_provided(self):
+        """Raise exception if no value is set for required_score."""
+        with self.assertRaises(ImproperlyConfigured) as e:
+            _ = ReCAPTCHAEnterpriseV1CheckboxField(
+                project_id="<PROJECT-ID>",
+                sitekey=f.SITEKEY,
+                access_token="<ACCESS-TOKEN>",
+            )
+
+        self.assertEqual(
+            str(e.exception),
+            "Must provide value of required_score as an argument or Django setting.",
+        )
+
+    @override_settings(RECAPTCHA_ENTERPRISE_REQUIRED_SCORE=0.0)
+    def test_init__required_score_provided_as_django_setting(self):
+        """Use Django setting to set value for required_score."""
+        _ = ReCAPTCHAEnterpriseV1CheckboxField(
+            project_id="<PROJECT-ID>",
+            sitekey=f.SITEKEY,
+            access_token="<ACCESS-TOKEN>",
+        )
+
+    def test_init__required_score_invalid_value(self):
+        """Raise exception if required score has an invalid value."""
+        with self.assertRaises(ImproperlyConfigured):
+            _ = ReCAPTCHAEnterpriseV1CheckboxField(
+                project_id="<PROJECT-ID>",
+                sitekey=f.SITEKEY,
+                access_token="<ACCESS-TOKEN>",
+                required_score=2.0,
+            )
 
     def test_init__bad_action_name(self):
         """Raise exception if action name contains a disallowed character."""
@@ -85,6 +124,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
                 sitekey=f.SITEKEY,
                 access_token="<ACCESS-TOKEN>",
                 action="not-valid",  # cannot contain -
+                required_score=0.0,
             )
 
         self.assertEqual(
@@ -95,7 +135,10 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     def test_validate__value_not_provided(self, verify_mock):
         """Validation should fail if Field class' validation fails."""
         captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
-            project_id="<PROJECT-ID>", sitekey=f.SITEKEY, access_token="<ACCESS-TOKEN>"
+            project_id="<PROJECT-ID>",
+            sitekey=f.SITEKEY,
+            access_token="<ACCESS-TOKEN>",
+            required_score=0.0,
         )
 
         # fails because fields are required by default
@@ -109,7 +152,10 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     def test_validate__good_token(self, verify_mock):
         """Validation should pass if nothing is wrong with token."""
         captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
-            project_id="<PROJECT-ID>", sitekey=f.SITEKEY, access_token="<ACCESS-TOKEN>"
+            project_id="<PROJECT-ID>",
+            sitekey=f.SITEKEY,
+            access_token="<ACCESS-TOKEN>",
+            required_score=0.0,
         )
         response_data = f.create_response_data(valid=True)
         verify_mock.return_value = VerificationResult(response_data)
@@ -124,7 +170,10 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     def test_validate__bad_token(self, verify_mock):
         """Validation should fail if token is invalid."""
         captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
-            project_id="<PROJECT-ID>", sitekey=f.SITEKEY, access_token="<ACCESS-TOKEN>"
+            project_id="<PROJECT-ID>",
+            sitekey=f.SITEKEY,
+            access_token="<ACCESS-TOKEN>",
+            required_score=0.0,
         )
         response_data = f.create_response_data(valid=False)
         verify_mock.return_value = VerificationResult(response_data)
@@ -139,12 +188,13 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
 
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_validate__action_is_passed_along(self, verify_mock):
-        """Validation"""
+        """Validation should include action if passed along."""
         captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
             action="ACTION",
+            required_score=0.0,
         )
         response_data = f.create_response_data(
             client_action="ACTION", expected_action="ACTION"
