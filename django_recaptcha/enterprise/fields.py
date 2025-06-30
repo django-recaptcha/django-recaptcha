@@ -12,7 +12,7 @@ from .widgets import ReCAPTCHAEnterpriseV1CheckboxWidget
 ACTION_ALLOWED_CHARS = set(ascii_letters + digits + "/" + "_")
 
 
-def _action_name_is_valid(action) -> bool:
+def _action_name_is_valid(action: str) -> bool:
     """Checks whether name of a given action is valid.
 
     More information: https://cloud.google.com/recaptcha/docs/actions-website
