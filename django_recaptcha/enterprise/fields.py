@@ -85,6 +85,7 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
         self._access_token = _access_token
         self._action = action
         self._required_score = _required_score
+        self._score: Optional[float] = None  # set after successful verification
 
         self.widget.attrs["data-sitekey"] = sitekey
         if action:
@@ -108,5 +109,12 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
                 code="captcha_error",
             )
 
+        self._score = verification_result.score
+
         if not verification_result.is_okay(self._required_score):
             raise ValidationError("token failed verification", code="captcha_invalid")
+
+    @property
+    def score(self) -> Optional[float]:
+        """Score of token after a successful verificaton attempt."""
+        return self._score

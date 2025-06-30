@@ -206,3 +206,22 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
         verify_mock.assert_called_once_with(
             "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, "ACTION"
         )
+
+    @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
+    def test_validate__score_is_set_after_validation(self, verify_mock):
+        """Score should be set after validation."""
+        captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
+            project_id="<PROJECT-ID>",
+            sitekey=f.SITEKEY,
+            access_token="<ACCESS-TOKEN>",
+            required_score=0.0,
+        )
+        response_data = f.create_response_data(score=0.7)
+        verify_mock.return_value = VerificationResult(response_data)
+
+        score_before = captcha_field.score
+        captcha_field.validate(f.RECAPTCHA_TOKEN)
+        score_after = captcha_field.score
+
+        self.assertIsNone(score_before)
+        self.assertEqual(score_after, 0.7)

@@ -30,6 +30,11 @@ class VerificationResult:
             return False
         return True
 
+    @property
+    def score(self) -> float:
+        """Returns score returned after token verification."""
+        return cast(float, self.data["riskAnalysis"]["score"])
+
 
 def verify_enterprise_v1_token(
     project_id: str,

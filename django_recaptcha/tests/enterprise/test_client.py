@@ -96,6 +96,14 @@ class VerificationResultTests(TestCase):
 
         self.assertFalse(result.is_okay(0.5))
 
+    def test_get_score(self):
+        """Can retrieve the score correctly."""
+        response_data = f.create_response_data(score=0.3)
+
+        result = m.VerificationResult(response_data)
+
+        self.assertEqual(result.score, 0.3)
+
 
 class VerifyEnterpriseV1TokenTests(TestCase):
 
