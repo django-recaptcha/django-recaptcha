@@ -1,4 +1,4 @@
-<script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
+<script src="https://{{ script.recaptcha_domain }}/recaptcha/enterprise.js" async defer></script>
 <div
   {% for name, value in widget.attrs.items %}
     {% if value is True %}

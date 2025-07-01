@@ -2,6 +2,8 @@ from typing import Any, Optional
 
 from django.forms.widgets import Widget
 
+from .conf import use_setting
+
 
 def extend_class_attr(attrs: dict[str, Any], extra_classes: list[str]) -> None:
     """Adds classes to widget's class attribute that aren't present yet."""
@@ -61,3 +63,18 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
 
     def value_omitted_from_data(self, data: Any, files: Any, name: str) -> bool:
         return "g-recaptcha-response" not in data
+
+    def get_context(
+        self, name: str, value: Any, attrs: Optional[dict[str, Any]]
+    ) -> dict[str, Any]:
+        context = super().get_context(name, value, attrs)
+        context.update(
+            {
+                "script": {
+                    "recaptcha_domain": use_setting(
+                        "RECAPTCHA_ENTERPRISE_FRONTEND_DOMAIN"
+                    ),
+                }
+            }
+        )
+        return context

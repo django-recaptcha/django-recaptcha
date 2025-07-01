@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.utils.datastructures import MultiValueDict
 
 from django_recaptcha.enterprise.widgets import (
@@ -211,3 +211,24 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         result = widget.value_omitted_from_data(form_data, files, field_name)
 
         self.assertTrue(result)
+
+    def test_get_context__default_recaptcha_domain(self):
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        name = "<NAME>"
+        value = "<VALUE>"
+        attrs = {}
+
+        context = widget.get_context(name, value, attrs)
+
+        self.assertEqual(context["script"]["recaptcha_domain"], "www.google.com")
+
+    @override_settings(RECAPTCHA_ENTERPRISE_FRONTEND_DOMAIN="www.recaptcha.net")
+    def test_get_context__overwritten_recaptcha_domain(self):
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        name = "<NAME>"
+        value = "<VALUE>"
+        attrs = {}
+
+        context = widget.get_context(name, value, attrs)
+
+        self.assertEqual(context["script"]["recaptcha_domain"], "www.recaptcha.net")
