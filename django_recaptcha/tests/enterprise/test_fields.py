@@ -4,7 +4,8 @@ from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.test import TestCase, override_settings
 
 from django_recaptcha.enterprise.client import VerificationResult
-from django_recaptcha.enterprise.fields import ReCAPTCHAEnterpriseV1CheckboxField
+from django_recaptcha.enterprise.fields import \
+    ReCAPTCHAEnterpriseV1CheckboxField
 
 from . import fixtures as f
 
@@ -163,7 +164,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
         captcha_field.validate(f.RECAPTCHA_TOKEN)
 
         verify_mock.assert_called_once_with(
-            "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, None, None
+            "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, None, None, None,
         )
 
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
@@ -183,7 +184,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
 
         self.assertEqual(e.exception.code, "captcha_invalid")
         verify_mock.assert_called_once_with(
-            "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, None, None
+            "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, None, None, None,
         )
 
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
@@ -209,6 +210,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
             "<ACCESS-TOKEN>",
             f.RECAPTCHA_TOKEN,
             "ACTION",
+            None,
             None,
         )
 
@@ -242,6 +244,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
         )
         http_request = MagicMock()
         http_request.build_absolute_uri.return_value = "http://example.com/"
+        http_request.META = {"HTTP_USER_AGENT": "<CLIENT-USER-AGENT>"}
 
         captcha_field.add_additional_info(http_request)
         captcha_field.validate(f.RECAPTCHA_TOKEN)
@@ -254,4 +257,5 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
             f.RECAPTCHA_TOKEN,
             None,
             "http://example.com/",
+            "<CLIENT-USER-AGENT>",
         )

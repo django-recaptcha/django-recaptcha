@@ -167,6 +167,25 @@ class VerifyEnterpriseV1TokenTests(TestCase):
             request_data,
         )
 
+    @patch("django_recaptcha.enterprise.client.send_request")
+    def test_submit_user_agent(self, send_mock):
+        """User agent is submitted if specified."""
+        request_data = f.create_request_data(user_agent="my-user-agent")
+
+        _ = m.verify_enterprise_v1_token(
+            project_id="alpha-beta-123",
+            sitekey=f.SITEKEY,
+            access_token="<ACCESS-TOKEN>",
+            recaptcha_token=f.RECAPTCHA_TOKEN,
+            user_agent="my-user-agent",
+        )
+
+        send_mock.assert_called_once_with(
+            "https://recaptchaenterprise.googleapis.com/v1/projects/alpha-beta-123/assessments",
+            "<ACCESS-TOKEN>",
+            request_data,
+        )
+
 
 class SendRequestTests(TestCase):
 

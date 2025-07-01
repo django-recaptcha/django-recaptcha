@@ -8,6 +8,7 @@ ASSESSMENT_ID = "<ASSESSMENT_ID>"  # e.g. "projects/85...68/assessments/f8..00"
 def create_request_data(
     action: Optional[str] = None,
     requested_uri: Optional[str] = None,
+    user_agent: Optional[str] = None,
 ) -> dict[str, Any]:
     data = {
         "event": {
@@ -19,6 +20,8 @@ def create_request_data(
         data["event"]["expectedAction"] = action
     if requested_uri:
         data["event"]["requestedUri"] = requested_uri
+    if user_agent:
+        data["event"]["userAgent"] = user_agent
     return data
 
 
@@ -28,13 +31,14 @@ def create_response_data(
     expected_action: str = "",
     score: float = 0.4,
     requested_uri: str = "",
+    user_agent: str = "",
 ) -> dict[str, Any]:
     return {
         "name": ASSESSMENT_ID,
         "event": {
             "token": RECAPTCHA_TOKEN,
             "siteKey": SITEKEY,
-            "userAgent": "",
+            "userAgent": user_agent,
             "userIpAddress": "",
             "expectedAction": expected_action,
             "hashedAccountId": "",

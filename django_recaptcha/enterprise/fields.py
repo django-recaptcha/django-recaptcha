@@ -89,6 +89,7 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
 
         # set by calling add_additional_info()
         self._requested_uri: Optional[str] = None
+        self._user_agent: Optional[str] = None
 
         # set after successful verification
         self._score: Optional[float] = None
@@ -113,6 +114,7 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
                 value,
                 self._action,
                 self._requested_uri,
+                self._user_agent,
             )
         except:
             raise ValidationError(
@@ -136,3 +138,4 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
         :param request: HTTP request sent by user
         """
         self._requested_uri = request.build_absolute_uri()
+        self._user_agent = request.META.get("HTTP_USER_AGENT")
