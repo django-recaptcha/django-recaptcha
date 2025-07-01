@@ -2,8 +2,10 @@ from django.test import TestCase
 from django.utils.datastructures import MultiValueDict
 
 from django_recaptcha.enterprise.widgets import (
-    ReCAPTCHAEnterpriseNoWidget, ReCAPTCHAEnterpriseV1CheckboxWidget,
-    extend_class_attr)
+    ReCAPTCHAEnterpriseNoWidget,
+    ReCAPTCHAEnterpriseV1CheckboxWidget,
+    extend_class_attr,
+)
 
 
 class ExtendClassAttributeTests(TestCase):

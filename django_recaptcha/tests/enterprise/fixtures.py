@@ -9,7 +9,7 @@ def create_request_data(
     action: Optional[str] = None,
     requested_uri: Optional[str] = None,
     user_agent: Optional[str] = None,
-    user_ip_address: Optional[str] = None
+    user_ip_address: Optional[str] = None,
 ) -> dict[str, Any]:
     data = {
         "event": {

@@ -66,7 +66,7 @@ def verify_enterprise_v1_token(
         "assessmentEnvironment": {
             "client": "pypi.org/project/django-recaptcha/",
             "version": "4.1.0",
-        }
+        },
     }
     if expected_action is not None:
         request_data["event"]["expectedAction"] = expected_action
