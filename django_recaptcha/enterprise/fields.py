@@ -3,6 +3,7 @@ from typing import Any, Optional
 
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.forms.fields import Field
+from django.http import HttpRequest
 
 from .client import verify_enterprise_v1_token
 from .conf import use_setting
@@ -85,7 +86,12 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
         self._access_token = _access_token
         self._action = action
         self._required_score = _required_score
-        self._score: Optional[float] = None  # set after successful verification
+
+        # set by calling add_additional_info()
+        self._requested_uri: Optional[str] = None
+
+        # set after successful verification
+        self._score: Optional[float] = None
 
         self.widget.attrs["data-sitekey"] = sitekey
         if action:
@@ -101,7 +107,12 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
 
         try:
             verification_result = verify_enterprise_v1_token(
-                self._project_id, self._sitekey, self._access_token, value, self._action
+                self._project_id,
+                self._sitekey,
+                self._access_token,
+                value,
+                self._action,
+                self._requested_uri,
             )
         except:
             raise ValidationError(
@@ -118,3 +129,10 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
     def score(self) -> Optional[float]:
         """Score of token after a successful verificaton attempt."""
         return self._score
+
+    def add_additional_info(self, request: HttpRequest) -> None:
+        """Adds additional information that is submitted with token verification attempt.
+
+        :param request: HTTP request sent by user
+        """
+        self._requested_uri = request.build_absolute_uri()

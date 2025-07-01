@@ -148,6 +148,25 @@ class VerifyEnterpriseV1TokenTests(TestCase):
             request_data,
         )
 
+    @patch("django_recaptcha.enterprise.client.send_request")
+    def test_submit_requested_uri(self, send_mock):
+        """Requested URI is submitted if specified."""
+        request_data = f.create_request_data(requested_uri="https://example.com/")
+
+        _ = m.verify_enterprise_v1_token(
+            project_id="alpha-beta-123",
+            sitekey=f.SITEKEY,
+            access_token="<ACCESS-TOKEN>",
+            recaptcha_token=f.RECAPTCHA_TOKEN,
+            requested_uri="https://example.com/",
+        )
+
+        send_mock.assert_called_once_with(
+            "https://recaptchaenterprise.googleapis.com/v1/projects/alpha-beta-123/assessments",
+            "<ACCESS-TOKEN>",
+            request_data,
+        )
+
 
 class SendRequestTests(TestCase):
 

@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.test import TestCase, override_settings
@@ -163,7 +163,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
         captcha_field.validate(f.RECAPTCHA_TOKEN)
 
         verify_mock.assert_called_once_with(
-            "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, None
+            "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, None, None
         )
 
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
@@ -183,7 +183,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
 
         self.assertEqual(e.exception.code, "captcha_invalid")
         verify_mock.assert_called_once_with(
-            "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, None
+            "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, None, None
         )
 
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
@@ -204,7 +204,12 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
         captcha_field.validate(f.RECAPTCHA_TOKEN)
 
         verify_mock.assert_called_once_with(
-            "<PROJECT-ID>", f.SITEKEY, "<ACCESS-TOKEN>", f.RECAPTCHA_TOKEN, "ACTION"
+            "<PROJECT-ID>",
+            f.SITEKEY,
+            "<ACCESS-TOKEN>",
+            f.RECAPTCHA_TOKEN,
+            "ACTION",
+            None,
         )
 
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
@@ -225,3 +230,28 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
 
         self.assertIsNone(score_before)
         self.assertEqual(score_after, 0.7)
+
+    @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
+    def test_submitting_additional_info(self, verify_mock):
+        """Additional info is also submitted after being provided."""
+        captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
+            project_id="<PROJECT-ID>",
+            sitekey=f.SITEKEY,
+            access_token="<ACCESS-TOKEN>",
+            required_score=0.0,
+        )
+        http_request = MagicMock()
+        http_request.build_absolute_uri.return_value = "http://example.com/"
+
+        captcha_field.add_additional_info(http_request)
+        captcha_field.validate(f.RECAPTCHA_TOKEN)
+
+        http_request.build_absolute_uri.assert_called_once()
+        verify_mock.assert_called_once_with(
+            "<PROJECT-ID>",
+            f.SITEKEY,
+            "<ACCESS-TOKEN>",
+            f.RECAPTCHA_TOKEN,
+            None,
+            "http://example.com/",
+        )

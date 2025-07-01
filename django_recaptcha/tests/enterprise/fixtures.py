@@ -5,7 +5,10 @@ SITEKEY = "<SITEKEY>"  # e.g. "6Ldc...7GNA
 ASSESSMENT_ID = "<ASSESSMENT_ID>"  # e.g. "projects/85...68/assessments/f8..00"
 
 
-def create_request_data(action: Optional[str] = None) -> dict[str, Any]:
+def create_request_data(
+    action: Optional[str] = None,
+    requested_uri: Optional[str] = None,
+) -> dict[str, Any]:
     data = {
         "event": {
             "token": RECAPTCHA_TOKEN,
@@ -14,14 +17,17 @@ def create_request_data(action: Optional[str] = None) -> dict[str, Any]:
     }
     if action:
         data["event"]["expectedAction"] = action
+    if requested_uri:
+        data["event"]["requestedUri"] = requested_uri
     return data
 
 
 def create_response_data(
     valid: bool = True,
-    client_action: Optional[str] = None,
-    expected_action: Optional[str] = None,
-    score=0.4,
+    client_action: str = "",
+    expected_action: str = "",
+    score: float = 0.4,
+    requested_uri: str = "",
 ) -> dict[str, Any]:
     return {
         "name": ASSESSMENT_ID,
@@ -30,10 +36,10 @@ def create_response_data(
             "siteKey": SITEKEY,
             "userAgent": "",
             "userIpAddress": "",
-            "expectedAction": expected_action if expected_action else "",
+            "expectedAction": expected_action,
             "hashedAccountId": "",
             "express": False,
-            "requestedUri": "",
+            "requestedUri": requested_uri,
             "wafTokenAssessment": False,
             "ja3": "",
             "ja4": "",
