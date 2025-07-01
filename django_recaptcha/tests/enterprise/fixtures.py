@@ -9,6 +9,7 @@ def create_request_data(
     action: Optional[str] = None,
     requested_uri: Optional[str] = None,
     user_agent: Optional[str] = None,
+    user_ip_address: Optional[str] = None
 ) -> dict[str, Any]:
     data = {
         "event": {
@@ -22,6 +23,8 @@ def create_request_data(
         data["event"]["requestedUri"] = requested_uri
     if user_agent:
         data["event"]["userAgent"] = user_agent
+    if user_ip_address:
+        data["event"]["userIpAddress"] = user_ip_address
     return data
 
 

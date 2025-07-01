@@ -44,6 +44,7 @@ def verify_enterprise_v1_token(
     expected_action: Optional[str] = None,
     requested_uri: Optional[str] = None,
     user_agent: Optional[str] = None,
+    user_ip_address: Optional[str] = None,
 ) -> VerificationResult:
     """Verifies a reCAPTCHA Enterprise v1 token submitted by user.
 
@@ -54,6 +55,7 @@ def verify_enterprise_v1_token(
     :param expected_action: action associated with reCAPTCHA token
     :param requested_uri: URI of resource accessed by user
     :param user_agent: the client's user-agent string
+    :param user_ip_address: the user's IP address
     """
     url = f"https://recaptchaenterprise.googleapis.com/v1/projects/{project_id}/assessments"
     request_data = {
@@ -68,6 +70,8 @@ def verify_enterprise_v1_token(
         request_data["event"]["requestedUri"] = requested_uri
     if user_agent is not None:
         request_data["event"]["userAgent"] = user_agent
+    if user_ip_address is not None:
+        request_data["event"]["userIpAddress"] = user_ip_address
     response_data = send_request(url, access_token, request_data)
     return VerificationResult(response_data)
 

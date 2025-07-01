@@ -23,6 +23,14 @@ def _action_name_is_valid(action: str) -> bool:
     return all((ch in ACTION_ALLOWED_CHARS) for ch in action)
 
 
+def get_user_ip_address(request: HttpRequest) -> Optional[str]:
+    """Returns the user's IP address.
+
+    :param request: HTTP request sent by user
+    """
+    return request.META.get("REMOTE_ADDR")
+
+
 class ReCAPTCHAEnterpriseV1CheckboxField(Field):
     """Field that handles reCAPTCHA Enterprise V1 Checkbox tokens."""
 
@@ -90,6 +98,7 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
         # set by calling add_additional_info()
         self._requested_uri: Optional[str] = None
         self._user_agent: Optional[str] = None
+        self._user_ip_address: Optional[str] = None
 
         # set after successful verification
         self._score: Optional[float] = None
@@ -115,6 +124,7 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
                 self._action,
                 self._requested_uri,
                 self._user_agent,
+                self._user_ip_address,
             )
         except:
             raise ValidationError(
@@ -139,3 +149,4 @@ class ReCAPTCHAEnterpriseV1CheckboxField(Field):
         """
         self._requested_uri = request.build_absolute_uri()
         self._user_agent = request.META.get("HTTP_USER_AGENT")
+        self._user_ip_address = get_user_ip_address(request)
