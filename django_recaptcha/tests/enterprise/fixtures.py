@@ -16,6 +16,10 @@ def create_request_data(
             "token": RECAPTCHA_TOKEN,
             "siteKey": SITEKEY,
         },
+        "assessmentEnvironment": {
+            "client": "pypi.org/project/django-recaptcha/",
+            "version": "4.1.0",
+        },
     }
     if action:
         data["event"]["expectedAction"] = action
