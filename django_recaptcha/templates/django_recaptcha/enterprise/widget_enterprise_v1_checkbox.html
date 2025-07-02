@@ -1,5 +1,14 @@
 {% if api_script.include %}
-<script src="https://{{ api_script.domain }}/recaptcha/enterprise.js{% if api_script.qs %}?{{ api_script.qs }}{% endif %}" async defer></script>
+<script
+  src="https://{{ api_script.domain }}/recaptcha/enterprise.js{% if api_script.qs %}?{{ api_script.qs }}{% endif %}"
+  {% for name, value in api_script.attrs.items %}
+    {% if value is True %}
+      {{ name }}
+    {% elif value %}
+      {{ name }}="{{ value|stringformat:'s' }}"
+    {% endif %}
+  {% endfor %}>
+</script>
 {% endif %}
 <div
   {% for name, value in widget.attrs.items %}

@@ -216,6 +216,23 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
             """,
         )
 
+    def test_render__with_different_script_attributes(self):
+        """Should render the widget with other attributes for its API script's tag."""
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(
+            api_script_attributes={"type": "module"}
+        )
+        widget.attrs["data-sitekey"] = "SITEKEY"
+
+        result = widget.render("field_name", "field_value")
+
+        self.assertHTMLEqual(
+            result,
+            """
+            <script src="https://www.google.com/recaptcha/enterprise.js" type="module"></script>
+            <div class="g-recaptcha" data-sitekey="SITEKEY"></div>
+            """,
+        )
+
     def test_value_from_datadict__value_provided(self):
         """Should return reCAPTCHA token if token is present in form data."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
@@ -351,3 +368,30 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         context = widget.get_context(name, value, attrs)
 
         self.assertEqual(context["api_script"]["qs"], "render=explicit&hl=en")
+
+    @override_settings(
+        RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_ATTRIBUTES={"type": "module"}
+    )
+    def test_get_context__set_script_attributes_via_django_setting(self):
+        """Should set attributes of API script's tag via Django setting."""
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        name = "field_name"
+        value = "field_value"
+        attrs = {}
+
+        context = widget.get_context(name, value, attrs)
+
+        self.assertEqual(context["api_script"]["attrs"], {"type": "module"})
+
+    def test_get_context__set_script_attributes_via_parameter(self):
+        """Should set attributes of API script's tag via parameter."""
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(
+            api_script_attributes={"type": "module"}
+        )
+        name = "field_name"
+        value = "field_value"
+        attrs = {}
+
+        context = widget.get_context(name, value, attrs)
+
+        self.assertEqual(context["api_script"]["attrs"], {"type": "module"})

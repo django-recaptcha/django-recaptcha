@@ -29,7 +29,10 @@ _DEFAULT_SETTINGS: dict[str, Any] = {
     "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_DOMAIN": "www.google.com",
     # Query parameters of widget's reCAPTCHA API script's URL.
     # e.g. {"render": "explicit", "onload": "renderAllWidgets", "hl": "nl"}
-    "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_PARAMETERS": None,
+    "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_PARAMETERS": {},
+    # Attributes of widget's reCAPTCHA API script's tag.
+    # e.g. {"type": "module"}
+    "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_ATTRIBUTES": {"async": True, "defer": True},
 }
 
 
