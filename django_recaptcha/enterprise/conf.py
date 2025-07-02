@@ -27,6 +27,9 @@ _DEFAULT_SETTINGS: dict[str, Any] = {
     # Domain of widget's reCAPTCHA API script's URL.
     # e.g. "www.recaptcha.net"
     "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_DOMAIN": "www.google.com",
+    # Query parameters of widget's reCAPTCHA API script's URL.
+    # e.g. {"render": "explicit", "onload": "renderAllWidgets", "hl": "nl"}
+    "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_PARAMETERS": None,
 }
 
 

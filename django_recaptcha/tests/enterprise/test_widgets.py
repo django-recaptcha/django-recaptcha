@@ -199,6 +199,23 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
             """,
         )
 
+    def test_render__with_query_string(self):
+        """Should render the widget with a query string for its API script."""
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(
+            api_script_parameters={"onload": "loadAllWidgets", "hl": "nl"}
+        )
+        widget.attrs["data-sitekey"] = "SITEKEY"
+
+        result = widget.render("field_name", "field_value")
+
+        self.assertHTMLEqual(
+            result,
+            """
+            <script src="https://www.google.com/recaptcha/enterprise.js?onload=loadAllWidgets&hl=nl" async defer></script>
+            <div class="g-recaptcha" data-sitekey="SITEKEY"></div>
+            """,
+        )
+
     def test_value_from_datadict__value_provided(self):
         """Should return reCAPTCHA token if token is present in form data."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
@@ -304,3 +321,33 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         context = widget.get_context(name, value, attrs)
 
         self.assertEqual(context["api_script"]["domain"], "www.recaptcha.net")
+
+    @override_settings(
+        RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_PARAMETERS={
+            "render": "explicit",
+            "hl": "en",
+        }
+    )
+    def test_get_context__set_script_query_string_via_django_setting(self):
+        """Should set query string of API script's URL via a django setting."""
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        name = "field_name"
+        value = "field_value"
+        attrs = {}
+
+        context = widget.get_context(name, value, attrs)
+
+        self.assertEqual(context["api_script"]["qs"], "render=explicit&hl=en")
+
+    def test_get_context__set_script_query_string_via_parameter(self):
+        """Should set query string of API script's URL via parameter."""
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(
+            api_script_parameters={"render": "explicit", "hl": "en"}
+        )
+        name = "field_name"
+        value = "field_value"
+        attrs = {}
+
+        context = widget.get_context(name, value, attrs)
+
+        self.assertEqual(context["api_script"]["qs"], "render=explicit&hl=en")

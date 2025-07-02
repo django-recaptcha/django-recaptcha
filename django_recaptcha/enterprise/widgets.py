@@ -1,4 +1,5 @@
 from typing import Any, Optional
+from urllib.parse import urlencode
 
 from django.forms.widgets import Widget
 
@@ -60,6 +61,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
         *,
         api_script_include: Optional[bool] = None,
         api_script_domain: Optional[str] = None,
+        api_script_parameters: Optional[dict[str, Any]] = None,
     ):
         """
         :param api_script_include: include API script?
@@ -71,6 +73,9 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
         )
         self._api_script_domain = use_setting(
             "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_DOMAIN", api_script_domain
+        )
+        self._api_script_parameters = use_setting(
+            "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_PARAMETERS", api_script_parameters
         )
 
         extend_class_attr(self.attrs, ["g-recaptcha"])
@@ -93,4 +98,6 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
                 }
             }
         )
+        if self._api_script_parameters is not None:
+            context["api_script"]["qs"] = urlencode(self._api_script_parameters)
         return context

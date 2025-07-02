@@ -1,5 +1,5 @@
 {% if api_script.include %}
-<script src="https://{{ api_script.domain }}/recaptcha/enterprise.js" async defer></script>
+<script src="https://{{ api_script.domain }}/recaptcha/enterprise.js{% if api_script.qs %}?{{ api_script.qs }}{% endif %}" async defer></script>
 {% endif %}
 <div
   {% for name, value in widget.attrs.items %}
