@@ -168,6 +168,20 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
             """,
         )
 
+    def test_render__different_domain(self):
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(recaptcha_domain="www.recaptcha.net")
+        widget.attrs["data-sitekey"] = "SITEKEY"  # done by field
+
+        result = widget.render("field_name", "field_value")
+
+        self.assertHTMLEqual(
+            result,
+            """
+            <script src="https://www.recaptcha.net/recaptcha/enterprise.js" async defer></script>
+            <div class="g-recaptcha" data-sitekey="SITEKEY"></div>
+            """,
+        )
+
     def test_value_from_datadict__value_provided(self):
         """Should return reCAPTCHA token if token is present in form data."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
@@ -223,8 +237,18 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         self.assertEqual(context["script"]["recaptcha_domain"], "www.google.com")
 
     @override_settings(RECAPTCHA_ENTERPRISE_FRONTEND_DOMAIN="www.recaptcha.net")
-    def test_get_context__overwritten_recaptcha_domain(self):
+    def test_get_context__set_script_frontend_domain_via_django_setting(self):
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        name = "<NAME>"
+        value = "<VALUE>"
+        attrs = {}
+
+        context = widget.get_context(name, value, attrs)
+
+        self.assertEqual(context["script"]["recaptcha_domain"], "www.recaptcha.net")
+
+    def test_get_context__set_script_frontend_domain_via_argument(self):
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(recaptcha_domain="www.recaptcha.net")
         name = "<NAME>"
         value = "<VALUE>"
         attrs = {}
