@@ -24,9 +24,9 @@ _DEFAULT_SETTINGS: dict[str, Any] = {
     # Include API script with each widget?
     # e.g. False
     "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_INCLUDE": True,
-    # Domain that is used for client-side integration of reCAPTCHA.
+    # Domain of widget's reCAPTCHA API script's URL.
     # e.g. "www.recaptcha.net"
-    "RECAPTCHA_ENTERPRISE_FRONTEND_DOMAIN": "www.google.com",
+    "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_DOMAIN": "www.google.com",
 }
 
 

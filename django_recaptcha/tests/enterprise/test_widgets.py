@@ -151,10 +151,10 @@ class ReCAPTCHAEnterpriseNoWidgetTest(TestCase):
 
 
 class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
-    """Tests of the ReCAPTCHAEnterpriseV1CheckboxWidget class."""
+    """Tests the ReCAPTCHAEnterpriseV1CheckboxWidget class."""
 
-    def test_render(self):
-        """Widget's rendering should be as expected."""
+    def test_render__default(self):
+        """Should render the default widget if not altered in any way."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
         widget.attrs["data-sitekey"] = "SITEKEY"  # done by field
 
@@ -169,7 +169,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         )
 
     def test_render__without_script_tag(self):
-        """Widget can be rendered without script tag."""
+        """Should render the widget without script tag."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget(api_script_include=False)
         widget.attrs["data-sitekey"] = "SITEKEY"  # done by field
 
@@ -183,7 +183,10 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         )
 
     def test_render__different_domain(self):
-        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(recaptcha_domain="www.recaptcha.net")
+        """Should render the widget with a different domain for its API script."""
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(
+            api_script_domain="www.recaptcha.net"
+        )
         widget.attrs["data-sitekey"] = "SITEKEY"  # done by field
 
         result = widget.render("field_name", "field_value")
@@ -208,7 +211,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         self.assertEqual(result, "<RECAPTCHA-TOKEN>")
 
     def test_value_from_datadict__value_not_provided(self):
-        """Should return None if token is not present in form data."""
+        """Should return None if reCAPTCHA token is not present in form data."""
         widget = ReCAPTCHAEnterpriseNoWidget()
         form_data = {}
         files = MultiValueDict()
@@ -241,54 +244,63 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         self.assertTrue(result)
 
     def test_get_context__default_values(self):
+        """Should add default values to context if not altered in any way."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
-        name = "<NAME>"
-        value = "<VALUE>"
+        name = "field_name"
+        value = "field_value"
         attrs = {}
 
         context = widget.get_context(name, value, attrs)
 
-        self.assertEqual(context["script"]["include"], True)
-        self.assertEqual(context["script"]["recaptcha_domain"], "www.google.com")
+        self.assertTrue(context["api_script"]["include"])
+        self.assertEqual(context["api_script"]["domain"], "www.google.com")
 
     @override_settings(RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_INCLUDE=False)
     def test_get_context__exclude_api_script_via_django_setting(self):
+        """Should set context variable to exclude script tag via a Django setting."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
-        name = "<NAME>"
-        value = "<VALUE>"
+        name = "field_name"
+        value = "field_value"
         attrs = {}
 
         context = widget.get_context(name, value, attrs)
 
-        self.assertFalse(context["script"]["include"])
+        self.assertFalse(context["api_script"]["include"])
 
-    def test_get_context__exclude_api_script_via_argument(self):
+    def test_get_context__exclude_api_script_via_parameter(self):
+        """Should set context variable to exclude script tag via a parameter."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget(api_script_include=False)
-        name = "<NAME>"
-        value = "<VALUE>"
+        name = "field_name"
+        value = "field_value"
         attrs = {}
 
         context = widget.get_context(name, value, attrs)
 
-        self.assertFalse(context["script"]["include"])
+        self.assertFalse(context["api_script"]["include"])
 
-    @override_settings(RECAPTCHA_ENTERPRISE_FRONTEND_DOMAIN="www.recaptcha.net")
+    @override_settings(
+        RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_DOMAIN="www.recaptcha.net"
+    )
     def test_get_context__set_script_frontend_domain_via_django_setting(self):
+        """Should change context variable of API script's domain via a Django setting."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        name = "field_name"
+        value = "field_value"
+        attrs = {}
+
+        context = widget.get_context(name, value, attrs)
+
+        self.assertEqual(context["api_script"]["domain"], "www.recaptcha.net")
+
+    def test_get_context__set_script_domain_via_parameter(self):
+        """Should change context variable of API script's domain via a parameter."""
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(
+            api_script_domain="www.recaptcha.net"
+        )
         name = "<NAME>"
         value = "<VALUE>"
         attrs = {}
 
         context = widget.get_context(name, value, attrs)
 
-        self.assertEqual(context["script"]["recaptcha_domain"], "www.recaptcha.net")
-
-    def test_get_context__set_script_frontend_domain_via_argument(self):
-        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(recaptcha_domain="www.recaptcha.net")
-        name = "<NAME>"
-        value = "<VALUE>"
-        attrs = {}
-
-        context = widget.get_context(name, value, attrs)
-
-        self.assertEqual(context["script"]["recaptcha_domain"], "www.recaptcha.net")
+        self.assertEqual(context["api_script"]["domain"], "www.recaptcha.net")

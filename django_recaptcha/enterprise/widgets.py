@@ -58,14 +58,18 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
         self,
         attrs: Optional[dict[str, Any]] = None,
         api_script_include: Optional[bool] = None,
-        recaptcha_domain: Optional[str] = None,
+        api_script_domain: Optional[str] = None,
     ):
+        """
+        :param api_script_include: include API script?
+        :param api_script_domain: domain of widget's reCAPTCHA API script's URL
+        """
         super().__init__(attrs)
-        self._recaptcha_domain = use_setting(
-            "RECAPTCHA_ENTERPRISE_FRONTEND_DOMAIN", recaptcha_domain
-        )
         self._api_script_include = use_setting(
             "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_INCLUDE", api_script_include
+        )
+        self._api_script_domain = use_setting(
+            "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_DOMAIN", api_script_domain
         )
 
         extend_class_attr(self.attrs, ["g-recaptcha"])
@@ -82,9 +86,9 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
         context = super().get_context(name, value, attrs)
         context.update(
             {
-                "script": {
+                "api_script": {
                     "include": self._api_script_include,
-                    "recaptcha_domain": self._recaptcha_domain,
+                    "domain": self._api_script_domain,
                 }
             }
         )
