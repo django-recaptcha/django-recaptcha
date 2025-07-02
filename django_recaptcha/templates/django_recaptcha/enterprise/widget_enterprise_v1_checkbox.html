@@ -1,4 +1,6 @@
+{% if script.include %}
 <script src="https://{{ script.recaptcha_domain }}/recaptcha/enterprise.js" async defer></script>
+{% endif %}
 <div
   {% for name, value in widget.attrs.items %}
     {% if value is True %}

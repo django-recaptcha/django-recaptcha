@@ -21,6 +21,9 @@ _DEFAULT_SETTINGS: dict[str, Any] = {
     # Amount of seconds to wait until attempt to verify token times out.
     # e.g. 5.0
     "RECAPTCHA_ENTERPRISE_VERIFY_TIMEOUT": 10.0,
+    # Include API script with each widget?
+    # e.g. False
+    "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_INCLUDE": True,
     # Domain that is used for client-side integration of reCAPTCHA.
     # e.g. "www.recaptcha.net"
     "RECAPTCHA_ENTERPRISE_FRONTEND_DOMAIN": "www.google.com",

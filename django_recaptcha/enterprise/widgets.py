@@ -54,9 +54,19 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
 
     template_name = "django_recaptcha/enterprise/widget_enterprise_v1_checkbox.html"
 
-    def __init__(self, attrs: Optional[dict[str, Any]] = None, recaptcha_domain: Optional[str] = None):
+    def __init__(
+        self,
+        attrs: Optional[dict[str, Any]] = None,
+        api_script_include: Optional[bool] = None,
+        recaptcha_domain: Optional[str] = None,
+    ):
         super().__init__(attrs)
-        self._recaptcha_domain = use_setting("RECAPTCHA_ENTERPRISE_FRONTEND_DOMAIN", recaptcha_domain)
+        self._recaptcha_domain = use_setting(
+            "RECAPTCHA_ENTERPRISE_FRONTEND_DOMAIN", recaptcha_domain
+        )
+        self._api_script_include = use_setting(
+            "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_INCLUDE", api_script_include
+        )
 
         extend_class_attr(self.attrs, ["g-recaptcha"])
 
@@ -73,6 +83,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
         context.update(
             {
                 "script": {
+                    "include": self._api_script_include,
                     "recaptcha_domain": self._recaptcha_domain,
                 }
             }

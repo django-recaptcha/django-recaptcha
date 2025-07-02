@@ -168,6 +168,20 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
             """,
         )
 
+    def test_render__without_script_tag(self):
+        """Widget can be rendered without script tag."""
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(api_script_include=False)
+        widget.attrs["data-sitekey"] = "SITEKEY"  # done by field
+
+        result = widget.render("field_name", "field_value")
+
+        self.assertHTMLEqual(
+            result,
+            """
+            <div class="g-recaptcha" data-sitekey="SITEKEY"></div>
+            """,
+        )
+
     def test_render__different_domain(self):
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget(recaptcha_domain="www.recaptcha.net")
         widget.attrs["data-sitekey"] = "SITEKEY"  # done by field
@@ -226,7 +240,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
 
         self.assertTrue(result)
 
-    def test_get_context__default_recaptcha_domain(self):
+    def test_get_context__default_values(self):
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
         name = "<NAME>"
         value = "<VALUE>"
@@ -234,7 +248,29 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
 
         context = widget.get_context(name, value, attrs)
 
+        self.assertEqual(context["script"]["include"], True)
         self.assertEqual(context["script"]["recaptcha_domain"], "www.google.com")
+
+    @override_settings(RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_INCLUDE=False)
+    def test_get_context__exclude_api_script_via_django_setting(self):
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        name = "<NAME>"
+        value = "<VALUE>"
+        attrs = {}
+
+        context = widget.get_context(name, value, attrs)
+
+        self.assertFalse(context["script"]["include"])
+
+    def test_get_context__exclude_api_script_via_argument(self):
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget(api_script_include=False)
+        name = "<NAME>"
+        value = "<VALUE>"
+        attrs = {}
+
+        context = widget.get_context(name, value, attrs)
+
+        self.assertFalse(context["script"]["include"])
 
     @override_settings(RECAPTCHA_ENTERPRISE_FRONTEND_DOMAIN="www.recaptcha.net")
     def test_get_context__set_script_frontend_domain_via_django_setting(self):
