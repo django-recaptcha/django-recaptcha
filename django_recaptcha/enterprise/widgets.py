@@ -57,6 +57,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
     def __init__(
         self,
         attrs: Optional[dict[str, Any]] = None,
+        *,
         api_script_include: Optional[bool] = None,
         api_script_domain: Optional[str] = None,
     ):
