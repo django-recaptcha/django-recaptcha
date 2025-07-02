@@ -31,8 +31,8 @@ def get_user_ip_address(request: HttpRequest) -> Optional[str]:
     return request.META.get("REMOTE_ADDR")
 
 
-class ReCAPTCHAEnterpriseV1CheckboxField(Field):
-    """Field that handles reCAPTCHA Enterprise V1 Checkbox tokens."""
+class ReCAPTCHAEnterpriseV1Field(Field):
+    """Field that handles reCAPTCHA Enterprise V1 tokens."""
 
     widget = ReCAPTCHAEnterpriseV1CheckboxWidget
 

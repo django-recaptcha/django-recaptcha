@@ -4,18 +4,18 @@ from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.test import TestCase, override_settings
 
 from django_recaptcha.enterprise.client import VerificationResult
-from django_recaptcha.enterprise.fields import ReCAPTCHAEnterpriseV1CheckboxField
+from django_recaptcha.enterprise.fields import ReCAPTCHAEnterpriseV1Field
 
 from . import fixtures as f
 
 
-class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
-    """Tests the ReCAPTCHAEnterpriseV1CheckboxField class."""
+class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
+    """Tests the ReCAPTCHAEnterpriseV1Field class."""
 
     def test_init__project_id_not_provided(self):
         """Raise exception if no value is set for project_id."""
         with self.assertRaises(ImproperlyConfigured) as e:
-            _ = ReCAPTCHAEnterpriseV1CheckboxField(
+            _ = ReCAPTCHAEnterpriseV1Field(
                 sitekey=f.SITEKEY,
                 access_token="ACCESS-TOKEN",
                 required_score=0.0,
@@ -29,7 +29,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     @override_settings(RECAPTCHA_ENTERPRISE_PROJECT_ID="<PROJECT-ID>")
     def test_init__project_id_provided_as_django_setting(self):
         """Use Django setting to set value for project_id."""
-        captcha = ReCAPTCHAEnterpriseV1CheckboxField(
+        captcha = ReCAPTCHAEnterpriseV1Field(
             sitekey=f.SITEKEY,
             access_token="ACCESS-TOKEN",
             required_score=0.0,
@@ -40,7 +40,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     def test_init__sitekey_not_provided(self):
         """Raise exception if no value is set for sitekey."""
         with self.assertRaises(ImproperlyConfigured) as e:
-            _ = ReCAPTCHAEnterpriseV1CheckboxField(
+            _ = ReCAPTCHAEnterpriseV1Field(
                 project_id="<PROJECT-ID>",
                 access_token="<ACCESS-TOKEN>",
                 required_score=0.0,
@@ -54,7 +54,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     @override_settings(RECAPTCHA_ENTERPRISE_SITEKEY=f.SITEKEY)
     def test_init__sitekey_provided_as_django_setting(self):
         """Use Django setting to set value for sitekey."""
-        _ = ReCAPTCHAEnterpriseV1CheckboxField(
+        _ = ReCAPTCHAEnterpriseV1Field(
             project_id="<PROJECT-ID>",
             access_token="<ACCESS-TOKEN>",
             required_score=0.0,
@@ -63,7 +63,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     def test_init__access_token_not_provided(self):
         """Raise exception if no value is set for access_token."""
         with self.assertRaises(ImproperlyConfigured) as e:
-            _ = ReCAPTCHAEnterpriseV1CheckboxField(
+            _ = ReCAPTCHAEnterpriseV1Field(
                 project_id="<PROJECT-ID>",
                 sitekey=f.SITEKEY,
                 required_score=0.0,
@@ -77,7 +77,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     @override_settings(RECAPTCHA_ENTERPRISE_ACCESS_TOKEN="<ACCESS-TOKEN>")
     def test_init__access_token_provided_as_django_setting(self):
         """Use Django setting to set value for access_token."""
-        _ = ReCAPTCHAEnterpriseV1CheckboxField(
+        _ = ReCAPTCHAEnterpriseV1Field(
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             required_score=0.0,
@@ -86,7 +86,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     def test_init__required_score_not_provided(self):
         """Raise exception if no value is set for required_score."""
         with self.assertRaises(ImproperlyConfigured) as e:
-            _ = ReCAPTCHAEnterpriseV1CheckboxField(
+            _ = ReCAPTCHAEnterpriseV1Field(
                 project_id="<PROJECT-ID>",
                 sitekey=f.SITEKEY,
                 access_token="<ACCESS-TOKEN>",
@@ -100,7 +100,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     @override_settings(RECAPTCHA_ENTERPRISE_REQUIRED_SCORE=0.0)
     def test_init__required_score_provided_as_django_setting(self):
         """Use Django setting to set value for required_score."""
-        _ = ReCAPTCHAEnterpriseV1CheckboxField(
+        _ = ReCAPTCHAEnterpriseV1Field(
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
@@ -109,7 +109,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     def test_init__required_score_invalid_value(self):
         """Raise exception if required score has an invalid value."""
         with self.assertRaises(ImproperlyConfigured):
-            _ = ReCAPTCHAEnterpriseV1CheckboxField(
+            _ = ReCAPTCHAEnterpriseV1Field(
                 project_id="<PROJECT-ID>",
                 sitekey=f.SITEKEY,
                 access_token="<ACCESS-TOKEN>",
@@ -119,7 +119,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     def test_init__bad_action_name(self):
         """Raise exception if action name contains a disallowed character."""
         with self.assertRaises(ImproperlyConfigured) as e:
-            _ = ReCAPTCHAEnterpriseV1CheckboxField(
+            _ = ReCAPTCHAEnterpriseV1Field(
                 project_id="<PROJECT-ID>",
                 sitekey=f.SITEKEY,
                 access_token="<ACCESS-TOKEN>",
@@ -134,7 +134,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_validate__value_not_provided(self, verify_mock):
         """Validation should fail if Field class' validation fails."""
-        captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
+        captcha_field = ReCAPTCHAEnterpriseV1Field(
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
@@ -151,7 +151,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_validate__good_token(self, verify_mock):
         """Validation should pass if nothing is wrong with token."""
-        captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
+        captcha_field = ReCAPTCHAEnterpriseV1Field(
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
@@ -176,7 +176,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_validate__bad_token(self, verify_mock):
         """Validation should fail if token is invalid."""
-        captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
+        captcha_field = ReCAPTCHAEnterpriseV1Field(
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
@@ -203,7 +203,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_validate__action_is_passed_along(self, verify_mock):
         """Validation should include action if passed along."""
-        captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
+        captcha_field = ReCAPTCHAEnterpriseV1Field(
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
@@ -231,7 +231,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_validate__score_is_set_after_validation(self, verify_mock):
         """Score should be set after validation."""
-        captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
+        captcha_field = ReCAPTCHAEnterpriseV1Field(
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
@@ -250,7 +250,7 @@ class ReCAPTCHAEnterpriseV1CheckboxFieldTests(TestCase):
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_submitting_additional_info(self, verify_mock):
         """Additional info is also submitted after being provided."""
-        captcha_field = ReCAPTCHAEnterpriseV1CheckboxField(
+        captcha_field = ReCAPTCHAEnterpriseV1Field(
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
