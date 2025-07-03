@@ -17,7 +17,17 @@ def extend_class_attr(attrs: dict[str, Any], extra_classes: list[str]) -> None:
         attrs["class"] = " ".join(class_list)
 
 
-class ReCAPTCHAEnterpriseNoWidget(Widget):
+class ReCAPTCHAEnterpriseWidget(Widget):
+    """Common base class of reCAPTCHA Enterprise widgets."""
+
+    def value_from_datadict(self, data: Any, files: Any, name: str) -> Any:
+        return data.get("g-recaptcha-response", None)
+
+    def value_omitted_from_data(self, data: Any, files: Any, name: str) -> bool:
+        return "g-recaptcha-response" not in data
+
+
+class ReCAPTCHAEnterpriseNoWidget(ReCAPTCHAEnterpriseWidget):
     """Used with reCAPTCHA fields for which no HTML is rendered.
 
     Using this widget is not recommended, unless you want to heavily customize
@@ -43,14 +53,8 @@ class ReCAPTCHAEnterpriseNoWidget(Widget):
 
     template_name = "django_recaptcha/enterprise/no_widget.html"
 
-    def value_from_datadict(self, data: Any, files: Any, name: str) -> Any:
-        return data.get("g-recaptcha-response", None)
 
-    def value_omitted_from_data(self, data: Any, files: Any, name: str) -> bool:
-        return "g-recaptcha-response" not in data
-
-
-class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
+class ReCAPTCHAEnterpriseV1CheckboxWidget(ReCAPTCHAEnterpriseWidget):
     """Widget for reCAPTCHA Enterprise V1 Checkbox."""
 
     template_name = "django_recaptcha/enterprise/widget_enterprise_v1_checkbox.html"
@@ -85,12 +89,6 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(Widget):
         )
 
         extend_class_attr(self.attrs, ["g-recaptcha"])
-
-    def value_from_datadict(self, data: Any, files: Any, name: str) -> Any:
-        return data.get("g-recaptcha-response", None)
-
-    def value_omitted_from_data(self, data: Any, files: Any, name: str) -> bool:
-        return "g-recaptcha-response" not in data
 
     def get_context(
         self, name: str, value: Any, attrs: Optional[dict[str, Any]]
