@@ -156,7 +156,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
     def test_render__default(self):
         """Should render the default widget if not altered in any way."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
-        widget.attrs["data-sitekey"] = "SITEKEY"  # done by field
+        widget.set_sitekey("SITEKEY")
 
         result = widget.render("field_name", "field_value")
 
@@ -171,7 +171,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
     def test_render__without_script_tag(self):
         """Should render the widget without script tag."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget(api_script_include=False)
-        widget.attrs["data-sitekey"] = "SITEKEY"  # done by field
+        widget.set_sitekey("SITEKEY")
 
         result = widget.render("field_name", "field_value")
 
@@ -187,7 +187,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget(
             api_script_domain="www.recaptcha.net"
         )
-        widget.attrs["data-sitekey"] = "SITEKEY"  # done by field
+        widget.set_sitekey("SITEKEY")
 
         result = widget.render("field_name", "field_value")
 
@@ -204,7 +204,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget(
             api_script_parameters={"onload": "loadAllWidgets", "hl": "nl"}
         )
-        widget.attrs["data-sitekey"] = "SITEKEY"
+        widget.set_sitekey("SITEKEY")
 
         result = widget.render("field_name", "field_value")
 
@@ -221,7 +221,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget(
             api_script_attributes={"type": "module"}
         )
-        widget.attrs["data-sitekey"] = "SITEKEY"
+        widget.set_sitekey("SITEKEY")
 
         result = widget.render("field_name", "field_value")
 
@@ -236,6 +236,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
     def test_value_from_datadict__value_provided(self):
         """Should return reCAPTCHA token if token is present in form data."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        widget.set_sitekey("SITEKEY")
         form_data = {"g-recaptcha-response": "<RECAPTCHA-TOKEN>"}
         files = MultiValueDict()
         name = "captcha"
@@ -247,6 +248,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
     def test_value_from_datadict__value_not_provided(self):
         """Should return None if reCAPTCHA token is not present in form data."""
         widget = ReCAPTCHAEnterpriseNoWidget()
+        widget.set_sitekey("SITEKEY")
         form_data = {}
         files = MultiValueDict()
         name = "captcha"
@@ -258,6 +260,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
     def test_value_omitted_from_data__value_provided(self):
         """Should return False if token is present in form data."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        widget.set_sitekey("SITEKEY")
         form_data = {"g-recaptcha-response": "<RECAPTCHA-TOKEN>"}
         files = MultiValueDict()
         field_name = "captcha"
@@ -269,6 +272,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
     def test_value_omitted_from_data__value_not_provided(self):
         """Should return True if token is not present in form data."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        widget.set_sitekey("SITEKEY")
         form_data = {}
         files = MultiValueDict()
         field_name = "captcha"
@@ -280,6 +284,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
     def test_get_context__default_values(self):
         """Should add default values to context if not altered in any way."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        widget.set_sitekey("SITEKEY")
         name = "field_name"
         value = "field_value"
         attrs = {}
@@ -293,6 +298,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
     def test_get_context__exclude_api_script_via_django_setting(self):
         """Should set context variable to exclude script tag via a Django setting."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        widget.set_sitekey("SITEKEY")
         name = "field_name"
         value = "field_value"
         attrs = {}
@@ -304,6 +310,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
     def test_get_context__exclude_api_script_via_parameter(self):
         """Should set context variable to exclude script tag via a parameter."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget(api_script_include=False)
+        widget.set_sitekey("SITEKEY")
         name = "field_name"
         value = "field_value"
         attrs = {}
@@ -318,6 +325,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
     def test_get_context__set_script_frontend_domain_via_django_setting(self):
         """Should change context variable of API script's domain via a Django setting."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        widget.set_sitekey("SITEKEY")
         name = "field_name"
         value = "field_value"
         attrs = {}
@@ -331,6 +339,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget(
             api_script_domain="www.recaptcha.net"
         )
+        widget.set_sitekey("SITEKEY")
         name = "<NAME>"
         value = "<VALUE>"
         attrs = {}
@@ -348,6 +357,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
     def test_get_context__set_script_query_string_via_django_setting(self):
         """Should set query string of API script's URL via a django setting."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        widget.set_sitekey("SITEKEY")
         name = "field_name"
         value = "field_value"
         attrs = {}
@@ -361,6 +371,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget(
             api_script_parameters={"render": "explicit", "hl": "en"}
         )
+        widget.set_sitekey("SITEKEY")
         name = "field_name"
         value = "field_value"
         attrs = {}
@@ -375,6 +386,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
     def test_get_context__set_script_attributes_via_django_setting(self):
         """Should set attributes of API script's tag via Django setting."""
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
+        widget.set_sitekey("SITEKEY")
         name = "field_name"
         value = "field_value"
         attrs = {}
@@ -388,6 +400,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
         widget = ReCAPTCHAEnterpriseV1CheckboxWidget(
             api_script_attributes={"type": "module"}
         )
+        widget.set_sitekey("SITEKEY")
         name = "field_name"
         value = "field_value"
         attrs = {}

@@ -1,6 +1,8 @@
+from abc import abstractmethod
 from typing import Any, Optional
 from urllib.parse import urlencode
 
+from django.core.exceptions import ImproperlyConfigured
 from django.forms.widgets import Widget
 
 from .conf import use_setting
@@ -25,6 +27,20 @@ class ReCAPTCHAEnterpriseWidget(Widget):
 
     def value_omitted_from_data(self, data: Any, files: Any, name: str) -> bool:
         return "g-recaptcha-response" not in data
+
+    @abstractmethod
+    def set_action(self, action: str) -> None:
+        """Shares action name with widget for further use.
+
+        :param action: name of action expected by field"""
+        ...
+
+    @abstractmethod
+    def set_sitekey(self, sitekey: str) -> None:
+        """Shares sitekey with widget for further use.
+
+        :param sitekey: sitekey used by field"""
+        ...
 
 
 class ReCAPTCHAEnterpriseNoWidget(ReCAPTCHAEnterpriseWidget):
@@ -52,6 +68,12 @@ class ReCAPTCHAEnterpriseNoWidget(ReCAPTCHAEnterpriseWidget):
     """
 
     template_name = "django_recaptcha/enterprise/no_widget.html"
+
+    def set_action(self, action: str) -> None:
+        pass
+
+    def set_sitekey(self, sitekey: str) -> None:
+        pass
 
 
 class ReCAPTCHAEnterpriseV1CheckboxWidget(ReCAPTCHAEnterpriseWidget):
@@ -87,8 +109,26 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(ReCAPTCHAEnterpriseWidget):
         self._api_script_attributes = use_setting(
             "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_ATTRIBUTES", api_script_attributes
         )
+        self._action: Optional[str] = None  # can be set by field
+        self._sitekey: Optional[str] = None  # must be set by field afterwards!
 
         extend_class_attr(self.attrs, ["g-recaptcha"])
+
+    def set_action(self, action: str) -> None:
+        self._action = action
+
+    def set_sitekey(self, sitekey: str) -> None:
+        self._sitekey = sitekey
+
+    def build_attrs(
+        self, base_attrs: dict[str, Any], extra_attrs: Optional[dict[str, Any]] = None
+    ) -> dict[str, Any]:
+        attrs = super().build_attrs(base_attrs, extra_attrs)
+        assert self._sitekey is not None
+        attrs["data-sitekey"] = self._sitekey
+        if self._action:
+            attrs["data-action"] = self._action
+        return attrs
 
     def get_context(
         self, name: str, value: Any, attrs: Optional[dict[str, Any]]

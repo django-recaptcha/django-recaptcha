@@ -1,10 +1,12 @@
 from unittest.mock import MagicMock, patch
 
 from django.core.exceptions import ImproperlyConfigured, ValidationError
+from django.forms.widgets import TextInput
 from django.test import TestCase, override_settings
 
 from django_recaptcha.enterprise.client import VerificationResult
 from django_recaptcha.enterprise.fields import ReCAPTCHAEnterpriseV1Field
+from django_recaptcha.enterprise.widgets import ReCAPTCHAEnterpriseNoWidget
 
 from . import fixtures as f
 
@@ -90,6 +92,63 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
         self.assertEqual(
             str(e.exception), "Action 'not-valid' contains disallowed character(s)."
         )
+
+    def test_init__bad_widget_type(self):
+        """Raise exception if widget is not an instance of the right type."""
+        with self.assertRaises(TypeError) as e:
+            _ = ReCAPTCHAEnterpriseV1Field(
+                project_id="<PROJECT-ID>",
+                sitekey=f.SITEKEY,
+                access_token="<ACCESS-TOKEN>",
+                widget=TextInput(),
+            )
+
+        self.assertEqual(
+            str(e.exception), "Widget must be an instance of ReCAPTCHAEnterpriseWidget."
+        )
+
+    def test_init__set_sitekey_on_widget(self):
+        """Should call set_sitekey() on widget."""
+        widget = ReCAPTCHAEnterpriseNoWidget()
+        widget.set_sitekey = MagicMock()
+
+        _ = ReCAPTCHAEnterpriseV1Field(
+            project_id="<PROJECT-ID>",
+            sitekey=f.SITEKEY,
+            access_token="<ACCESS-TOKEN>",
+            widget=widget,
+        )
+
+        widget.set_sitekey.assert_called_once_with(f.SITEKEY)
+
+    def test_init__dont_set_action_on_widget(self):
+        """Should not call set_action() on widget if action is not specified."""
+        widget = ReCAPTCHAEnterpriseNoWidget()
+        widget.set_action = MagicMock()
+
+        _ = ReCAPTCHAEnterpriseV1Field(
+            project_id="<PROJECT-ID>",
+            sitekey=f.SITEKEY,
+            access_token="<ACCESS-TOKEN>",
+            widget=widget,
+        )
+
+        widget.set_action.assert_not_called()
+
+    def test_init__set_action_on_widget(self):
+        """Should call set_action() on widget if action is specified."""
+        widget = ReCAPTCHAEnterpriseNoWidget()
+        widget.set_action = MagicMock()
+
+        _ = ReCAPTCHAEnterpriseV1Field(
+            project_id="<PROJECT-ID>",
+            sitekey=f.SITEKEY,
+            access_token="<ACCESS-TOKEN>",
+            widget=widget,
+            action="login",
+        )
+
+        widget.set_action.assert_called_once_with("login")
 
     @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
     def test_validate__value_not_provided(self, verify_mock):
