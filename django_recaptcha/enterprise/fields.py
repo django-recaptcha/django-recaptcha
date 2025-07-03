@@ -43,7 +43,6 @@ class ReCAPTCHAEnterpriseV1Field(Field):
         sitekey: Optional[str] = None,
         access_token: Optional[str] = None,
         action: Optional[str] = None,
-        required_score: Optional[float] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -71,18 +70,6 @@ class ReCAPTCHAEnterpriseV1Field(Field):
                 "Must provide value of access_token as an argument or Django setting."
             )
 
-        _required_score = use_setting(
-            "RECAPTCHA_ENTERPRISE_REQUIRED_SCORE", required_score
-        )
-        if _required_score is None:
-            raise ImproperlyConfigured(
-                "Must provide value of required_score as an argument or Django setting."
-            )
-        if not 0.0 <= _required_score <= 1.0:
-            raise ImproperlyConfigured(
-                "The required score must be a value between 0.0 and 1.0."
-            )
-
         if action and not _action_name_is_valid(action):
             raise ImproperlyConfigured(
                 f"Action '{action}' contains disallowed character(s)."
@@ -93,7 +80,6 @@ class ReCAPTCHAEnterpriseV1Field(Field):
         self._sitekey = _sitekey
         self._access_token = _access_token
         self._action = action
-        self._required_score = _required_score
 
         # set by calling add_additional_info()
         self._requested_uri: Optional[str] = None
@@ -134,7 +120,7 @@ class ReCAPTCHAEnterpriseV1Field(Field):
 
         self._score = verification_result.score
 
-        if not verification_result.is_okay(self._required_score):
+        if not verification_result.is_okay():
             raise ValidationError("token failed verification", code="captcha_invalid")
 
     @property

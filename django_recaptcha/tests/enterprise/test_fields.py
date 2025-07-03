@@ -18,7 +18,6 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             _ = ReCAPTCHAEnterpriseV1Field(
                 sitekey=f.SITEKEY,
                 access_token="ACCESS-TOKEN",
-                required_score=0.0,
             )
 
         self.assertEqual(
@@ -32,7 +31,6 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
         captcha = ReCAPTCHAEnterpriseV1Field(
             sitekey=f.SITEKEY,
             access_token="ACCESS-TOKEN",
-            required_score=0.0,
         )
 
         self.assertEqual(captcha._project_id, "<PROJECT-ID>")
@@ -43,7 +41,6 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             _ = ReCAPTCHAEnterpriseV1Field(
                 project_id="<PROJECT-ID>",
                 access_token="<ACCESS-TOKEN>",
-                required_score=0.0,
             )
 
         self.assertEqual(
@@ -57,7 +54,6 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
         _ = ReCAPTCHAEnterpriseV1Field(
             project_id="<PROJECT-ID>",
             access_token="<ACCESS-TOKEN>",
-            required_score=0.0,
         )
 
     def test_init__access_token_not_provided(self):
@@ -66,7 +62,6 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             _ = ReCAPTCHAEnterpriseV1Field(
                 project_id="<PROJECT-ID>",
                 sitekey=f.SITEKEY,
-                required_score=0.0,
             )
 
         self.assertEqual(
@@ -80,41 +75,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
         _ = ReCAPTCHAEnterpriseV1Field(
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
-            required_score=0.0,
         )
-
-    def test_init__required_score_not_provided(self):
-        """Raise exception if no value is set for required_score."""
-        with self.assertRaises(ImproperlyConfigured) as e:
-            _ = ReCAPTCHAEnterpriseV1Field(
-                project_id="<PROJECT-ID>",
-                sitekey=f.SITEKEY,
-                access_token="<ACCESS-TOKEN>",
-            )
-
-        self.assertEqual(
-            str(e.exception),
-            "Must provide value of required_score as an argument or Django setting.",
-        )
-
-    @override_settings(RECAPTCHA_ENTERPRISE_REQUIRED_SCORE=0.0)
-    def test_init__required_score_provided_as_django_setting(self):
-        """Use Django setting to set value for required_score."""
-        _ = ReCAPTCHAEnterpriseV1Field(
-            project_id="<PROJECT-ID>",
-            sitekey=f.SITEKEY,
-            access_token="<ACCESS-TOKEN>",
-        )
-
-    def test_init__required_score_invalid_value(self):
-        """Raise exception if required score has an invalid value."""
-        with self.assertRaises(ImproperlyConfigured):
-            _ = ReCAPTCHAEnterpriseV1Field(
-                project_id="<PROJECT-ID>",
-                sitekey=f.SITEKEY,
-                access_token="<ACCESS-TOKEN>",
-                required_score=2.0,
-            )
 
     def test_init__bad_action_name(self):
         """Raise exception if action name contains a disallowed character."""
@@ -124,7 +85,6 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
                 sitekey=f.SITEKEY,
                 access_token="<ACCESS-TOKEN>",
                 action="not-valid",  # cannot contain -
-                required_score=0.0,
             )
 
         self.assertEqual(
@@ -138,7 +98,6 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
-            required_score=0.0,
         )
 
         # fails because fields are required by default
@@ -155,7 +114,6 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
-            required_score=0.0,
         )
         response_data = f.create_response_data(valid=True)
         verify_mock.return_value = VerificationResult(response_data)
@@ -180,7 +138,6 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
-            required_score=0.0,
         )
         response_data = f.create_response_data(valid=False)
         verify_mock.return_value = VerificationResult(response_data)
@@ -208,7 +165,6 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
             action="ACTION",
-            required_score=0.0,
         )
         response_data = f.create_response_data(
             client_action="ACTION", expected_action="ACTION"
@@ -235,7 +191,6 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
-            required_score=0.0,
         )
         response_data = f.create_response_data(score=0.7)
         verify_mock.return_value = VerificationResult(response_data)
@@ -254,7 +209,6 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             project_id="<PROJECT-ID>",
             sitekey=f.SITEKEY,
             access_token="<ACCESS-TOKEN>",
-            required_score=0.0,
         )
         http_request = MagicMock()
         http_request.build_absolute_uri.return_value = "http://example.com/"

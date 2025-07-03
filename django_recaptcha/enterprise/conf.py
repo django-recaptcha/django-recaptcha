@@ -12,9 +12,6 @@ _DEFAULT_SETTINGS: dict[str, Any] = {
     # API key used for authentication
     # e.g. "ABcdEfG12jKlMNo3pqRsTUvWXYzA4BCDEf5hiJk"
     "RECAPTCHA_ENTERPRISE_ACCESS_TOKEN": None,
-    # minimum score needed to pass validation (value between 0.0 and 1.0)
-    # e.g. 0.1
-    "RECAPTCHA_ENTERPRISE_REQUIRED_SCORE": None,
     # Configuration for usage of proxies.
     # e.g. {"https": "https://127.0.0.1:56789"}
     "RECAPTCHA_ENTERPRISE_PROXY": {},
