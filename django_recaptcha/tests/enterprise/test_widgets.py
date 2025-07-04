@@ -2,7 +2,7 @@ from django.test import TestCase, override_settings
 from django.utils.datastructures import MultiValueDict
 
 from django_recaptcha.enterprise.widgets import (
-    ReCAPTCHAEnterpriseNoWidget,
+    ReCAPTCHAEnterpriseNoHTMLRenderWidget,
     ReCAPTCHAEnterpriseV1CheckboxWidget,
     extend_class_attr,
 )
@@ -99,7 +99,7 @@ class ReCAPTCHAEnterpriseNoWidgetTest(TestCase):
 
     def test_render(self):
         """Widget's rendering should be an empty string."""
-        widget = ReCAPTCHAEnterpriseNoWidget()
+        widget = ReCAPTCHAEnterpriseNoHTMLRenderWidget()
 
         result = widget.render("field_name", "field_value")
 
@@ -107,7 +107,7 @@ class ReCAPTCHAEnterpriseNoWidgetTest(TestCase):
 
     def test_value_from_datadict__value_provided(self):
         """Should return reCAPTCHA token if token is present in form data."""
-        widget = ReCAPTCHAEnterpriseNoWidget()
+        widget = ReCAPTCHAEnterpriseNoHTMLRenderWidget()
         form_data = {"g-recaptcha-response": "<RECAPTCHA-TOKEN>"}
         files = MultiValueDict()
         name = "captcha"
@@ -118,7 +118,7 @@ class ReCAPTCHAEnterpriseNoWidgetTest(TestCase):
 
     def test_value_from_datadict__value_not_provided(self):
         """Should return None if token is not present in form data."""
-        widget = ReCAPTCHAEnterpriseNoWidget()
+        widget = ReCAPTCHAEnterpriseNoHTMLRenderWidget()
         form_data = {}
         files = MultiValueDict()
         name = "captcha"
@@ -129,7 +129,7 @@ class ReCAPTCHAEnterpriseNoWidgetTest(TestCase):
 
     def test_value_omitted_from_data__value_provided(self):
         """Should return False if token is present in form data."""
-        widget = ReCAPTCHAEnterpriseNoWidget()
+        widget = ReCAPTCHAEnterpriseNoHTMLRenderWidget()
         form_data = {"g-recaptcha-response": "<RECAPTCHA-TOKEN>"}
         files = MultiValueDict()
         field_name = "captcha"
@@ -140,7 +140,7 @@ class ReCAPTCHAEnterpriseNoWidgetTest(TestCase):
 
     def test_value_omitted_from_data__value_not_provided(self):
         """Should return True if token is not present in form data."""
-        widget = ReCAPTCHAEnterpriseNoWidget()
+        widget = ReCAPTCHAEnterpriseNoHTMLRenderWidget()
         form_data = {}
         files = MultiValueDict()
         field_name = "captcha"
@@ -247,7 +247,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
 
     def test_value_from_datadict__value_not_provided(self):
         """Should return None if reCAPTCHA token is not present in form data."""
-        widget = ReCAPTCHAEnterpriseNoWidget()
+        widget = ReCAPTCHAEnterpriseNoHTMLRenderWidget()
         widget.set_sitekey("SITEKEY")
         form_data = {}
         files = MultiValueDict()
