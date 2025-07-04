@@ -7,7 +7,7 @@ from django.http import HttpRequest
 
 from .client import verify_enterprise_v1_token
 from .conf import use_setting
-from .widgets import ReCAPTCHAEnterpriseV1CheckboxWidget, ReCAPTCHAEnterpriseWidget
+from .widgets import ReCAPTCHAEnterpriseV1CheckboxWidget, ReCAPTCHAEnterpriseV1Widget
 
 # can only contain alphanumeric characters, slashes, and underscores
 ACTION_ALLOWED_CHARS = set(ascii_letters + digits + "/" + "_")
@@ -90,7 +90,7 @@ class ReCAPTCHAEnterpriseV1Field(Field):
         self._score: Optional[float] = None
 
         # widget setup
-        if not isinstance(self.widget, ReCAPTCHAEnterpriseWidget):
+        if not isinstance(self.widget, ReCAPTCHAEnterpriseV1Widget):
             raise TypeError("Widget must be an instance of ReCAPTCHAEnterpriseWidget.")
         self.widget.set_sitekey(sitekey)
         if action:

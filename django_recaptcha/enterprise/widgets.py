@@ -1,8 +1,6 @@
-from abc import abstractmethod
 from typing import Any, Optional
 from urllib.parse import urlencode
 
-from django.core.exceptions import ImproperlyConfigured
 from django.forms.widgets import Widget
 
 from .conf import use_setting
@@ -19,67 +17,8 @@ def extend_class_attr(attrs: dict[str, Any], extra_classes: list[str]) -> None:
         attrs["class"] = " ".join(class_list)
 
 
-class ReCAPTCHAEnterpriseWidget(Widget):
+class ReCAPTCHAEnterpriseV1Widget(Widget):
     """Common base class of reCAPTCHA Enterprise widgets."""
-
-    def value_from_datadict(self, data: Any, files: Any, name: str) -> Any:
-        return data.get("g-recaptcha-response", None)
-
-    def value_omitted_from_data(self, data: Any, files: Any, name: str) -> bool:
-        return "g-recaptcha-response" not in data
-
-    @abstractmethod
-    def set_action(self, action: str) -> None:
-        """Shares action name with widget for further use.
-
-        :param action: name of action expected by field"""
-        ...
-
-    @abstractmethod
-    def set_sitekey(self, sitekey: str) -> None:
-        """Shares sitekey with widget for further use.
-
-        :param sitekey: sitekey used by field"""
-        ...
-
-
-class ReCAPTCHAEnterpriseNoHTMLRenderWidget(ReCAPTCHAEnterpriseWidget):
-    """Used with reCAPTCHA fields for which no HTML is rendered.
-
-    Using this widget is not recommended, unless you want to heavily customize
-    the client-side integration of reCAPTCHA:
-
-    - you'll have to load the reCAPTCHA API script yourself
-
-    - if you rely on reCAPTCHA automatically rendering its elements once it
-      finishes loading, do not forget to add ``g-recaptcha`` to the class
-      attribute of every container and/or protected buttons; otherwise, call
-      ``grecaptcha.render()`` once for each
-
-    - you'll also need to make your sitekey and other attributes accessible in
-      some other way, e.g.:
-        - hardcode it in the form's HTML (not flexible)
-        - inject it when rendering the view
-        - ...
-
-    You should not have to do anything different from other widgets on the
-    server side. This widget can handle extracting the reCAPTCHA token
-    submitted by the user from the form data.
-    """
-
-    template_name = "django_recaptcha/enterprise/no_widget.html"
-
-    def set_action(self, action: str) -> None:
-        pass
-
-    def set_sitekey(self, sitekey: str) -> None:
-        pass
-
-
-class ReCAPTCHAEnterpriseV1CheckboxWidget(ReCAPTCHAEnterpriseWidget):
-    """Widget for reCAPTCHA Enterprise V1 Checkbox."""
-
-    template_name = "django_recaptcha/enterprise/widget_enterprise_v1_checkbox.html"
 
     def __init__(
         self,
@@ -127,7 +66,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(ReCAPTCHAEnterpriseWidget):
         assert self._sitekey is not None
         attrs["data-sitekey"] = self._sitekey
         if self._action:
-            attrs["data-action"] = self._action
+            attrs["data-action"] = self._action or ""
         return attrs
 
     def get_context(
@@ -136,13 +75,54 @@ class ReCAPTCHAEnterpriseV1CheckboxWidget(ReCAPTCHAEnterpriseWidget):
         context = super().get_context(name, value, attrs)
         context.update(
             {
+                "action": self._action,
+                "sitekey": self._sitekey,
                 "api_script": {
                     "include": self._api_script_include,
                     "domain": self._api_script_domain,
                     "attrs": self._api_script_attributes,
-                }
+                },
             }
         )
         if self._api_script_parameters is not None:
             context["api_script"]["qs"] = urlencode(self._api_script_parameters)
         return context
+
+    def value_from_datadict(self, data: Any, files: Any, name: str) -> Any:
+        return data.get("g-recaptcha-response", None)
+
+    def value_omitted_from_data(self, data: Any, files: Any, name: str) -> bool:
+        return "g-recaptcha-response" not in data
+
+
+class ReCAPTCHAEnterpriseNoHTMLRenderWidget(ReCAPTCHAEnterpriseV1Widget):
+    """Used with reCAPTCHA fields for which no HTML is rendered.
+
+    Using this widget is not recommended, unless you want to heavily customize
+    the client-side integration of reCAPTCHA:
+
+    - you'll have to load the reCAPTCHA API script yourself
+
+    - if you rely on reCAPTCHA automatically rendering its elements once it
+      finishes loading, do not forget to add ``g-recaptcha`` to the class
+      attribute of every container and/or protected buttons; otherwise, call
+      ``grecaptcha.render()`` once for each
+
+    - you'll also need to make your sitekey and other attributes accessible in
+      some other way, e.g.:
+        - hardcode it in the form's HTML (not flexible)
+        - inject it when rendering the view
+        - ...
+
+    You should not have to do anything different from other widgets on the
+    server side. This widget can handle extracting the reCAPTCHA token
+    submitted by the user from the form data.
+    """
+
+    template_name = "django_recaptcha/enterprise/no_widget.html"
+
+
+class ReCAPTCHAEnterpriseV1CheckboxWidget(ReCAPTCHAEnterpriseV1Widget):
+    """Widget for reCAPTCHA Enterprise V1 Checkbox."""
+
+    template_name = "django_recaptcha/enterprise/widget_enterprise_v1_checkbox.html"
