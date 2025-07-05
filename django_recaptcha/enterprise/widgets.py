@@ -94,7 +94,7 @@ class ReCAPTCHAEnterpriseV1Widget(Widget):
         return "g-recaptcha-response" not in data
 
 
-class ReCAPTCHAEnterpriseNoHTMLRenderWidget(ReCAPTCHAEnterpriseV1Widget):
+class ReCAPTCHAEnterpriseNoHTMLWidget(ReCAPTCHAEnterpriseV1Widget):
     """Used with reCAPTCHA fields for which no HTML is rendered.
 
     Using this widget is not recommended, unless you want to heavily customize

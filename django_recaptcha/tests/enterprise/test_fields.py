@@ -6,7 +6,7 @@ from django.test import TestCase, override_settings
 
 from django_recaptcha.enterprise.client import VerificationResult
 from django_recaptcha.enterprise.fields import ReCAPTCHAEnterpriseV1Field
-from django_recaptcha.enterprise.widgets import ReCAPTCHAEnterpriseNoHTMLRenderWidget
+from django_recaptcha.enterprise.widgets import ReCAPTCHAEnterpriseNoHTMLWidget
 
 from . import fixtures as f
 
@@ -109,7 +109,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
 
     def test_init__set_sitekey_on_widget(self):
         """Should call set_sitekey() on widget."""
-        widget = ReCAPTCHAEnterpriseNoHTMLRenderWidget()
+        widget = ReCAPTCHAEnterpriseNoHTMLWidget()
         widget.set_sitekey = MagicMock()
 
         _ = ReCAPTCHAEnterpriseV1Field(
@@ -123,7 +123,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
 
     def test_init__dont_set_action_on_widget(self):
         """Should not call set_action() on widget if action is not specified."""
-        widget = ReCAPTCHAEnterpriseNoHTMLRenderWidget()
+        widget = ReCAPTCHAEnterpriseNoHTMLWidget()
         widget.set_action = MagicMock()
 
         _ = ReCAPTCHAEnterpriseV1Field(
@@ -137,7 +137,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
 
     def test_init__set_action_on_widget(self):
         """Should call set_action() on widget if action is specified."""
-        widget = ReCAPTCHAEnterpriseNoHTMLRenderWidget()
+        widget = ReCAPTCHAEnterpriseNoHTMLWidget()
         widget.set_action = MagicMock()
 
         _ = ReCAPTCHAEnterpriseV1Field(
