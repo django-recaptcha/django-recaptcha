@@ -252,7 +252,7 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
 
     def test_value_from_datadict__value_not_provided(self):
         """Should return None if reCAPTCHA token is not present in form data."""
-        widget = ReCAPTCHAEnterpriseNoHTMLRenderWidget()
+        widget = ReCAPTCHAEnterpriseV1CheckboxWidget()
         widget.set_sitekey("SITEKEY")
         form_data = {}
         files = MultiValueDict()
