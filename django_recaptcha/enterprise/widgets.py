@@ -51,8 +51,6 @@ class ReCAPTCHAEnterpriseV1Widget(Widget):
         self._action: Optional[str] = None  # can be set by field
         self._sitekey: Optional[str] = None  # must be set by field afterwards!
 
-        extend_class_attr(self.attrs, ["g-recaptcha"])
-
     def set_action(self, action: str) -> None:
         self._action = action
 
@@ -63,7 +61,7 @@ class ReCAPTCHAEnterpriseV1Widget(Widget):
         self, base_attrs: dict[str, Any], extra_attrs: Optional[dict[str, Any]] = None
     ) -> dict[str, Any]:
         attrs = super().build_attrs(base_attrs, extra_attrs)
-        assert self._sitekey is not None
+        assert self._sitekey is not None  # should've been set by Field
         attrs["data-sitekey"] = self._sitekey
         if self._action:
             attrs["data-action"] = self._action or ""
@@ -73,6 +71,7 @@ class ReCAPTCHAEnterpriseV1Widget(Widget):
         self, name: str, value: Any, attrs: Optional[dict[str, Any]]
     ) -> dict[str, Any]:
         context = super().get_context(name, value, attrs)
+        assert self._sitekey is not None  # should've been set by Field
         context.update(
             {
                 "action": self._action,
@@ -123,6 +122,40 @@ class ReCAPTCHAEnterpriseNoHTMLRenderWidget(ReCAPTCHAEnterpriseV1Widget):
 
 
 class ReCAPTCHAEnterpriseV1CheckboxWidget(ReCAPTCHAEnterpriseV1Widget):
-    """Widget for reCAPTCHA Enterprise V1 Checkbox."""
+    """Widget for challenge-based reCAPTCHA Enterprise v1."""
 
     template_name = "django_recaptcha/enterprise/widget_enterprise_v1_checkbox.html"
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        extend_class_attr(self.attrs, ["g-recaptcha"])
+
+
+class ReCAPTCHAEnterpriseV1HiddenWidget(ReCAPTCHAEnterpriseV1Widget):
+    """Widget for score-based reCAPTCHA Enterprise v1."""
+
+    template_name = "django_recaptcha/enterprise/widget_enterprise_v1_hidden.html"
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        extend_class_attr(self.attrs, ["django-recaptcha-widget-enterprise"])
+
+    def build_attrs(
+        self, base_attrs: dict[str, Any], extra_attrs: Optional[dict[str, Any]] = None
+    ) -> dict[str, Any]:
+        attrs = super().build_attrs(base_attrs, extra_attrs)
+        attrs["data-size"] = attrs.get("data-size", "invisible")
+        return attrs
+
+    def get_context(
+        self, name: str, value: Any, attrs: Optional[dict[str, Any]]
+    ) -> dict[str, Any]:
+        context = super().get_context(name, value, attrs)
+        assert self._sitekey is not None  # should've been set by Field
+
+        aps = {}
+        aps.update(self._api_script_parameters)
+        aps["render"] = aps.get("render", self._sitekey)
+        context["api_script"]["qs"] = urlencode(aps)
+
+        return context
