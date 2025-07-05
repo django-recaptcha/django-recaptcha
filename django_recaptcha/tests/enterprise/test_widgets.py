@@ -10,7 +10,7 @@ from django_recaptcha.enterprise.widgets import (
 
 
 class ExtendClassAttributeTests(TestCase):
-    """Tests the ``extend_class_attribute()`` function.
+    """Tests the ``extend_class_attr()`` function.
 
     Test design is based on the following parameters:
 
@@ -41,58 +41,52 @@ class ExtendClassAttributeTests(TestCase):
     def test__no_extra_classes(self):
         extra_classes = []
         matrix = [
-            ({}, {}),  # no need to add an empty class attribute
-            (
-                {"class": ""},
-                {"class": ""},
-            ),  # keep empty class attribute if already present
-            ({"class": "classA"}, {"class": "classA"}),
-            ({"class": "classA classB"}, {"class": "classA classB"}),
+            ("", ""),
+            ("classA", "classA"),
+            ("classA classB", "classA classB"),
         ]
 
-        for attrs, expected in matrix:
-            extend_class_attr(attrs, extra_classes)
-            self.assertEqual(attrs, expected)
+        for original, expected in matrix:
+            result = extend_class_attr(original, extra_classes)
+            self.assertEqual(result, expected)
 
     def test__one_extra_class(self):
         extra_classes = ["class1"]
         matrix = [
-            ({}, {"class": "class1"}),
-            ({"class": ""}, {"class": "class1"}),
-            ({"class": "classA"}, {"class": "classA class1"}),
-            ({"class": "class1"}, {"class": "class1"}),
-            ({"class": "classA classB"}, {"class": "classA classB class1"}),
-            ({"class": "classA class1"}, {"class": "classA class1"}),
-            ({"class": "class1 classA"}, {"class": "class1 classA"}),
-            ({"class": "class1 class1"}, {"class": "class1 class1"}),
+            ("", "class1"),
+            ("classA", "classA class1"),
+            ("class1", "class1"),
+            ("classA classB", "classA classB class1"),
+            ("classA class1", "classA class1"),
+            ("class1 classA", "class1 classA"),
+            ("class1 class1", "class1 class1"),
         ]
 
-        for attrs, expected in matrix:
-            extend_class_attr(attrs, extra_classes)
-            self.assertEqual(attrs, expected)
+        for original, expected in matrix:
+            result = extend_class_attr(original, extra_classes)
+            self.assertEqual(result, expected)
 
     def test__two_extra_classes(self):
         extra_classes = ["class1", "class2"]
         matrix = [
-            ({}, {"class": "class1 class2"}),
-            ({"class": ""}, {"class": "class1 class2"}),
-            ({"class": "classA"}, {"class": "classA class1 class2"}),
-            ({"class": "class1"}, {"class": "class1 class2"}),
-            ({"class": "class2"}, {"class": "class2 class1"}),
-            ({"class": "classA classB"}, {"class": "classA classB class1 class2"}),
-            ({"class": "classA class1"}, {"class": "classA class1 class2"}),
-            ({"class": "classA class2"}, {"class": "classA class2 class1"}),
-            ({"class": "class1 classA"}, {"class": "class1 classA class2"}),
-            ({"class": "class1 class1"}, {"class": "class1 class1 class2"}),
-            ({"class": "class1 class2"}, {"class": "class1 class2"}),
-            ({"class": "class2 classA"}, {"class": "class2 classA class1"}),
-            ({"class": "class2 class1"}, {"class": "class2 class1"}),
-            ({"class": "class2 class2"}, {"class": "class2 class2 class1"}),
+            ("", "class1 class2"),
+            ("classA", "classA class1 class2"),
+            ("class1", "class1 class2"),
+            ("class2", "class2 class1"),
+            ("classA classB", "classA classB class1 class2"),
+            ("classA class1", "classA class1 class2"),
+            ("classA class2", "classA class2 class1"),
+            ("class1 classA", "class1 classA class2"),
+            ("class1 class1", "class1 class1 class2"),
+            ("class1 class2", "class1 class2"),
+            ("class2 classA", "class2 classA class1"),
+            ("class2 class1", "class2 class1"),
+            ("class2 class2", "class2 class2 class1"),
         ]
 
-        for attrs, expected in matrix:
-            extend_class_attr(attrs, extra_classes)
-            self.assertEqual(attrs, expected)
+        for original, expected in matrix:
+            result = extend_class_attr(original, extra_classes)
+            self.assertEqual(result, expected)
 
 
 class ReCAPTCHAEnterpriseNoWidgetTest(TestCase):
@@ -415,11 +409,21 @@ class ReCAPTCHAEnterpriseV1CheckboxWidgetTests(TestCase):
 
         self.assertEqual(context["api_script"]["attrs"], {"type": "module"})
 
+    def test_add_classes(self):
+        """Should correctly add extra classes."""
+        widget = ReCAPTCHAEnterpriseV1HiddenWidget()
+        widget.set_sitekey("SITEKEY")
+
+        before = widget.attrs.get("class", "")
+        widget.add_classes(["abc"])
+        after = widget.attrs.get("class")
+
+        self.assertEqual(before, "django-recaptcha-widget-enterprise")
+        self.assertEqual(after, "django-recaptcha-widget-enterprise abc")
+
 
 class ReCAPTCHAEnterpriseV1HiddenWidgetTests(TestCase):
     """Tests the ReCAPTCHAEnterpriseV1HiddenWidget class."""
-
-    maxDiff = None
 
     def test_render__default(self):
         """Should render the default widget if not altered in any way."""
@@ -683,3 +687,15 @@ class ReCAPTCHAEnterpriseV1HiddenWidgetTests(TestCase):
         context = widget.get_context(name, value, attrs)
 
         self.assertEqual(context["api_script"]["attrs"], {"type": "module"})
+
+    def test_add_classes(self):
+        """Should correctly add extra classes."""
+        widget = ReCAPTCHAEnterpriseV1HiddenWidget()
+        widget.set_sitekey("SITEKEY")
+
+        before = widget.attrs.get("class", "")
+        widget.add_classes(["abc"])
+        after = widget.attrs.get("class")
+
+        self.assertEqual(before, "django-recaptcha-widget-enterprise")
+        self.assertEqual(after, "django-recaptcha-widget-enterprise abc")
