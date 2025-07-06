@@ -4,7 +4,7 @@ from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.forms.widgets import TextInput
 from django.test import TestCase, override_settings
 
-from django_recaptcha.enterprise.client import VerificationResult
+from django_recaptcha.enterprise.client import Assessment
 from django_recaptcha.enterprise.fields import ReCAPTCHAEnterpriseV1Field
 from django_recaptcha.enterprise.widgets import ReCAPTCHAEnterpriseNoHTMLWidget
 
@@ -150,7 +150,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
 
         widget.set_action.assert_called_once_with("login")
 
-    @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
+    @patch("django_recaptcha.enterprise.fields.create_assessment")
     def test_validate__value_not_provided(self, verify_mock):
         """Validation should fail if Field class' validation fails."""
         captcha_field = ReCAPTCHAEnterpriseV1Field(
@@ -166,7 +166,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
         self.assertEqual(e.exception.code, "required")
         verify_mock.assert_not_called()
 
-    @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
+    @patch("django_recaptcha.enterprise.fields.create_assessment")
     def test_validate__good_token(self, verify_mock):
         """Validation should pass if nothing is wrong with token."""
         captcha_field = ReCAPTCHAEnterpriseV1Field(
@@ -175,7 +175,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             access_token="<ACCESS-TOKEN>",
         )
         response_data = f.create_response_data(valid=True)
-        verify_mock.return_value = VerificationResult(response_data)
+        verify_mock.return_value = Assessment(response_data)
 
         captcha_field.validate(f.RECAPTCHA_TOKEN)
 
@@ -190,7 +190,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             None,
         )
 
-    @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
+    @patch("django_recaptcha.enterprise.fields.create_assessment")
     def test_validate__bad_token(self, verify_mock):
         """Validation should fail if token is invalid."""
         captcha_field = ReCAPTCHAEnterpriseV1Field(
@@ -199,7 +199,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             access_token="<ACCESS-TOKEN>",
         )
         response_data = f.create_response_data(valid=False)
-        verify_mock.return_value = VerificationResult(response_data)
+        verify_mock.return_value = Assessment(response_data)
 
         with self.assertRaises(ValidationError) as e:
             captcha_field.validate(f.RECAPTCHA_TOKEN)
@@ -216,7 +216,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             None,
         )
 
-    @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
+    @patch("django_recaptcha.enterprise.fields.create_assessment")
     def test_validate__action_is_passed_along(self, verify_mock):
         """Validation should include action if passed along."""
         captcha_field = ReCAPTCHAEnterpriseV1Field(
@@ -226,9 +226,9 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             action="ACTION",
         )
         response_data = f.create_response_data(
-            client_action="ACTION", expected_action="ACTION"
+            token_action="ACTION", expected_action="ACTION"
         )
-        verify_mock.return_value = VerificationResult(response_data)
+        verify_mock.return_value = Assessment(response_data)
 
         captcha_field.validate(f.RECAPTCHA_TOKEN)
 
@@ -243,7 +243,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             None,
         )
 
-    @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
+    @patch("django_recaptcha.enterprise.fields.create_assessment")
     def test_validate__score_is_set_after_validation(self, verify_mock):
         """Score should be set after validation."""
         captcha_field = ReCAPTCHAEnterpriseV1Field(
@@ -252,7 +252,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
             access_token="<ACCESS-TOKEN>",
         )
         response_data = f.create_response_data(score=0.7)
-        verify_mock.return_value = VerificationResult(response_data)
+        verify_mock.return_value = Assessment(response_data)
 
         score_before = captcha_field.score
         captcha_field.validate(f.RECAPTCHA_TOKEN)
@@ -261,7 +261,7 @@ class ReCAPTCHAEnterpriseV1FieldTests(TestCase):
         self.assertIsNone(score_before)
         self.assertEqual(score_after, 0.7)
 
-    @patch("django_recaptcha.enterprise.fields.verify_enterprise_v1_token")
+    @patch("django_recaptcha.enterprise.fields.create_assessment")
     def test_submitting_additional_info(self, verify_mock):
         """Additional info is also submitted after being provided."""
         captcha_field = ReCAPTCHAEnterpriseV1Field(

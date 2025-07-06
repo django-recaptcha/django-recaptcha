@@ -1,8 +1,10 @@
 from typing import Any, Optional
 
+ACCESS_TOKEN = "<ACCESS_TOKEN>"
+ASSESSMENT_ID = "<ASSESSMENT_ID>"  # e.g. "projects/85...68/assessments/f8..00"
+PROJECT_ID = "<PROJECT-ID>"
 RECAPTCHA_TOKEN = "<RECAPTCHA-TOKEN>"  # e.g. "03AF...EV2o"
 SITEKEY = "<SITEKEY>"  # e.g. "6Ldc...7GNA
-ASSESSMENT_ID = "<ASSESSMENT_ID>"  # e.g. "projects/85...68/assessments/f8..00"
 
 
 def create_request_data(
@@ -34,7 +36,7 @@ def create_request_data(
 
 def create_response_data(
     valid: bool = True,
-    client_action: str = "",
+    token_action: str = "",
     expected_action: str = "",
     score: float = 0.4,
     requested_uri: str = "",
@@ -47,7 +49,7 @@ def create_response_data(
             "siteKey": SITEKEY,
             "userAgent": user_agent,
             "userIpAddress": "",
-            "expectedAction": expected_action,
+            "expectedAction": expected_action or "",
             "hashedAccountId": "",
             "express": False,
             "requestedUri": requested_uri,
@@ -71,7 +73,7 @@ def create_response_data(
             "hostname": "localhost",
             "androidPackageName": "",
             "iosBundleId": "",
-            "action": client_action if client_action else "",
+            "action": token_action or "",
             "createTime": "2025-06-26T15:15:13.551Z",
         },
         "accountDefenderAssessment": {"labels": []},

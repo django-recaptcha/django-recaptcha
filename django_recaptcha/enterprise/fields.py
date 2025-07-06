@@ -5,7 +5,7 @@ from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.forms.fields import Field
 from django.http import HttpRequest
 
-from .client import verify_enterprise_v1_token
+from .client import create_assessment
 from .conf import use_setting
 from .widgets import ReCAPTCHAEnterpriseV1CheckboxWidget, ReCAPTCHAEnterpriseV1Widget
 
@@ -105,7 +105,7 @@ class ReCAPTCHAEnterpriseV1Field(Field):
             return
 
         try:
-            verification_result = verify_enterprise_v1_token(
+            verification_result = create_assessment(
                 self._project_id,
                 self._sitekey,
                 self._access_token,
@@ -123,7 +123,7 @@ class ReCAPTCHAEnterpriseV1Field(Field):
 
         self._score = verification_result.score
 
-        if not verification_result.is_okay():
+        if not verification_result.is_token_valid():
             raise ValidationError("token failed verification", code="captcha_invalid")
 
     @property

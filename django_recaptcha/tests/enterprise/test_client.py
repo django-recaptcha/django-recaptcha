@@ -8,186 +8,213 @@ import django_recaptcha.enterprise.client as m
 from . import fixtures as f
 
 
-class VerificationResultTests(TestCase):
-    """Tests VerificationResult class."""
+class AssessmentTests(TestCase):
+    """Tests Assessment class."""
 
     def test_access_data_directly(self):
-        """User should be able to access data directly for convenience."""
+        """Should be able to access response data directly."""
         response_data = f.create_response_data()
 
-        result = m.VerificationResult(response_data)
+        assessment = m.Assessment(response_data)
+        result = assessment.data
 
-        self.assertEqual(result.data["event"]["token"], f.RECAPTCHA_TOKEN)
-        self.assertEqual(result.data["tokenProperties"]["valid"], True)
+        self.assertEqual(result, response_data)
 
-    def test_is_okay__valid_token(self):
-        """Valid token are okay."""
-        response_data = f.create_response_data(valid=True)
+    def test_is_token_valid(self):
+        """Should assert token's validity correctly."""
 
-        result = m.VerificationResult(response_data)
+        # This test matrix is based on the following parameters:
+        # 1. is token valid? yes/no
+        # 2. is token action specified? yes/no
+        # 3. is expected action specified? yes/no
+        # 4. if both (2) and (3) are specified, do they match? yes/no
+        test_matrix = [
+            ((True, "login", "login"), True),
+            ((True, "login", "logout"), False),
+            ((True, "login", ""), False),
+            ((True, "", "login"), False),
+            ((True, "", ""), True),
+            ((False, "login", "login"), False),
+            ((False, "login", "logout"), False),
+            ((False, "login", ""), False),
+            ((False, "", "login"), False),
+            ((False, "", ""), False),
+        ]
 
-        self.assertTrue(result.is_okay())
+        for (valid, token_action, expected_action), expected in test_matrix:
+            response_data = f.create_response_data(
+                valid=valid, token_action=token_action, expected_action=expected_action
+            )
 
-    def test_is_okay__invalid_token(self):
-        """Invalid token are not okay."""
-        response_data = f.create_response_data(valid=False)
+            assessment = m.Assessment(response_data)
+            result = assessment.is_token_valid()
 
-        result = m.VerificationResult(response_data)
+            self.assertEqual(result, expected)
 
-        self.assertFalse(result.is_okay())
+    def test_is_token_valid__missing_data(self):
+        """Should raise exception if needed data is missing."""
+        response_data = f.create_response_data()
+        del response_data["tokenProperties"]["valid"]
 
-    def test_is_okay__actions_set_and_matching(self):
-        """Token is okay if token's action matches expectation."""
-        response_data = f.create_response_data(
-            client_action="login", expected_action="login"
+        assessment = m.Assessment(response_data)
+        with self.assertRaises(m.MissingAssessmentData) as exc:
+            _ = assessment.is_token_valid()
+
+        self.assertEqual(
+            str(exc.exception),
+            "Object with key 'valid' is missing from assessment data.",
         )
 
-        result = m.VerificationResult(response_data)
-
-        self.assertTrue(result.is_okay())
-
-    def test_is_okay__actions_set_and_not_matching(self):
-        """Token is not okay if token's action doesn't match expectation."""
-        response_data = f.create_response_data(
-            client_action="login", expected_action="pay"
-        )
-
-        result = m.VerificationResult(response_data)
-
-        self.assertFalse(result.is_okay())
-
-    def test_is_okay__only_client_action_set(self):
-        """Token is not okay if token has unexpected associated action."""
-        response_data = f.create_response_data(client_action="login")
-
-        result = m.VerificationResult(response_data)
-
-        self.assertFalse(result.is_okay())
-
-    def test_is_okay__only_server_action_set(self):
-        """Token is not okay if token lacks the expected associated action."""
-        response_data = f.create_response_data(expected_action="login")
-
-        result = m.VerificationResult(response_data)
-
-        self.assertFalse(result.is_okay())
-
-    def test_get_score(self):
-        """Can retrieve the score correctly."""
+    def test_score(self):
+        """Should return the assessment's score correctly."""
         response_data = f.create_response_data(score=0.3)
 
-        result = m.VerificationResult(response_data)
+        assessment = m.Assessment(response_data)
+        result = assessment.score
 
-        self.assertEqual(result.score, 0.3)
+        self.assertEqual(result, 0.3)
+
+    def test_score__missing_data(self):
+        """Should raise exception if needed data is missing."""
+        response_data = f.create_response_data()
+        del response_data["riskAnalysis"]["score"]
+
+        assessment = m.Assessment(response_data)
+        with self.assertRaises(m.MissingAssessmentData) as exc:
+            _ = assessment.score
+
+        self.assertEqual(
+            str(exc.exception),
+            "Object with key 'score' is missing from assessment data.",
+        )
 
 
-class VerifyEnterpriseV1TokenTests(TestCase):
+class CreateAssessmentTests(TestCase):
+    """Tests create_assessment() function."""
 
     @patch("django_recaptcha.enterprise.client.send_request")
-    def test_success(self, send_mock):
-        """Request data is submitted and response data returned as expected."""
+    def test_create_assessment(self, send_request_mock):
+        """Should send request data and return response data as expected."""
         request_data = f.create_request_data()
         response_data = f.create_response_data(valid=True)
+        send_request_mock.return_value = response_data
 
-        send_mock.return_value = response_data
-
-        verification_result = m.verify_enterprise_v1_token(
-            project_id="alpha-beta-123",
-            sitekey=f.SITEKEY,
-            access_token="<ACCESS-TOKEN>",
+        assessment = m.create_assessment(
+            project_id=f.PROJECT_ID,
+            site_key=f.SITEKEY,
+            access_token=f.ACCESS_TOKEN,
             recaptcha_token=f.RECAPTCHA_TOKEN,
         )
 
-        send_mock.assert_called_once_with(
-            "https://recaptchaenterprise.googleapis.com/v1/projects/alpha-beta-123/assessments",
-            "<ACCESS-TOKEN>",
+        send_request_mock.assert_called_once_with(
+            f"https://recaptchaenterprise.googleapis.com/v1/projects/{f.PROJECT_ID}/assessments",
+            f.ACCESS_TOKEN,
             request_data,
         )
-        self.assertEqual(verification_result.data, response_data)
+        self.assertEqual(assessment.data, response_data)
 
     @patch("django_recaptcha.enterprise.client.send_request")
-    def test_submit_token_with_action(self, send_mock):
-        """Expected action is submitted if action is specified."""
-        request_data = f.create_request_data(action="myaction")
+    def test_create_assessment__include_action(self, send_request_mock):
+        """Should include expected action in request data if specified."""
+        request_data = f.create_request_data(action="login")
 
-        _ = m.verify_enterprise_v1_token(
-            project_id="alpha-beta-123",
-            sitekey=f.SITEKEY,
-            access_token="<ACCESS-TOKEN>",
+        _ = m.create_assessment(
+            project_id=f.PROJECT_ID,
+            site_key=f.SITEKEY,
+            access_token=f.ACCESS_TOKEN,
             recaptcha_token=f.RECAPTCHA_TOKEN,
-            expected_action="myaction",
+            expected_action="login",
         )
 
-        send_mock.assert_called_once_with(
-            "https://recaptchaenterprise.googleapis.com/v1/projects/alpha-beta-123/assessments",
-            "<ACCESS-TOKEN>",
+        send_request_mock.assert_called_once_with(
+            f"https://recaptchaenterprise.googleapis.com/v1/projects/{f.PROJECT_ID}/assessments",
+            f.ACCESS_TOKEN,
             request_data,
         )
 
     @patch("django_recaptcha.enterprise.client.send_request")
-    def test_submit_requested_uri(self, send_mock):
-        """Requested URI is submitted if specified."""
+    def test_create_assessment__include_requested_uri(self, send_request_mock):
+        """Should include requested URI in request data if specified."""
         request_data = f.create_request_data(requested_uri="https://example.com/")
 
-        _ = m.verify_enterprise_v1_token(
-            project_id="alpha-beta-123",
-            sitekey=f.SITEKEY,
-            access_token="<ACCESS-TOKEN>",
+        _ = m.create_assessment(
+            project_id=f.PROJECT_ID,
+            site_key=f.SITEKEY,
+            access_token=f.ACCESS_TOKEN,
             recaptcha_token=f.RECAPTCHA_TOKEN,
             requested_uri="https://example.com/",
         )
 
-        send_mock.assert_called_once_with(
-            "https://recaptchaenterprise.googleapis.com/v1/projects/alpha-beta-123/assessments",
-            "<ACCESS-TOKEN>",
+        send_request_mock.assert_called_once_with(
+            f"https://recaptchaenterprise.googleapis.com/v1/projects/{f.PROJECT_ID}/assessments",
+            f.ACCESS_TOKEN,
             request_data,
         )
 
     @patch("django_recaptcha.enterprise.client.send_request")
-    def test_submit_user_agent(self, send_mock):
-        """User agent is submitted if specified."""
+    def test_create_assessment__include_user_agent(self, send_request_mock):
+        """Should include user agent in request data if specified."""
         request_data = f.create_request_data(user_agent="my-user-agent")
 
-        _ = m.verify_enterprise_v1_token(
-            project_id="alpha-beta-123",
-            sitekey=f.SITEKEY,
-            access_token="<ACCESS-TOKEN>",
+        _ = m.create_assessment(
+            project_id=f.PROJECT_ID,
+            site_key=f.SITEKEY,
+            access_token=f.ACCESS_TOKEN,
             recaptcha_token=f.RECAPTCHA_TOKEN,
             user_agent="my-user-agent",
         )
 
-        send_mock.assert_called_once_with(
-            "https://recaptchaenterprise.googleapis.com/v1/projects/alpha-beta-123/assessments",
-            "<ACCESS-TOKEN>",
+        send_request_mock.assert_called_once_with(
+            f"https://recaptchaenterprise.googleapis.com/v1/projects/{f.PROJECT_ID}/assessments",
+            f.ACCESS_TOKEN,
             request_data,
         )
 
     @patch("django_recaptcha.enterprise.client.send_request")
-    def test_submit_user_ip_address(self, send_mock):
-        """User IP address is submitted if specified."""
+    def test_create_assessment__include_ip_address(self, send_request_mock):
+        """Should include user's IP address in request data if specified."""
         request_data = f.create_request_data(user_ip_address="1.2.3.4")
 
-        _ = m.verify_enterprise_v1_token(
-            project_id="alpha-beta-123",
-            sitekey=f.SITEKEY,
-            access_token="<ACCESS-TOKEN>",
+        _ = m.create_assessment(
+            project_id=f.PROJECT_ID,
+            site_key=f.SITEKEY,
+            access_token=f.ACCESS_TOKEN,
             recaptcha_token=f.RECAPTCHA_TOKEN,
             user_ip_address="1.2.3.4",
         )
 
-        send_mock.assert_called_once_with(
-            "https://recaptchaenterprise.googleapis.com/v1/projects/alpha-beta-123/assessments",
-            "<ACCESS-TOKEN>",
+        send_request_mock.assert_called_once_with(
+            f"https://recaptchaenterprise.googleapis.com/v1/projects/{f.PROJECT_ID}/assessments",
+            f.ACCESS_TOKEN,
             request_data,
+        )
+
+    @patch("django_recaptcha.enterprise.client.send_request")
+    def test_create_assessment__api_call_failed(self, send_request_mock):
+        """Should re-raise exception if API call fails with an added note."""
+        send_request_mock.side_effect = m.ReCAPTCHAEnterpriseAPICallFailed()
+
+        with self.assertRaises(m.ReCAPTCHAEnterpriseAPICallFailed) as exc:
+            _ = m.create_assessment(
+                project_id=f.PROJECT_ID,
+                site_key=f.SITEKEY,
+                access_token=f.ACCESS_TOKEN,
+                recaptcha_token=f.RECAPTCHA_TOKEN,
+            )
+
+        self.assertEqual(
+            exc.exception.__notes__, ["failed during call: projects.assessments.create"]
         )
 
 
 class SendRequestTests(TestCase):
+    """Tests send_request() function."""
 
     @patch("django_recaptcha.enterprise.client.Request")
     @patch("django_recaptcha.enterprise.client.ProxyHandler")
     @patch("django_recaptcha.enterprise.client.build_opener")
-    def test_success(self, build_opener_mock, proxy_handler_mock, request_mock):
+    def test_send_request(self, build_opener_mock, proxy_handler_mock, request_mock):
+        """Should send request data and return response data as expected."""
         request_data = f.create_request_data()
         request_data_bytes = json.dumps(request_data).encode("utf-8")
         response_data = f.create_response_data()
@@ -203,7 +230,7 @@ class SendRequestTests(TestCase):
         response_obj_mock = opener_obj_mock.open.return_value
         response_obj_mock.read.return_value = response_data_bytes
 
-        returned_data = m.send_request("<URL>", "<ACCESS_TOKEN>", request_data)
+        result = m.send_request("<URL>", "<ACCESS_TOKEN>", request_data)
 
         request_mock.assert_called_once_with(
             url="<URL>",
@@ -218,14 +245,16 @@ class SendRequestTests(TestCase):
         build_opener_mock.assert_called_once_with()
         opener_obj_mock.open.assert_called_once_with(request_obj_mock, timeout=10.0)
         response_obj_mock.read.assert_called_once()
-        self.assertEqual(returned_data, response_data)
+        self.assertEqual(result, response_data)
 
     @patch("django_recaptcha.enterprise.client.Request")
     @patch("django_recaptcha.enterprise.client.ProxyHandler")
     @patch("django_recaptcha.enterprise.client.build_opener")
     @override_settings(RECAPTCHA_ENTERPRISE_PROXY={"http": "<HTTP_PROXY>"})
-    def test_use_proxy(self, build_opener_mock, proxy_handler_mock, request_mock):
-        """Can use setting to use proxies."""
+    def test_send_request__use_proxy(
+        self, build_opener_mock, proxy_handler_mock, request_mock
+    ):
+        """Should use a proxy if specified."""
         request_data = f.create_request_data()
         response_data = f.create_response_data()
         response_data_bytes = json.dumps(response_data).encode("utf-8")
@@ -246,10 +275,10 @@ class SendRequestTests(TestCase):
     @patch("django_recaptcha.enterprise.client.ProxyHandler")
     @patch("django_recaptcha.enterprise.client.build_opener")
     @override_settings(RECAPTCHA_ENTERPRISE_VERIFY_TIMEOUT=5.0)
-    def test_different_timeout(
+    def test_send_request__use_different_timeout(
         self, build_opener_mock, proxy_handler_mock, request_mock
     ):
-        """Can use setting to change timeout."""
+        """Should use a different timeout if specfied."""
         request_data = f.create_request_data()
         response_data = f.create_response_data()
         response_data_bytes = json.dumps(response_data).encode("utf-8")
@@ -267,3 +296,21 @@ class SendRequestTests(TestCase):
         _ = m.send_request("<URL>", "<ACCESS_TOKEN>", request_data)
 
         opener_obj_mock.open.assert_called_once_with(request_obj_mock, timeout=5.0)
+
+    @patch("django_recaptcha.enterprise.client.Request")
+    @patch("django_recaptcha.enterprise.client.ProxyHandler")
+    @patch("django_recaptcha.enterprise.client.build_opener")
+    def test_send_request__api_call_failed(
+        self, build_opener_mock, proxy_handler_mock, request_mock
+    ):
+        """Should raise an exception if the API call fails unexpectedly."""
+        request_data = f.create_request_data()
+
+        # opener = ...
+        opener_obj_mock = build_opener_mock.return_value
+        opener_obj_mock.open.side_effect = m.URLError("")
+
+        with self.assertRaises(m.ReCAPTCHAEnterpriseAPICallFailed) as exc:
+            _ = m.send_request("<URL>", "<ACCESS_TOKEN>", request_data)
+
+        self.assertEqual(str(exc.exception), "API call failed.")
