@@ -1,34 +1,44 @@
+"""Settings used by this app.
+
+This module documents all of the settings used to configure this app, and
+their default values. Users will need to provide values for some settings in
+order for this app to work properly, while other settings have sane defaults.
+
+It also includes a function that is used internally to prioritize between an
+argument or Django setting provided by the user, or its default value.
+"""
+
 from typing import Any, Optional
 
 from django.conf import settings
 
 _DEFAULT_SETTINGS: dict[str, Any] = {
-    # ID of Google cloud project associated with sitekey
+    # ID of Google Cloud project associated with site key.
     # e.g. "my-project-123456"
     "RECAPTCHA_ENTERPRISE_PROJECT_ID": None,
-    # public key used to integrate reCAPTCHA
+    # Public key used to integrate reCAPTCHA.
     # e.g. "6Lcm3XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX5mfX"
     "RECAPTCHA_ENTERPRISE_SITEKEY": None,
-    # API key used for authentication
+    # Secret token used for authentication.
     # e.g. "ABcdEfG12jKlMNo3pqRsTUvWXYzA4BCDEf5hiJk"
     "RECAPTCHA_ENTERPRISE_ACCESS_TOKEN": None,
-    # Configuration for usage of proxies.
+    # Configuration of proxies used to communicate with reCAPTCHA Enterprise API.
     # e.g. {"https": "https://127.0.0.1:56789"}
     "RECAPTCHA_ENTERPRISE_PROXY": {},
-    # Amount of seconds to wait until attempt to verify token times out.
+    # Amount of seconds until an API call times out.
     # e.g. 5.0
     "RECAPTCHA_ENTERPRISE_VERIFY_TIMEOUT": 10.0,
-    # Include API script with each widget?
+    # Include reCAPTCHA Enterprise's API script with each widget?
     # e.g. False
     "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_INCLUDE": True,
-    # Domain of widget's reCAPTCHA API script's URL.
+    # If API script is included with widget: domain of its URL.
     # e.g. "www.recaptcha.net"
     "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_DOMAIN": "www.google.com",
-    # Query parameters of widget's reCAPTCHA API script's URL.
+    # If API script is included with widget: query parameters of its URL.
     # e.g. {"render": "explicit", "onload": "renderAllWidgets", "hl": "nl"}
     "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_PARAMETERS": {},
-    # Attributes of widget's reCAPTCHA API script's tag.
-    # e.g. {"type": "module"}
+    # If API script is included with widget: attributes of its script tag.
+    # e.g. {"async": True, "type": "module"}
     "RECAPTCHA_ENTERPRISE_WIDGET_API_SCRIPT_ATTRIBUTES": {"async": True, "defer": True},
 }
 
