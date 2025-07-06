@@ -114,8 +114,7 @@ def create_assessment(
         request_data["event"]["userIpAddress"] = user_ip_address
     try:
         response_data = send_request(url, access_token, request_data)
-    except ReCAPTCHAEnterpriseAPICallFailed as e:
-        e.add_note("failed during call: projects.assessments.create")
+    except ReCAPTCHAEnterpriseAPICallFailed:
         raise
     return Assessment(response_data)
 

@@ -194,17 +194,13 @@ class CreateAssessmentTests(TestCase):
         """Should re-raise exception if API call fails with an added note."""
         send_request_mock.side_effect = m.ReCAPTCHAEnterpriseAPICallFailed()
 
-        with self.assertRaises(m.ReCAPTCHAEnterpriseAPICallFailed) as exc:
+        with self.assertRaises(m.ReCAPTCHAEnterpriseAPICallFailed):
             _ = m.create_assessment(
                 project_id=f.PROJECT_ID,
                 site_key=f.SITEKEY,
                 access_token=f.ACCESS_TOKEN,
                 recaptcha_token=f.RECAPTCHA_TOKEN,
             )
-
-        self.assertEqual(
-            exc.exception.__notes__, ["failed during call: projects.assessments.create"]
-        )
 
 
 class SendRequestTests(TestCase):
