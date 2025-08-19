@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 from django_recaptcha import client
 from django_recaptcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
+from django_recaptcha.exceptions import CaptchaHostnameError
 from django_recaptcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox, ReCaptchaV3
 
 logger = logging.getLogger(__name__)
@@ -21,7 +22,14 @@ class ReCaptchaField(forms.CharField):
         "captcha_error": _("Error verifying reCAPTCHA, please try again."),
     }
 
-    def __init__(self, public_key=None, private_key=None, *args, **kwargs):
+    def __init__(
+        self,
+        public_key=None,
+        private_key=None,
+        log_level_hostname=None,
+        *args,
+        **kwargs
+    ):
         """
         ReCaptchaField can accepts attributes which is a dictionary of
         attributes to be passed to the ReCaptcha widget class. The widget will
@@ -46,6 +54,10 @@ class ReCaptchaField(forms.CharField):
         )
         self.public_key = public_key or getattr(
             settings, "RECAPTCHA_PUBLIC_KEY", TEST_PUBLIC_KEY
+        )
+
+        self.log_level_hostname = log_level_hostname or getattr(
+            settings, "RECAPTCHA_LOG_LEVEL_HOSTNAME", logging.ERROR
         )
 
         # Update widget attrs with data-sitekey.
@@ -84,6 +96,19 @@ class ReCaptchaField(forms.CharField):
             raise ValidationError(
                 self.error_messages["captcha_invalid"], code="captcha_invalid"
             )
+
+        validate_hostname = self.widget.attrs.get("validate_hostname")
+        if validate_hostname:
+            hostname = check_captcha.extra_data.get("hostname")
+            if not validate_hostname(hostname):
+                logger.log(
+                    self.log_level_hostname,
+                    "ReCAPTCHA validation failed because hostname %s rejected"
+                    % hostname,
+                )
+                raise CaptchaHostnameError(
+                    self.error_messages["captcha_invalid"], code="captcha_invalid"
+                )
 
         if (
             isinstance(self.widget, ReCaptchaV3)
