@@ -6,7 +6,6 @@ from django import forms
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.utils.translation import gettext_lazy as _
-
 from django_recaptcha import client
 from django_recaptcha.constants import TEST_PRIVATE_KEY, TEST_PUBLIC_KEY
 from django_recaptcha.widgets import ReCaptchaBase, ReCaptchaV2Checkbox, ReCaptchaV3
@@ -51,16 +50,24 @@ class ReCaptchaField(forms.CharField):
         # Update widget attrs with data-sitekey.
         self.widget.attrs["data-sitekey"] = self.public_key
 
-    def get_remote_ip(self):
+    def get_request(self):
         f = sys._getframe()
         while f:
             request = f.f_locals.get("request")
             if request:
-                remote_ip = request.META.get("REMOTE_ADDR", "")
-                forwarded_ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
-                ip = remote_ip if not forwarded_ip else forwarded_ip
-                return ip
+                return request
             f = f.f_back
+
+    def get_remote_ip(self):
+        request = self.get_request()
+        if request:
+            remote_ip = request.META.get("REMOTE_ADDR", "")
+            forwarded_ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
+            ip = remote_ip if not forwarded_ip else forwarded_ip
+            return ip
+
+    def log_warning(self, message):
+        logger.warning(message)
 
     def validate(self, value):
         super().validate(value)
