@@ -36,3 +36,4 @@
 - [Sean Stewart](https://github.com/mindcruzer)
 - [Rob Charlwood](https://github.com/robcharlwood)
 - [Ruslan Kovtun](https://github.com/koutoftimer)
+- [Dan Morrison](https://github.com/danmoz)
