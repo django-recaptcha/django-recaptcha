@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=64", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +7,7 @@ name = "django-recaptcha"
 version = "4.2.0"
 description = "Django recaptcha form field/widget app."
 readme = "README.md"
-license = {text = "BSD"}
+license = "BSD-3-Clause"
 authors = [
     {name = "Individual contributors and Torchbox", email = "hello@torchbox.com"}
 ]
@@ -20,7 +20,6 @@ classifiers = [
     "Framework :: Django :: 5.1",
     "Framework :: Django :: 5.2",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
