@@ -268,7 +268,7 @@ SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
 
 If you want to mock the call to Google's servers altogether, have a look
 at
-[test_fields.py](https://github.com/django-recaptcha/django-recaptcha/blob/main/captcha/tests/test_fields.py):
+[test_fields.py](https://github.com/django-recaptcha/django-recaptcha/blob/main/django_recaptcha/tests/test_fields.py):
 
 ```python
 from unittest.mock import patch

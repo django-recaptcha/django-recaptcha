@@ -5,6 +5,10 @@
 - [Andrew Chen Wang](https://github.com/Andrew-Chen-Wang)
 - [Storm Heg](https://github.com/Stormheg)
 
+## Alumni Maintainers
+
+- [Tibor Leupold](https://github.com/tbrlpld)
+
 ## Praekelt Consulting
 
 - Shaun Sephton
