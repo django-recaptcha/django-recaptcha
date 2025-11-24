@@ -28,7 +28,7 @@ def get_user_ip_address(request: HttpRequest) -> Optional[str]:
 
     :param request: HTTP request sent by user
     """
-    return request.META.get("REMOTE_ADDR")
+    return request.META.get("REMOTE_ADDR")  # TODO: too naive
 
 
 class ReCAPTCHAEnterpriseV1Field(Field):
@@ -128,7 +128,7 @@ class ReCAPTCHAEnterpriseV1Field(Field):
 
     @property
     def score(self) -> Optional[float]:
-        """Score of token after a successful verificaton attempt."""
+        """Score of token after a successful verification attempt."""
         return self._score
 
     def add_additional_info(self, request: HttpRequest) -> None:
