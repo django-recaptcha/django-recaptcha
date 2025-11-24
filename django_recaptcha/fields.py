@@ -51,16 +51,24 @@ class ReCaptchaField(forms.CharField):
         # Update widget attrs with data-sitekey.
         self.widget.attrs["data-sitekey"] = self.public_key
 
-    def get_remote_ip(self):
+    def get_request(self):
         f = sys._getframe()
         while f:
             request = f.f_locals.get("request")
             if request:
-                remote_ip = request.META.get("REMOTE_ADDR", "")
-                forwarded_ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
-                ip = remote_ip if not forwarded_ip else forwarded_ip
-                return ip
+                return request
             f = f.f_back
+
+    def get_remote_ip(self):
+        request = self.get_request()
+        if request:
+            remote_ip = request.META.get("REMOTE_ADDR", "")
+            forwarded_ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
+            ip = remote_ip if not forwarded_ip else forwarded_ip
+            return ip
+
+    def log_warning(self, message):
+        logger.warning(message)
 
     def validate(self, value):
         super().validate(value)
@@ -78,7 +86,7 @@ class ReCaptchaField(forms.CharField):
             )
 
         if not check_captcha.is_valid:
-            logger.warning(
+            self.log_warning(
                 "ReCAPTCHA validation failed due to: %s" % check_captcha.error_codes
             )
             raise ValidationError(
@@ -89,7 +97,7 @@ class ReCaptchaField(forms.CharField):
             isinstance(self.widget, ReCaptchaV3)
             and check_captcha.action != self.widget.action
         ):
-            logger.warning(
+            self.log_warning(
                 "ReCAPTCHA validation failed due to: mismatched action. Expected '%s' but received '%s' from captcha server."
                 % (self.widget.action, check_captcha.action)
             )
@@ -113,7 +121,7 @@ class ReCaptchaField(forms.CharField):
             score = float(check_captcha.extra_data.get("score", 0))
 
             if required_score > score:
-                logger.warning(
+                self.log_warning(
                     "ReCAPTCHA validation failed due to its score of %s"
                     " being lower than the required amount." % score
                 )

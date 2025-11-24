@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 4.2.0 (UNRELEASED)
 
-- Nothing yet
+- Added: Allow subclasses to override logging ([#374](https://github.com/django-recaptcha/django-recaptcha/pull/375))
 
 ## 4.1.0 (2025-03-28)
 
