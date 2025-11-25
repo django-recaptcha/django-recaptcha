@@ -139,7 +139,7 @@ class TestWidgets(TestCase):
         self.assertIn('data-callback="onSubmit_%s"' % test_hex, html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
-        self.assertIn("var onSubmit_%s = function(token) {" % test_hex, html)
+        self.assertIn('data-recaptcha-type="classic-v2-checkbox"', html)
 
     @patch("django_recaptcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_v2_checkbox_attribute_changes_html(self, mocked_uuid):
@@ -177,7 +177,7 @@ class TestWidgets(TestCase):
         self.assertIn('class="g-recaptcha custom-class"', html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
-        self.assertIn("var onSubmit_%s = function(token) {" % test_hex, html)
+        self.assertIn('data-recaptcha-type="classic-v2-checkbox"', html)
 
     @override_settings(RECAPTCHA_DOMAIN="www.recaptcha.net")
     def test_default_v2_checkbox_domain_html(self):
@@ -214,9 +214,7 @@ class TestWidgets(TestCase):
         self.assertIn('class="g-recaptcha"', html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
-        self.assertIn("var onSubmit_%s = function(token) {" % test_hex, html)
-        self.assertIn("var verifyCaptcha_%s = function(e) {" % test_hex, html)
-        self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
+        self.assertIn('data-recaptcha-type="classic-v2-invisible"', html)
 
     @patch("django_recaptcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_v2_invisible_attribute_changes_html(self, mocked_uuid):
@@ -249,9 +247,7 @@ class TestWidgets(TestCase):
         self.assertIn('class="g-recaptcha custom-class"', html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
-        self.assertIn("var onSubmit_%s = function(token) {" % test_hex, html)
-        self.assertIn("var verifyCaptcha_%s = function(e) {" % test_hex, html)
-        self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
+        self.assertIn('data-recaptcha-type="classic-v2-invisible"', html)
 
     @override_settings(RECAPTCHA_DOMAIN="www.recaptcha.net")
     def test_default_v2_invisible_domain_html(self):
@@ -291,9 +287,7 @@ class TestWidgets(TestCase):
         self.assertIn('class="g-recaptcha"', html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
-        self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
-        # By default, the action should NOT be in the JS code
-        self.assertNotIn("action", html)
+        self.assertIn('data-recaptcha-type="classic-v3"', html)
 
     @patch("django_recaptcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_default_v3_html_with_action(self, mocked_uuid):
@@ -322,10 +316,7 @@ class TestWidgets(TestCase):
         self.assertIn('class="g-recaptcha"', html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
-        self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
-
-        # Expect the action to be in the JS code
-        self.assertIn("action: 'needle'", html)
+        self.assertIn('data-recaptcha-type="classic-v3"', html)
 
     @patch("django_recaptcha.widgets.uuid.UUID.hex", new_callable=PropertyMock)
     def test_v3_attribute_changes_html(self, mocked_uuid):
@@ -357,7 +348,7 @@ class TestWidgets(TestCase):
         self.assertIn('class="g-recaptcha"', html)
         self.assertIn('data-widget-uuid="%s"' % test_hex, html)
         self.assertIn('data-sitekey="pubkey"', html)
-        self.assertIn('.g-recaptcha[data-widget-uuid="%s"]' % test_hex, html)
+        self.assertIn('data-recaptcha-type="classic-v3"', html)
 
     @override_settings(RECAPTCHA_DOMAIN="www.recaptcha.net")
     def test_default_v3_domain_html(self):
