@@ -30,6 +30,7 @@ class ReCaptchaField(forms.CharField):
         https://developers.google.com/recaptcha/docs/display#render_param
         """
         super().__init__(*args, **kwargs)
+        self._recaptcha_response = None
 
         if not isinstance(self.widget, ReCaptchaBase):
             raise ImproperlyConfigured(
@@ -59,6 +60,10 @@ class ReCaptchaField(forms.CharField):
                 return request
             f = f.f_back
 
+    @property
+    def recaptcha_response(self):
+        return self._recaptcha_response
+
     def get_remote_ip(self):
         request = self.get_request()
         if request:
@@ -79,6 +84,7 @@ class ReCaptchaField(forms.CharField):
                 private_key=self.private_key,
                 remoteip=self.get_remote_ip(),
             )
+            self._recaptcha_response = check_captcha
 
         except HTTPError:  # Catch timeouts, etc
             raise ValidationError(
