@@ -457,7 +457,14 @@ class TestWidgets(TestCase):
         )
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
+        self.assertEqual(form.fields["captcha"].recaptcha_response, None)
         self.assertTrue(form.is_valid())
+        recaptcha_response = form.fields["captcha"].recaptcha_response
+        self.assertIsInstance(recaptcha_response, RecaptchaResponse)
+        self.assertEqual(recaptcha_response.extra_data, {"score": 0.85})
+        self.assertEqual(recaptcha_response.is_valid, True)
+        self.assertEqual(recaptcha_response.error_codes, [])
+        self.assertEqual(recaptcha_response.action, None)
 
     @patch("django_recaptcha.fields.client.submit")
     @override_settings(RECAPTCHA_REQUIRED_SCORE=0.85)
