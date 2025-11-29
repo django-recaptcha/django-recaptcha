@@ -10,24 +10,30 @@ def recaptcha_key_check(app_configs, **kwargs):
     public_key = getattr(settings, "RECAPTCHA_PUBLIC_KEY", TEST_PUBLIC_KEY)
 
     if private_key == "":
-        errors.extend([
-            checks.Error(
-                "RECAPTCHA_PRIVATE_KEY is an empty string.",
-                hint="Remove RECAPTCHA_PRIVATE_KEY from your settings file, or provide a proper key.",
-                id="django_recaptcha.private_key_is_empty_string",
-            )
-        ])
+        errors.extend(
+            [
+                checks.Error(
+                    "RECAPTCHA_PRIVATE_KEY is an empty string.",
+                    hint="Remove RECAPTCHA_PRIVATE_KEY from your settings file, or provide a proper key.",
+                    id="django_recaptcha.private_key_is_empty_string",
+                )
+            ]
+        )
 
     if public_key == "":
-        errors.extend([
-            checks.Error(
-                "RECAPTCHA_PUBLIC_KEY is an empty string.",
-                hint="Remove RECAPTCHA_PUBLIC_KEY from your settings file, or provide a proper key.",
-                id="django_recaptcha.public_key_is_empty_string",
-            )
-        ])
+        errors.extend(
+            [
+                checks.Error(
+                    "RECAPTCHA_PUBLIC_KEY is an empty string.",
+                    hint="Remove RECAPTCHA_PUBLIC_KEY from your settings file, or provide a proper key.",
+                    id="django_recaptcha.public_key_is_empty_string",
+                )
+            ]
+        )
 
-    if not settings.DEBUG and (private_key == TEST_PRIVATE_KEY or public_key == TEST_PUBLIC_KEY):
+    if not settings.DEBUG and (
+        private_key == TEST_PRIVATE_KEY or public_key == TEST_PUBLIC_KEY
+    ):
         errors.extend(
             [
                 checks.Error(

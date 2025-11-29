@@ -46,7 +46,11 @@ class TestChecks(TestCase):
 
         self.assertEqual(0, len(errs))
 
-    @override_settings(DEBUG=False, RECAPTCHA_PRIVATE_KEY="privatekey", RECAPTCHA_PUBLIC_KEY="publickey")
+    @override_settings(
+        DEBUG=False,
+        RECAPTCHA_PRIVATE_KEY="privatekey",
+        RECAPTCHA_PUBLIC_KEY="publickey",
+    )
     def test_check_test_key_usage_passes(self):
         errs = recaptcha_key_check("someconf")
         errs = _filter_errs(errs, "django_recaptcha.recaptcha_test_key_error")
