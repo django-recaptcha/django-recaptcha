@@ -9,7 +9,7 @@ def recaptcha_key_check(app_configs, **kwargs):
     private_key = getattr(settings, "RECAPTCHA_PRIVATE_KEY", TEST_PRIVATE_KEY)
     public_key = getattr(settings, "RECAPTCHA_PUBLIC_KEY", TEST_PUBLIC_KEY)
 
-    if private_key == TEST_PRIVATE_KEY or public_key == TEST_PUBLIC_KEY:
+    if not settings.DEBUG and (private_key == TEST_PRIVATE_KEY or public_key == TEST_PUBLIC_KEY):
         errors.extend(
             [
                 checks.Error(
