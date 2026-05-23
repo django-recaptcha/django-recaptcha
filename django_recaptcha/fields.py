@@ -90,6 +90,8 @@ class ReCaptchaField(forms.CharField):
             raise ValidationError(
                 self.error_messages["captcha_error"], code="captcha_error"
             )
+        finally:
+            self.widget.is_validated = True
 
         if not check_captcha.is_valid:
             self.log_warning(

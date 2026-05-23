@@ -107,6 +107,8 @@ class ReCaptchaV3(ReCaptchaBase):
         return data.get(name)
 
     def get_context(self, name, value, attrs):
+        if getattr(self, "is_validated", False):
+            value = ""
         context = super().get_context(name, value, attrs)
         context.update({"action": self.action})
         return context
