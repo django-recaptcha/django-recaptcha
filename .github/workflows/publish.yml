@@ -14,9 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.x"
       - name: Install dependencies
@@ -26,7 +26,7 @@ jobs:
       - name: Build package distributions
         run: python -m build
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           path: ./dist
 
@@ -41,10 +41,13 @@ jobs:
       # Mandatory for trusted publishing
       id-token: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
+        with:
+          name: dist
+          path: ./dist
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: artifact/
+          packages-dir: ./dist
           print-hash: true
