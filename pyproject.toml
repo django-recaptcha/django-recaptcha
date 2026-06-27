@@ -34,8 +34,8 @@ dependencies = [
     "django"
 ]
 
-[tool.setuptools]
-packages = ["django_recaptcha"]
+[tool.setuptools.packages.find]
+include = ["django_recaptcha*"]
 
 [project.optional-dependencies]
 testing = [
