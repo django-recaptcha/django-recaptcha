@@ -5,6 +5,7 @@ sandbox = Path(__file__).resolve().parent
 
 
 INSTALLED_APPS = [
+    "django.contrib.staticfiles",
     "django_recaptcha",
 ]
 
@@ -20,6 +21,12 @@ DEBUG = True
 SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
 
 ROOT_URLCONF = "sandbox.urls"
+
+STATIC_URL = "static/"
+
+STATICFILES_DIRS = [
+    sandbox / "static",
+]
 
 TEMPLATES = [
     {
