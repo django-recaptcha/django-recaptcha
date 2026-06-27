@@ -4,6 +4,7 @@ from django import forms
 from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.views import View
 
 from django_recaptcha.fields import ReCaptchaField
@@ -21,6 +22,10 @@ class Variant(View):
         if not cls.__name__.startswith("_"):
             VARIANTS[cls.__name__] = cls
 
+    @classmethod
+    def url(cls):
+        return reverse("variant", kwargs={"slug": cls.__name__})
+
     # TODO this should come from the widget's `recaptcha_response_name` field,
     # but it's only accurate for V2 captchas.
     data_field_name = "g-recaptcha-response"
@@ -32,7 +37,7 @@ class Variant(View):
         form = self.Form(request.POST)
         if form.is_valid():
             messages.success(request, "👍")
-            return redirect(request.get_full_path())
+            return redirect(self.url())
 
         messages.error(request, "👎")
         return self.render(request, form)

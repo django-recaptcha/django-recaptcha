@@ -16,9 +16,9 @@
     <div class="layout">
       <nav class="variants">
         <ul>
-          {% for name in VARIANTS %}
+          {% for name, variant in VARIANTS.items %}
             <li>
-              <a href="{% url 'variant' slug=name %}"{% if name == variant_name %} class="active"{% endif %}>{{ name }}</a>
+              <a href="{{ variant.url }}"{% if name == variant_name %} class="active"{% endif %}>{{ name }}</a>
             </li>
           {% endfor %}
         </ul>
