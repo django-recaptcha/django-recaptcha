@@ -27,7 +27,7 @@
 Tested with:
 
 - Python: 3.10, 3.11, 3.12, 3.13, 3.14, 3.15
-- Django: 4.2, 5.2, 6.0 and 6.1
+- Django: 5.2, 6.0 and 6.1
 - You can view the [Python-Django support matrix
   here](https://docs.djangoproject.com/en/dev/faq/install/#what-python-version-can-i-use-with-django)
 
@@ -203,7 +203,7 @@ The templates are located in:
 - `django_recaptcha/includes/js_v2_invisible.html` for overriding the reCAPTCHA V2 - Invisible template
 - `django_recaptcha/includes/js_v3.html` for overriding the reCAPTCHA V3 template
 
-For more information about overriding templates look at [Django's template override](https://docs.djangoproject.com/en/4.2/howto/overriding-templates/)
+For more information about overriding templates look at [Django's template override](https://docs.djangoproject.com/en/5.2/howto/overriding-templates/)
 
 ### reCAPTCHA V3 Score
 
