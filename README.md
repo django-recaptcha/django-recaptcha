@@ -27,7 +27,7 @@
 Tested with:
 
 - Python: 3.10, 3.11, 3.12, 3.13 and 3.14
-- Django: 4.2, 5.2 and 6.0
+- Django: 4.2, 5.2, 6.0 and 6.1
 - You can view the [Python-Django support matrix
   here](https://docs.djangoproject.com/en/dev/faq/install/#what-python-version-can-i-use-with-django)
 
