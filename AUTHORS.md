@@ -2,14 +2,21 @@
 
 ## Current Maintainers
 
+*the people below are the current active maintainers of this project.*
+
 - [Andrew Chen Wang](https://github.com/Andrew-Chen-Wang)
 - [Storm Heg](https://github.com/Stormheg)
+- [Alan Verresen](https://github.com/alanverresen)
 
 ## Alumni Maintainers
+
+*the people below have actively maintained this project in the past but are no longer (actively) involved.*
 
 - [Tibor Leupold](https://github.com/tbrlpld)
 
 ## Praekelt Consulting
+
+*Praekelt Consulting are the original creators of django-recaptcha. They handed over ownership to the current maintainers in 2022.*
 
 - Shaun Sephton
 - Peter Pistorius
@@ -22,6 +29,10 @@
 - [Brandon Taylor](http://btaylordesign.com/)
 
 ## Other
+
+**The following people have contributed to the project in various ways over time. Thank you!**
+
+*if you see your name missing and would like to be added, please open a pull request.*
 
 - Brooks Travis
 - [Denis Mishchishin](https://github.com/denz)
