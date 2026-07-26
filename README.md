@@ -248,7 +248,9 @@ captcha = fields.ReCaptchaField(
 
 Setting an action is entirely optional. If you don't specify an action, no action will be passed to the reCAPTCHA V3 API.
 
-### Local Development and Functional Testing
+## Local Development and Functional Testing
+
+### Public test keys
 
 If `RECAPTCHA_PUBLIC_KEY` and `RECAPTCHA_PRIVATE_KEY` are not set,
 django-recaptcha will use [Google's test
@@ -266,6 +268,8 @@ to your settings, here is an example:
 SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
 ```
 
+### Mocking API calls
+
 If you want to mock the call to Google's servers altogether, have a look
 at
 [test_fields.py](https://github.com/django-recaptcha/django-recaptcha/blob/main/django_recaptcha/tests/test_fields.py):
@@ -281,6 +285,10 @@ class TestFields(TestCase):
         mocked_submit.return_value = RecaptchaResponse(is_valid=True)
         ...
 ```
+
+### Development sandbox
+
+The codebase comes with a development sandbox in the [`sandbox/` subdirectory](./sandbox/) which exercises various aspects of the reCAPTCHA field and widgets.
 
 ## Credits
 

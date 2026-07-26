@@ -34,6 +34,9 @@ dependencies = [
     "django"
 ]
 
+[tool.setuptools.packages.find]
+include = ["django_recaptcha*"]
+
 [project.optional-dependencies]
 testing = [
     "tox",
