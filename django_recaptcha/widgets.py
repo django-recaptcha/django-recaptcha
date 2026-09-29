@@ -48,6 +48,7 @@ class ReCaptchaBase(widgets.Widget):
     def build_attrs(self, base_attrs, extra_attrs=None):
         attrs = super().build_attrs(base_attrs, extra_attrs)
         attrs["data-widget-uuid"] = self.uuid
+        attrs["data-recaptcha-type"] = self.recaptcha_type
 
         # Support the ability to override some of the Google data attrs.
         attrs["data-callback"] = base_attrs.get(
@@ -59,11 +60,13 @@ class ReCaptchaBase(widgets.Widget):
 
 class ReCaptchaV2Checkbox(ReCaptchaBase):
     input_type = "hidden"
+    recaptcha_type = "classic-v2-checkbox"
     template_name = "django_recaptcha/widget_v2_checkbox.html"
 
 
 class ReCaptchaV2Invisible(ReCaptchaBase):
     input_type = "hidden"
+    recaptcha_type = "classic-v2-invisible"
     template_name = "django_recaptcha/widget_v2_invisible.html"
 
     def build_attrs(self, base_attrs, extra_attrs=None):
@@ -76,6 +79,7 @@ class ReCaptchaV2Invisible(ReCaptchaBase):
 
 class ReCaptchaV3(ReCaptchaBase):
     input_type = "hidden"
+    recaptcha_type = "classic-v3"
     template_name = "django_recaptcha/widget_v3.html"
 
     def __init__(
@@ -101,6 +105,8 @@ class ReCaptchaV3(ReCaptchaBase):
 
     def build_attrs(self, base_attrs, extra_attrs=None):
         attrs = super().build_attrs(base_attrs, extra_attrs)
+        if self.action:
+            attrs["data-action"] = self.action
         return attrs
 
     def value_from_datadict(self, data, files, name):
