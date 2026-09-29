@@ -1,0 +1,62 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>django_recaptcha sandbox · {{ variant_name }}</title>
+  <script src="{% static 'sandbox.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'sandbox.css' %}">
+</head>
+<body>
+  <div class="shell">
+    <header class="masthead">
+      <h1><span class="brand">django_recaptcha</span> sandbox</h1>
+    </header>
+
+    <div class="layout">
+      <nav class="variants">
+        <ul>
+          {% for name, variant in VARIANTS.items %}
+            <li>
+              <a href="{{ variant.url }}"{% if name == variant_name %} class="active"{% endif %}>{{ name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+
+      <main class="panel">
+        <h2>{{ variant_name }}</h2>
+        <p class="doc">{{ doc }}</p>
+
+        {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <form method="POST">
+          {% if fake %}
+            {{ form.captcha.errors }}
+            <input name="{{ data_field_name }}" value="malicious-fake-token" readonly>
+          {% else %}
+            {{ form }}
+          {% endif %}
+          <input type="submit">
+        </form>
+
+        <div class="toggle">
+          {% if fake %}
+            <a href="?">↩ use the real captcha</a>
+          {% else %}
+            <a href="?fake=1">😈 simulate a malicious submission</a>
+          {% endif %}
+        </div>
+
+        <p class="example_onload"></p>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
