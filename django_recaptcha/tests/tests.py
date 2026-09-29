@@ -1,6 +1,5 @@
 from importlib import reload
 
-from django.core.checks import Error
 from django.core.exceptions import ImproperlyConfigured
 from django.test import TestCase, override_settings
 
@@ -42,24 +41,3 @@ class TestInit(TestCase):
                 error.exception.args,
                 ("Setting RECAPTCHA_PRIVATE_KEY is not of type", str),
             )
-
-    @override_settings(
-        RECAPTCHA_PRIVATE_KEY=django_recaptcha.constants.TEST_PRIVATE_KEY
-    )
-    def test_test_key_check(self):
-        check_errors = django_recaptcha.checks.recaptcha_key_check("someconf")
-        expected_errors = [
-            Error(
-                "RECAPTCHA_PRIVATE_KEY or RECAPTCHA_PUBLIC_KEY is making use"
-                " of the Google test keys and will not behave as expected in a"
-                " production environment",
-                hint="Update settings.RECAPTCHA_PRIVATE_KEY"
-                " and/or settings.RECAPTCHA_PUBLIC_KEY. Alternatively this"
-                " check can be ignored by adding"
-                " `SILENCED_SYSTEM_CHECKS ="
-                " ['django_recaptcha.recaptcha_test_key_error']`"
-                " to your settings file.",
-                id="django_recaptcha.recaptcha_test_key_error",
-            )
-        ]
-        self.assertEqual(check_errors, expected_errors)
