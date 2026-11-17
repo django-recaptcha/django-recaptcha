@@ -88,6 +88,31 @@ RECAPTCHA_DOMAIN = 'www.recaptcha.net'
 This will change the Google JavaScript api domain as well as the client
 side field verification domain.
 
+### Self-hosted compatible verification
+
+`RECAPTCHA_DOMAIN` changes both the script host and the server verification
+host. A self-hosted implementation must serve a compatible widget at
+`/recaptcha/api.js` and verification API at `/recaptcha/api/siteverify` over
+HTTPS.
+
+```python
+RECAPTCHA_DOMAIN = "captcha.example.com"  # Host only: no scheme or path.
+RECAPTCHA_PUBLIC_KEY = "your-public-site-key"
+RECAPTCHA_PRIVATE_KEY = "your-private-verification-secret"
+```
+
+Start with `ReCaptchaV2Checkbox`. Keep the private key on the server and verify
+the field before accepting the protected action. The package's server request
+includes `remoteip`; the verification service must receive the same client-IP
+context used when the token was issued. Configure trusted reverse proxies
+correctly rather than disabling token binding.
+
+[FCaptcha](https://github.com/WebDecoy/FCaptcha) is one self-hosted
+implementation providing these endpoints; its
+[demo](https://webdecoy.com/product/fcaptcha-demo/) illustrates the widget.
+This configuration does not make other incompatible CAPTCHA providers
+interchangeable, and availability of the endpoints does not prove bot-detection
+efficacy.
 ## Usage
 
 ### Fields
