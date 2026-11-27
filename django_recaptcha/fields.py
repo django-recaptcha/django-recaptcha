@@ -99,38 +99,42 @@ class ReCaptchaField(forms.CharField):
                 self.error_messages["captcha_invalid"], code="captcha_invalid"
             )
 
-        if (
-            isinstance(self.widget, ReCaptchaV3)
-            and check_captcha.action != self.widget.action
-        ):
-            self.log_warning(
-                "ReCAPTCHA validation failed due to: mismatched action. Expected '%s' but received '%s' from captcha server."
-                % (self.widget.action, check_captcha.action)
-            )
-            raise ValidationError(
-                self.error_messages["captcha_invalid"], code="captcha_invalid"
-            )
-
-        required_score = getattr(self.widget, "required_score", None)
-        if required_score:
-            # Our score values need to be floats, as that is the expected
-            # response from the Google endpoint. Rather than ensure that on
-            # the widget, we do it on the field to better support user
-            # subclassing of the widgets.
-            required_score = float(required_score)
-
-            # If a score was expected but non was returned, default to a 0,
-            # which is the lowest score that it can return. This is to do our
-            # best to assure a failure here, we can not assume that a form
-            # that needed the threshold should be valid if we didn't get a
-            # value back.
-            score = float(check_captcha.extra_data.get("score", 0))
-
-            if required_score > score:
+        # Google's test keys guarantee that every verification passes. The v2
+        # test keys return action=None and no score, so the v3 checks below
+        # would reject them; skip those checks for the documented test keys.
+        if self.private_key != TEST_PRIVATE_KEY:
+            if (
+                isinstance(self.widget, ReCaptchaV3)
+                and check_captcha.action != self.widget.action
+            ):
                 self.log_warning(
-                    "ReCAPTCHA validation failed due to its score of %s"
-                    " being lower than the required amount." % score
+                    "ReCAPTCHA validation failed due to: mismatched action. Expected '%s' but received '%s' from captcha server."
+                    % (self.widget.action, check_captcha.action)
                 )
                 raise ValidationError(
                     self.error_messages["captcha_invalid"], code="captcha_invalid"
                 )
+
+            required_score = getattr(self.widget, "required_score", None)
+            if required_score:
+                # Our score values need to be floats, as that is the expected
+                # response from the Google endpoint. Rather than ensure that on
+                # the widget, we do it on the field to better support user
+                # subclassing of the widgets.
+                required_score = float(required_score)
+
+                # If a score was expected but non was returned, default to a 0,
+                # which is the lowest score that it can return. This is to do our
+                # best to assure a failure here, we can not assume that a form
+                # that needed the threshold should be valid if we didn't get a
+                # value back.
+                score = float(check_captcha.extra_data.get("score", 0))
+
+                if required_score > score:
+                    self.log_warning(
+                        "ReCAPTCHA validation failed due to its score of %s"
+                        " being lower than the required amount." % score
+                    )
+                    raise ValidationError(
+                        self.error_messages["captcha_invalid"], code="captcha_invalid"
+                    )

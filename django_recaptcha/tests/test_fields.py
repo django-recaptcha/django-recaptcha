@@ -7,6 +7,7 @@ from django.test import TestCase, override_settings
 
 from django_recaptcha import fields, widgets
 from django_recaptcha.client import RecaptchaResponse
+from django_recaptcha.constants import TEST_PRIVATE_KEY
 
 
 class DefaultForm(forms.Form):
@@ -425,7 +426,9 @@ class TestWidgets(TestCase):
     @patch("django_recaptcha.fields.client.submit")
     def test_client_invalid_action_v3(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
-            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3(action="form"))
+            captcha = fields.ReCaptchaField(
+                private_key="real-key", widget=widgets.ReCaptchaV3(action="form")
+            )
 
         mocked_submit.return_value = RecaptchaResponse(
             is_valid=True, extra_data={"score": 0.1}, action="something_unexpected"
@@ -433,6 +436,36 @@ class TestWidgets(TestCase):
         form_params = {"captcha": "PASSED"}
         form = VThreeDomainForm(form_params)
         self.assertFalse(form.is_valid())
+
+    @patch("django_recaptcha.fields.client.submit")
+    def test_client_test_key_ignores_mismatched_action_v3(self, mocked_submit):
+        class VThreeDomainForm(forms.Form):
+            captcha = fields.ReCaptchaField(
+                private_key=TEST_PRIVATE_KEY,
+                widget=widgets.ReCaptchaV3(action="form"),
+            )
+
+        mocked_submit.return_value = RecaptchaResponse(
+            is_valid=True, extra_data={"score": 0.1}, action=None
+        )
+        form_params = {"captcha": "PASSED"}
+        form = VThreeDomainForm(form_params)
+        self.assertTrue(form.is_valid())
+
+    @patch("django_recaptcha.fields.client.submit")
+    def test_client_test_key_ignores_required_score_v3(self, mocked_submit):
+        class VThreeDomainForm(forms.Form):
+            captcha = fields.ReCaptchaField(
+                private_key=TEST_PRIVATE_KEY,
+                widget=widgets.ReCaptchaV3(required_score=0.9),
+            )
+
+        mocked_submit.return_value = RecaptchaResponse(
+            is_valid=True, extra_data={"score": 0.1}
+        )
+        form_params = {"captcha": "PASSED"}
+        form = VThreeDomainForm(form_params)
+        self.assertTrue(form.is_valid())
 
     @patch("django_recaptcha.fields.client.submit")
     def test_client_valid_action_v3(self, mocked_submit):
@@ -470,7 +503,9 @@ class TestWidgets(TestCase):
     @override_settings(RECAPTCHA_REQUIRED_SCORE=0.85)
     def test_required_score_bot_setting(self, mocked_submit):
         class VThreeDomainForm(forms.Form):
-            captcha = fields.ReCaptchaField(widget=widgets.ReCaptchaV3())
+            captcha = fields.ReCaptchaField(
+                private_key="real-key", widget=widgets.ReCaptchaV3()
+            )
 
         mocked_submit.return_value = RecaptchaResponse(
             is_valid=True, extra_data={"score": 0}
